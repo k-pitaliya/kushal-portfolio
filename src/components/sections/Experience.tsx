@@ -1,123 +1,94 @@
 "use client";
 
 import { useRef } from "react";
-import {
-  motion,
-  useScroll,
-  useTransform,
-} from "framer-motion";
-import { cn } from "@/lib/utils";
-import { fadeLeft, fadeRight, fadeUp } from "@/lib/animations";
+import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
 import { experiences } from "@/lib/data";
 import GlassCard from "@/components/ui/GlassCard";
 import SectionHeading from "@/components/ui/SectionHeading";
 
-export default function Experience() {
-  const timelineRef = useRef<HTMLDivElement>(null);
+function ExperienceCard({
+  exp,
+  index,
+  total,
+  progress,
+}: {
+  exp: (typeof experiences)[number];
+  index: number;
+  total: number;
+  progress: MotionValue<number>;
+}) {
+  const rangeStart = index / total;
+  const rangeEnd = (index + 1) / total;
 
-  const { scrollYProgress } = useScroll({
-    target: timelineRef,
-    offset: ["start 80%", "end 60%"],
-  });
+  const scale = useTransform(progress, [rangeStart, rangeEnd], [1, 0.93]);
+  const opacity = useTransform(progress, [rangeStart, rangeEnd], [1, 0.5]);
 
-  const lineHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+  // Only scale DOWN completed (scrolled past) cards
+  const finalScale = useTransform(scale, (v) => (index < total - 1 ? v : 1));
+  const finalOpacity = useTransform(opacity, (v) => (index < total - 1 ? v : 1));
 
   return (
-    <section id="experience" className="relative px-6 py-32 md:px-12 lg:px-24">
+    <div
+      className="sticky"
+      style={{ top: `calc(120px + ${index * 28}px)`, zIndex: index + 1 }}
+    >
+      <motion.div
+        style={{ scale: finalScale, opacity: finalOpacity }}
+        className="origin-top"
+      >
+        <GlassCard className="mx-auto max-w-3xl border-accent/10 p-8 md:p-10">
+          <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+            <div className="flex-1">
+              <span className="mb-3 inline-block rounded-full bg-accent/15 px-3 py-1 text-xs font-medium text-accent">
+                {exp.period}
+              </span>
+              <h3 className="text-xl font-bold text-text md:text-2xl">{exp.role}</h3>
+              <p className="mt-1 text-sm text-text-muted">{exp.company}</p>
+            </div>
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-accent/10 font-mono text-lg font-bold text-accent">
+              {String(index + 1).padStart(2, "0")}
+            </div>
+          </div>
+          <ul className="mt-6 space-y-3">
+            {exp.description.map((item, j) => (
+              <li key={j} className="flex items-start gap-3 text-sm leading-relaxed text-text-muted">
+                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                {item}
+              </li>
+            ))}
+          </ul>
+        </GlassCard>
+      </motion.div>
+    </div>
+  );
+}
+
+export default function Experience() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end end"],
+  });
+
+  return (
+    <section
+      id="experience"
+      ref={sectionRef}
+      className="relative px-6 py-32 md:px-12 lg:px-24"
+      style={{ minHeight: `${experiences.length * 250 + 400}px` }}
+    >
       <div className="mx-auto max-w-5xl">
         <SectionHeading number="04" title="Experience" />
-
-        <div ref={timelineRef} className="relative">
-          {/* Timeline Line */}
-          <div className="absolute left-4 top-0 hidden h-full w-0.5 bg-glass-border md:left-1/2 md:-translate-x-1/2 md:block">
-            <motion.div
-              className="w-full origin-top bg-accent"
-              style={{ height: lineHeight }}
+        <div className="mt-16 space-y-6">
+          {experiences.map((exp, i) => (
+            <ExperienceCard
+              key={exp.id}
+              exp={exp}
+              index={i}
+              total={experiences.length}
+              progress={scrollYProgress}
             />
-          </div>
-          {/* Mobile timeline line */}
-          <div className="absolute left-4 top-0 block h-full w-0.5 bg-glass-border md:hidden">
-            <motion.div
-              className="w-full origin-top bg-accent"
-              style={{ height: lineHeight }}
-            />
-          </div>
-
-          {/* Cards */}
-          <div className="space-y-12 md:space-y-16">
-            {experiences.map((exp, i) => {
-              const isLeft = i % 2 === 0;
-              return (
-                <div
-                  key={exp.id}
-                  className={cn(
-                    "relative flex items-start",
-                    "pl-12 md:pl-0",
-                    isLeft ? "md:flex-row" : "md:flex-row-reverse"
-                  )}
-                >
-                  {/* Dot */}
-                  <div
-                    className={cn(
-                      "absolute left-2.5 top-6 z-10 md:left-1/2 md:-translate-x-1/2",
-                    )}
-                  >
-                    <motion.div
-                      className="h-3.5 w-3.5 rounded-full border-2 border-accent bg-bg"
-                      initial={{ scale: 0 }}
-                      whileInView={{ scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: 0.2 }}
-                    />
-                    <motion.div
-                      className="absolute inset-0 rounded-full bg-accent/40"
-                      animate={{ scale: [1, 2, 1], opacity: [0.6, 0, 0.6] }}
-                      transition={{
-                        duration: 2,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      }}
-                    />
-                  </div>
-
-                  {/* Card */}
-                  <motion.div
-                    className={cn(
-                      "w-full md:w-[calc(50%-2rem)]",
-                      isLeft ? "md:pr-4" : "md:pl-4"
-                    )}
-                    variants={isLeft ? fadeLeft : fadeRight}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, margin: "-100px" }}
-                  >
-                    <GlassCard>
-                      <span className="mb-2 inline-block rounded-full bg-accent/15 px-3 py-1 text-xs font-medium text-accent">
-                        {exp.period}
-                      </span>
-                      <h3 className="text-lg font-semibold text-text">
-                        {exp.role}
-                      </h3>
-                      <p className="mb-4 text-sm text-text-muted">
-                        {exp.company}
-                      </p>
-                      <ul className="space-y-2">
-                        {exp.description.map((item, j) => (
-                          <li
-                            key={j}
-                            className="flex items-start gap-2 text-sm text-text-muted"
-                          >
-                            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
-                            {item}
-                          </li>
-                        ))}
-                      </ul>
-                    </GlassCard>
-                  </motion.div>
-                </div>
-              );
-            })}
-          </div>
+          ))}
         </div>
       </div>
     </section>

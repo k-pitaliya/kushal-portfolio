@@ -7,6 +7,7 @@ import { staggerContainer, staggerItem } from "@/lib/animations";
 import { skillCategories } from "@/lib/data";
 import GlassCard from "@/components/ui/GlassCard";
 import SectionHeading from "@/components/ui/SectionHeading";
+import RevealMask from "@/components/ui/RevealMask";
 
 function SkillBar({ level, name }: { level: number; name: string }) {
   return (
@@ -66,24 +67,26 @@ export default function Skills() {
         </LayoutGroup>
 
         {/* Skills Grid */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeCategory}
-            className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
-            variants={staggerContainer}
-            initial="hidden"
-            animate="visible"
-            exit={{ opacity: 0, transition: { duration: 0.2 } }}
-          >
-            {skillCategories[activeCategory].skills.map((skill) => (
-              <motion.div key={skill.name} variants={staggerItem}>
-                <GlassCard className="space-y-3">
-                  <SkillBar name={skill.name} level={skill.level} />
-                </GlassCard>
-              </motion.div>
-            ))}
-          </motion.div>
-        </AnimatePresence>
+        <RevealMask direction="center">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeCategory}
+              className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+              variants={staggerContainer}
+              initial="hidden"
+              animate="visible"
+              exit={{ opacity: 0, transition: { duration: 0.2 } }}
+            >
+              {skillCategories[activeCategory].skills.map((skill) => (
+                <motion.div key={skill.name} variants={staggerItem}>
+                  <GlassCard className="space-y-3">
+                    <SkillBar name={skill.name} level={skill.level} />
+                  </GlassCard>
+                </motion.div>
+              ))}
+            </motion.div>
+          </AnimatePresence>
+        </RevealMask>
       </div>
     </section>
   );

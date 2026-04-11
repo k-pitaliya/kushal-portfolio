@@ -5,6 +5,11 @@ import { AnimatePresence } from "framer-motion";
 import { useSmoothScroll } from "@/hooks/useSmoothScroll";
 import Preloader from "@/components/layout/Preloader";
 import CustomCursor from "@/components/layout/CustomCursor";
+import CursorTrail from "@/components/ui/CursorTrail";
+import Spotlight from "@/components/ui/Spotlight";
+import CommandPalette from "@/components/ui/CommandPalette";
+import KonamiEaster from "@/components/ui/KonamiEaster";
+import SoundToggle from "@/components/ui/SoundToggle";
 import Navbar from "@/components/layout/Navbar";
 import ScrollProgress from "@/components/ui/ScrollProgress";
 import Hero from "@/components/sections/Hero";
@@ -32,6 +37,11 @@ export default function Home() {
       </AnimatePresence>
 
       <CustomCursor />
+      <CursorTrail />
+      <Spotlight />
+      <CommandPalette />
+      <KonamiEaster />
+      <SoundToggle />
       <ScrollProgress />
       <Navbar />
 

@@ -9,6 +9,7 @@ import AnimatedText from "@/components/ui/AnimatedText";
 import GlassCard from "@/components/ui/GlassCard";
 import Counter from "@/components/ui/Counter";
 import SectionHeading from "@/components/ui/SectionHeading";
+import DotGrid from "@/components/ui/DotGrid";
 
 export default function About() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -44,6 +45,8 @@ export default function About() {
       ref={sectionRef}
       className="relative px-6 py-32 md:px-12 lg:px-24"
     >
+      {/* Interactive dot grid background */}
+      <DotGrid className="absolute inset-0 h-full w-full opacity-60" />
       <div className="mx-auto max-w-6xl">
         <SectionHeading number="01" title="About Me" />
 

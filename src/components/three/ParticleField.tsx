@@ -1,18 +1,21 @@
 "use client";
 
-import { useRef, useMemo } from "react";
+import { useRef, useMemo, useEffect } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
-const PARTICLE_COUNT = 2500;
+const DEFAULT_COUNT = 2500;
 const SPHERE_RADIUS = 3;
 
-export default function ParticleField() {
+export default function ParticleField({ count = DEFAULT_COUNT }: { count?: number }) {
   const pointsRef = useRef<THREE.Points>(null);
   const mouse = useRef(new THREE.Vector2(0, 0));
   const { viewport } = useThree();
 
-  // Track pointer in normalized device coordinates
+  // Track pointer in normalized device coordinates via passive listener
+  useFrame(() => {}); // ensure hook order
+  useMemo(() => {}, []); // placeholder for hook order
+
   const onPointerMove = useMemo(() => {
     return (e: { clientX: number; clientY: number }) => {
       mouse.current.x = (e.clientX / window.innerWidth) * 2 - 1;
@@ -20,26 +23,19 @@ export default function ParticleField() {
     };
   }, []);
 
-  // Listen to pointer moves on the window
-  useMemo(() => {
-    if (typeof window !== "undefined") {
-      window.addEventListener("pointermove", onPointerMove);
-    }
-    return () => {
-      if (typeof window !== "undefined") {
-        window.removeEventListener("pointermove", onPointerMove);
-      }
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // Use useEffect (not useMemo) for side effects
+  useEffect(() => {
+    window.addEventListener("pointermove", onPointerMove, { passive: true });
+    return () => window.removeEventListener("pointermove", onPointerMove);
+  }, [onPointerMove]);
 
   const { positions, basePositions, sizes, opacities } = useMemo(() => {
-    const positions = new Float32Array(PARTICLE_COUNT * 3);
-    const basePositions = new Float32Array(PARTICLE_COUNT * 3);
-    const sizes = new Float32Array(PARTICLE_COUNT);
-    const opacities = new Float32Array(PARTICLE_COUNT);
+    const positions = new Float32Array(count * 3);
+    const basePositions = new Float32Array(count * 3);
+    const sizes = new Float32Array(count);
+    const opacities = new Float32Array(count);
 
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
+    for (let i = 0; i < count; i++) {
       // Distribute in a spherical cloud
       const theta = Math.random() * Math.PI * 2;
       const phi = Math.acos(2 * Math.random() - 1);
@@ -61,7 +57,7 @@ export default function ParticleField() {
     }
 
     return { positions, basePositions, sizes, opacities };
-  }, []);
+  }, [count]);
 
   useFrame(({ clock }) => {
     if (!pointsRef.current) return;
@@ -76,7 +72,7 @@ export default function ParticleField() {
     const mouseX = mouse.current.x * (viewport.width / 2);
     const mouseY = mouse.current.y * (viewport.height / 2);
 
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
+    for (let i = 0; i < count; i++) {
       const i3 = i * 3;
       const bx = basePositions[i3];
       const by = basePositions[i3 + 1];
@@ -119,17 +115,17 @@ export default function ParticleField() {
         <bufferAttribute
           attach="attributes-position"
           args={[positions, 3]}
-          count={PARTICLE_COUNT}
+          count={count}
         />
         <bufferAttribute
           attach="attributes-aSize"
           args={[sizes, 1]}
-          count={PARTICLE_COUNT}
+          count={count}
         />
         <bufferAttribute
           attach="attributes-aOpacity"
           args={[opacities, 1]}
-          count={PARTICLE_COUNT}
+          count={count}
         />
       </bufferGeometry>
       <shaderMaterial

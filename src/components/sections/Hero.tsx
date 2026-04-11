@@ -5,6 +5,9 @@ import { motion } from "framer-motion";
 import { ChevronDown, Download, FolderOpen, Mouse } from "lucide-react";
 import Scene from "@/components/three/Scene";
 import MagneticButton from "@/components/ui/MagneticButton";
+import MeshGradient from "@/components/ui/MeshGradient";
+import TextScramble from "@/components/ui/TextScramble";
+import ScrollVelocityText from "@/components/ui/ScrollVelocityText";
 import { staggerContainer, staggerItem, fadeUp } from "@/lib/animations";
 
 const skillBadges = [
@@ -38,6 +41,11 @@ export default function Hero() {
         <Scene />
       </div>
 
+      {/* Mesh gradient atmosphere */}
+      <div className="absolute inset-0 z-[0]">
+        <MeshGradient opacity={0.12} />
+      </div>
+
       {/* Gradient overlays for readability */}
       <div className="absolute inset-0 z-[1] bg-gradient-to-b from-bg/60 via-transparent to-bg" />
       <div className="absolute inset-0 z-[1] bg-gradient-to-r from-bg/40 via-transparent to-bg/40" />
@@ -54,16 +62,27 @@ export default function Hero() {
           className="mb-4 font-mono text-sm tracking-[0.3em] text-accent sm:text-base"
           variants={staggerItem}
         >
-          {"Hello, I'm".split("").map((char, i) => (
-            <motion.span
-              key={i}
-              initial={{ opacity: 0 }}
-              animate={ready ? { opacity: 1 } : {}}
-              transition={{ delay: 0.3 + i * 0.05, duration: 0.1 }}
-            >
-              {char}
-            </motion.span>
-          ))}
+          <motion.span
+            animate={ready ? {
+              textShadow: [
+                "0 0 4px rgba(0,191,255,0.2)",
+                "0 0 20px rgba(0,191,255,0.5)",
+                "0 0 4px rgba(0,191,255,0.2)",
+              ],
+            } : {}}
+            transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+          >
+            {"Hello, I'm".split("").map((char, i) => (
+              <motion.span
+                key={i}
+                initial={{ opacity: 0 }}
+                animate={ready ? { opacity: 1 } : {}}
+                transition={{ delay: 0.3 + i * 0.05, duration: 0.1 }}
+              >
+                {char}
+              </motion.span>
+            ))}
+          </motion.span>
           <motion.span
             className="ml-1 inline-block"
             animate={{ opacity: [1, 0] }}
@@ -73,48 +92,37 @@ export default function Hero() {
           </motion.span>
         </motion.p>
 
-        {/* Large name with split-letter stagger */}
+        {/* Large name with split-letter stagger + scramble on hover */}
         <div className="overflow-hidden">
           <motion.h1
             className="flex flex-wrap justify-center"
             variants={staggerItem}
           >
-            {nameText.split("").map((char, i) => (
-              <motion.span
-                key={i}
-                className="inline-block text-5xl font-bold leading-tight tracking-tight text-text sm:text-7xl md:text-8xl lg:text-9xl"
-                initial={{ y: 120, opacity: 0, rotateX: -30 }}
-                animate={
-                  ready
-                    ? { y: 0, opacity: 1, rotateX: 0 }
-                    : {}
-                }
-                transition={{
-                  duration: 0.7,
-                  delay: 0.6 + i * 0.03,
-                  ease: [0.43, 0.13, 0.23, 0.96],
-                }}
-              >
-                {char === " " ? "\u00A0" : char}
-              </motion.span>
-            ))}
+            <TextScramble
+              text={nameText}
+              as="span"
+              className="inline-block text-5xl font-bold leading-tight tracking-tight text-text sm:text-7xl md:text-8xl lg:text-9xl"
+              speed={40}
+            />
           </motion.h1>
         </div>
 
-        {/* Subtitle with gradient */}
-        <motion.p
-          className="mt-6 text-lg font-medium tracking-wide sm:text-xl md:text-2xl"
-          variants={staggerItem}
-        >
-          {subtitleParts.map((part, i) => (
-            <span key={part}>
-              {i > 0 && (
-                <span className="mx-2 text-text-dim sm:mx-3">·</span>
-              )}
-              <span className="gradient-text">{part}</span>
-            </span>
-          ))}
-        </motion.p>
+        {/* Subtitle with gradient + scroll velocity skew */}
+        <ScrollVelocityText skewFactor={0.6}>
+          <motion.p
+            className="mt-6 text-lg font-medium tracking-wide sm:text-xl md:text-2xl"
+            variants={staggerItem}
+          >
+            {subtitleParts.map((part, i) => (
+              <span key={part}>
+                {i > 0 && (
+                  <span className="mx-2 text-text-dim sm:mx-3">·</span>
+                )}
+                <span className="gradient-text">{part}</span>
+              </span>
+            ))}
+          </motion.p>
+        </ScrollVelocityText>
 
         {/* Tagline */}
         <motion.p
