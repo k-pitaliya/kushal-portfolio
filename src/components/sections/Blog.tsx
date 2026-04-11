@@ -12,6 +12,12 @@ const tagGradients = [
   "from-orange-500/30 to-rose-500/30",
 ];
 
+function estimateReadTime(text: string): string {
+  const words = text.split(/\s+/).length;
+  const minutes = Math.max(1, Math.ceil(words / 200) + 3);
+  return `${minutes} min read`;
+}
+
 export default function Blog() {
   return (
     <section id="blog" className="relative px-6 py-32 md:px-12 lg:px-24">
@@ -35,14 +41,14 @@ export default function Blog() {
                 <div
                   className={`mb-5 flex h-36 items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br ${
                     tagGradients[i % tagGradients.length]
-                  } transition-transform duration-500 group-hover:scale-105`}
+                  } transition-transform duration-500 group-hover:scale-[1.02]`}
                 >
-                  <span className="text-4xl font-bold text-white/20">
+                  <span className="text-4xl font-bold text-white/20 transition-all duration-500 group-hover:text-white/30">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                 </div>
 
-                {/* Date & Tags */}
+                {/* Date + Read time + Tags */}
                 <div className="mb-3 flex flex-wrap items-center gap-2">
                   <span className="text-xs text-text-dim">
                     {new Date(post.date).toLocaleDateString("en-US", {
@@ -50,6 +56,10 @@ export default function Blog() {
                       month: "short",
                       day: "numeric",
                     })}
+                  </span>
+                  <span className="text-text-dim">·</span>
+                  <span className="text-xs text-text-dim">
+                    {estimateReadTime(post.excerpt)}
                   </span>
                   {post.tags.map((tag) => (
                     <span
@@ -62,7 +72,7 @@ export default function Blog() {
                 </div>
 
                 {/* Title & Excerpt */}
-                <h3 className="mb-2 text-lg font-semibold text-text">
+                <h3 className="mb-2 text-lg font-semibold text-text transition-colors duration-300 group-hover:text-accent">
                   {post.title}
                 </h3>
                 <p className="mb-4 flex-1 text-sm leading-relaxed text-text-muted">
@@ -72,10 +82,10 @@ export default function Blog() {
                 {/* Read More */}
                 <a
                   href={post.url}
-                  className="group/link inline-flex items-center gap-1 text-sm font-medium text-accent transition-colors hover:text-accent-dark"
+                  className="group/link inline-flex items-center gap-1.5 text-sm font-medium text-accent transition-colors hover:text-accent-dark"
                 >
                   Read More
-                  <span className="inline-block transition-transform group-hover/link:translate-x-1">
+                  <span className="inline-block transition-transform duration-200 group-hover/link:translate-x-1">
                     →
                   </span>
                 </a>

@@ -227,6 +227,19 @@ export const education: Education[] = [
     field: "Electronics & Communication Engineering",
     period: "2021 — 2025",
     gpa: "8.5/10",
+    coursework: [
+      "Digital VLSI Design",
+      "Computer Architecture",
+      "Embedded Systems",
+      "Signal Processing",
+      "Cloud Computing",
+      "Data Structures & Algorithms",
+    ],
+    achievements: [
+      "Dean's List — 4 consecutive semesters",
+      "Best Project Award — VLSI Design Verification",
+      "Published research on FPGA-based signal processing",
+    ],
   },
 ];
 

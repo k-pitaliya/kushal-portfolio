@@ -23,12 +23,21 @@ import Testimonials from "@/components/sections/Testimonials";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/layout/Footer";
 
+function SectionDivider() {
+  return <div className="section-divider mx-auto w-full max-w-5xl" aria-hidden="true" />;
+}
+
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   useSmoothScroll();
 
   return (
     <>
+      {/* Skip to content — accessibility */}
+      <a href="#about" className="skip-to-content">
+        Skip to content
+      </a>
+
       <AnimatePresence mode="wait">
         {isLoading && (
           <Preloader onComplete={() => setIsLoading(false)} />
@@ -43,16 +52,25 @@ export default function Home() {
       <ScrollProgress />
       <Navbar />
 
-      <main>
+      <main id="main-content">
         <Hero />
+        <SectionDivider />
         <About />
+        <SectionDivider />
         <Skills />
+        <SectionDivider />
         <Projects />
+        <SectionDivider />
         <Experience />
+        <SectionDivider />
         <Education />
+        <SectionDivider />
         <Certifications />
+        <SectionDivider />
         <Blog />
+        <SectionDivider />
         <Testimonials />
+        <SectionDivider />
         <Contact />
       </main>
 

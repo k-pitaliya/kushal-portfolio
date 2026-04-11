@@ -28,6 +28,8 @@ export interface Education {
   period: string;
   gpa?: string;
   logo?: string;
+  coursework?: string[];
+  achievements?: string[];
 }
 
 export interface Skill {

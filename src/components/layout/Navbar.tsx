@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { navItems } from "@/lib/data";
 import { staggerContainer, staggerItem } from "@/lib/animations";
@@ -96,6 +96,7 @@ export default function Navbar() {
           </MagneticButton>
 
           {/* Desktop nav links */}
+          <LayoutGroup>
           <ul className="hidden items-center gap-1 md:flex">
             {navItems.map((item) => (
               <li key={item.href}>
@@ -117,23 +118,35 @@ export default function Navbar() {
                     >
                       {item.label}
                     </span>
-                    <motion.span
-                      className="absolute bottom-1 left-3 right-3 h-[2px] rounded-full bg-accent"
-                      variants={{
-                        rest: { scaleX: 0, opacity: 0 },
-                        hover: {
-                          scaleX: 1,
-                          opacity: 1,
-                          transition: { duration: 0.3, ease: "easeInOut" as const },
-                        },
-                      }}
-                      style={{ originX: 0.5 }}
-                    />
+                    {/* Active section indicator */}
+                    {activeSection === item.href.slice(1) && (
+                      <motion.span
+                        className="absolute bottom-1 left-3 right-3 h-[2px] rounded-full bg-accent"
+                        layoutId="navbar-active-underline"
+                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                      />
+                    )}
+                    {/* Hover underline (only when not active) */}
+                    {activeSection !== item.href.slice(1) && (
+                      <motion.span
+                        className="absolute bottom-1 left-3 right-3 h-[2px] rounded-full bg-text-dim"
+                        variants={{
+                          rest: { scaleX: 0, opacity: 0 },
+                          hover: {
+                            scaleX: 1,
+                            opacity: 0.5,
+                            transition: { duration: 0.3, ease: "easeInOut" as const },
+                          },
+                        }}
+                        style={{ originX: 0.5 }}
+                      />
+                    )}
                   </motion.button>
                 </MagneticButton>
               </li>
             ))}
           </ul>
+          </LayoutGroup>
 
           {/* Mobile hamburger */}
           <button

@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import { fadeUp, staggerContainer, staggerItem } from "@/lib/animations";
 import { education } from "@/lib/data";
-import GlassCard from "@/components/ui/GlassCard";
 import SectionHeading from "@/components/ui/SectionHeading";
 
 export default function Education() {
@@ -13,7 +12,7 @@ export default function Education() {
         <SectionHeading number="05" title="Education" />
 
         <motion.div
-          className="grid gap-6"
+          className="space-y-12"
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
@@ -21,32 +20,84 @@ export default function Education() {
         >
           {education.map((edu) => (
             <motion.div key={edu.id} variants={staggerItem}>
-              <GlassCard className="relative overflow-hidden">
-                {/* Decorative accent element */}
-                <div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-accent/10 blur-2xl" />
-                <div className="absolute -right-2 top-4 text-4xl text-accent/15 select-none">
-                  🎓
+              {/* Timeline card with left accent */}
+              <div className="relative grid gap-8 md:grid-cols-[1fr_2fr]">
+                {/* Left: Meta info */}
+                <div className="relative pl-8 md:pl-0 md:text-right">
+                  {/* Timeline dot + line (mobile) */}
+                  <div className="absolute left-0 top-1 h-full md:hidden">
+                    <div className="h-3 w-3 rounded-full border-2 border-accent bg-bg" />
+                    <div className="ml-[5px] h-full w-[2px] bg-gradient-to-b from-accent/40 to-transparent" />
+                  </div>
+
+                  <span className="inline-block rounded-full bg-accent/15 px-4 py-1.5 text-xs font-medium tracking-wide text-accent">
+                    {edu.period}
+                  </span>
+                  {edu.gpa && (
+                    <p className="mt-3 font-mono text-sm text-text-muted">
+                      GPA: <span className="text-accent">{edu.gpa}</span>
+                    </p>
+                  )}
                 </div>
 
+                {/* Right: Content */}
                 <div className="relative">
-                  <h3 className="text-2xl font-bold text-text">
-                    {edu.institution}
-                  </h3>
-                  <p className="mt-1 text-lg text-text-muted">
-                    {edu.degree} — {edu.field}
-                  </p>
-                  <div className="mt-4 flex flex-wrap items-center gap-3">
-                    <span className="rounded-full bg-glass px-4 py-1.5 text-sm text-text-muted">
-                      {edu.period}
-                    </span>
-                    {edu.gpa && (
-                      <span className="rounded-full bg-accent/15 px-4 py-1.5 text-sm font-medium text-accent">
-                        GPA: {edu.gpa}
-                      </span>
+                  {/* Timeline dot (desktop) */}
+                  <div className="absolute -left-[21px] top-1 hidden md:block">
+                    <div className="h-3 w-3 rounded-full border-2 border-accent bg-bg shadow-[0_0_12px_rgba(0,191,255,0.4)]" />
+                  </div>
+                  {/* Desktop vertical line */}
+                  <div className="absolute -left-[16px] top-4 hidden h-[calc(100%-16px)] w-[2px] bg-gradient-to-b from-accent/30 to-transparent md:block" />
+
+                  <div className="rounded-xl border border-glass-border bg-bg-secondary p-6 md:p-8">
+                    <h3 className="text-2xl font-bold text-text">
+                      {edu.institution}
+                    </h3>
+                    <p className="mt-1 text-lg text-text-muted">
+                      {edu.degree} — {edu.field}
+                    </p>
+
+                    {/* Coursework */}
+                    {edu.coursework && edu.coursework.length > 0 && (
+                      <div className="mt-6">
+                        <h4 className="mb-3 text-xs font-semibold uppercase tracking-widest text-text-dim">
+                          Key Coursework
+                        </h4>
+                        <div className="flex flex-wrap gap-2">
+                          {edu.coursework.map((course) => (
+                            <span
+                              key={course}
+                              className="rounded-full border border-glass-border bg-glass px-3 py-1 text-xs text-text-muted transition-colors duration-200 hover:border-accent/30 hover:text-accent"
+                            >
+                              {course}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Achievements */}
+                    {edu.achievements && edu.achievements.length > 0 && (
+                      <div className="mt-6">
+                        <h4 className="mb-3 text-xs font-semibold uppercase tracking-widest text-text-dim">
+                          Achievements
+                        </h4>
+                        <ul className="space-y-2">
+                          {edu.achievements.map((achievement) => (
+                            <li
+                              key={achievement}
+                              className="flex items-start gap-2.5 text-sm leading-relaxed text-text-muted"
+                            >
+                              <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                              {achievement}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     )}
                   </div>
                 </div>
-              </GlassCard>
+              </div>
             </motion.div>
           ))}
         </motion.div>

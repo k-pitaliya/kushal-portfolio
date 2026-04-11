@@ -51,12 +51,49 @@ body {
   color: var(--color-text);
   font-family: var(--font-sans), system-ui, sans-serif;
   overflow-x: hidden;
-  cursor: none;
 }
 
-/* Hide default cursor on interactive elements */
-a, button, input, textarea, select, [role="button"] {
-  cursor: none;
+/* Only hide cursor when a fine pointer (mouse) is available */
+@media (pointer: fine) {
+  body { cursor: none; }
+  a, button, input, textarea, select, [role="button"] { cursor: none; }
+}
+
+/* Keyboard focus ring — only shows for keyboard navigation */
+*:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Skip to content link */
+.skip-to-content {
+  position: fixed;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100000;
+  padding: 0.75rem 1.5rem;
+  background: var(--color-accent);
+  color: var(--color-bg);
+  font-weight: 600;
+  font-size: 0.875rem;
+  border-radius: 0 0 8px 8px;
+  transition: top 0.2s ease;
+}
+
+.skip-to-content:focus {
+  top: 0;
+}
+
+/* Section divider — thin gradient line */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06) 20%, rgba(255,255,255,0.06) 80%, transparent);
 }
 
 /* Noise overlay */
@@ -194,7 +231,11 @@ a, button, input, textarea, select, [role="button"] {
   50% { transform: translate3d(-50px, -30px, 0) scale(1.2); }
 }
 
-/* Cursor trail dot — kept for potential reuse */
+/* Spinning border for avatar */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
 
 /* Command palette backdrop */
 .cmd-backdrop {

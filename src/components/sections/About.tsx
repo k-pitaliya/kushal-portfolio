@@ -69,13 +69,27 @@ export default function About() {
                 transition={{ type: "spring", stiffness: 200, damping: 20 }}
                 style={{ transformStyle: "preserve-3d" }}
               >
-                <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-accent/20 via-bg-secondary to-accent-dark/20">
+                <div className="flex h-full w-full flex-col items-center justify-center bg-gradient-to-br from-accent/20 via-bg-secondary to-accent-dark/20">
                   <span className="select-none text-7xl font-bold text-accent/60">
                     KP
+                  </span>
+                  <span className="mt-2 text-xs font-medium uppercase tracking-[0.25em] text-text-dim">
+                    Engineer & Builder
                   </span>
                 </div>
                 {/* Glow overlay */}
                 <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-t from-accent/10 to-transparent" />
+                {/* Rotating border glow */}
+                <div className="pointer-events-none absolute -inset-[1px] rounded-2xl opacity-40"
+                  style={{
+                    background: "conic-gradient(from 0deg, transparent, rgba(0,191,255,0.4), transparent, rgba(123,104,238,0.3), transparent)",
+                    mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                    maskComposite: "exclude",
+                    WebkitMaskComposite: "xor",
+                    padding: "1.5px",
+                    animation: "spin 6s linear infinite",
+                  }}
+                />
               </motion.div>
             </div>
           </motion.div>
