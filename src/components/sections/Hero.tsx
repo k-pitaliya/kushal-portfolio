@@ -11,13 +11,13 @@ import ScrollVelocityText from "@/components/ui/ScrollVelocityText";
 import { staggerContainer, staggerItem, fadeUp } from "@/lib/animations";
 
 const skillBadges = [
-  "Embedded C",
-  "AWS",
   "Verilog",
+  "SystemVerilog",
+  "FPGA",
+  "UVM",
   "STM32",
-  "React",
-  "Docker",
-  "Terraform",
+  "Embedded C",
+  "RTL Design",
   "Python",
 ];
 
@@ -82,7 +82,7 @@ export default function Hero() {
         >
           <span className="h-[1px] w-8 bg-accent/60" />
           <span className="font-mono text-xs uppercase tracking-[0.3em] text-accent">
-            Engineer · Builder · Creator
+            VLSI Design · Verification · Embedded Systems
           </span>
           <span className="h-[1px] w-8 bg-accent/60" />
         </motion.div>
@@ -130,9 +130,8 @@ export default function Hero() {
             className="mt-8 text-lg font-light tracking-wide text-text-muted sm:text-xl md:text-2xl"
             variants={staggerItem}
           >
-            I craft the bridge between{" "}
-            <span className="font-medium text-text">silicon</span> and the{" "}
-            <span className="font-medium text-text">cloud</span>
+            I design <span className="font-medium text-text">silicon</span> and verify it works{" "}
+            <span className="font-medium text-text">flawlessly</span>
           </motion.p>
         </ScrollVelocityText>
 
@@ -141,7 +140,7 @@ export default function Hero() {
           className="mx-auto mt-4 max-w-lg text-sm leading-relaxed text-text-dim sm:text-base"
           variants={staggerItem}
         >
-          VLSI · Cloud Architecture · Embedded Systems
+          VLSI Design & Verification · FPGA Prototyping · Embedded Firmware
         </motion.p>
 
         {/* CTA Buttons */}

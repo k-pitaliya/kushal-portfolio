@@ -16,16 +16,20 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://kushalpitaliya.dev"),
-  title: "Kushal Pitaliya — Engineer & Builder",
+  title: "Kushal Pitaliya — VLSI & Embedded Systems Engineer",
   description:
-    "Electronics & Communication Engineering student at CHARUSAT with hands-on experience in Embedded Systems, Cloud/DevOps, and VLSI Design Verification. Building at the intersection of hardware and software.",
+    "Aspiring VLSI Design & Verification Engineer — RTL design in Verilog/SystemVerilog, FPGA prototyping on Spartan-6, UVM verification methodology, and bare-metal embedded firmware. ECE student at CHARUSAT.",
   keywords: [
     "Kushal Pitaliya",
-    "VLSI",
+    "VLSI Design",
     "Design Verification",
-    "Cloud DevOps",
+    "RTL Design",
+    "SystemVerilog",
+    "Verilog",
+    "UVM",
+    "FPGA",
     "Embedded Systems",
-    "Portfolio",
+    "STM32",
   ],
   authors: [{ name: "Kushal Pitaliya" }],
   robots: {
@@ -34,9 +38,9 @@ export const metadata: Metadata = {
     googleBot: { index: true, follow: true },
   },
   openGraph: {
-    title: "Kushal Pitaliya — Engineer & Builder",
+    title: "Kushal Pitaliya — VLSI & Embedded Systems Engineer",
     description:
-      "ECE student at CHARUSAT — Embedded Systems, Cloud/DevOps, and VLSI Design Verification.",
+      "VLSI Design & Verification · RTL in Verilog/SystemVerilog · FPGA Prototyping · Embedded Firmware",
     type: "website",
     locale: "en_US",
     url: "https://kushalpitaliya.dev",
@@ -44,9 +48,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Kushal Pitaliya — Engineer & Builder",
+    title: "Kushal Pitaliya — VLSI & Embedded Systems Engineer",
     description:
-      "ECE student at CHARUSAT — Embedded Systems, Cloud/DevOps, and VLSI Design Verification.",
+      "VLSI Design & Verification · RTL in Verilog/SystemVerilog · FPGA Prototyping · Embedded Firmware",
   },
 };
 
@@ -69,14 +73,18 @@ export default function RootLayout({
               "@type": "Person",
               name: "Kushal Pitaliya",
               url: "https://kushalpitaliya.dev",
-              jobTitle: "Electronics & Communication Engineering Student",
+              jobTitle: "Aspiring VLSI Design & Verification Engineer",
               description:
-                "Engineer & Builder specializing in Embedded Systems, Cloud/DevOps, and VLSI Design Verification.",
+                "VLSI Design & Verification Engineer specializing in RTL design, SystemVerilog verification, FPGA prototyping, and embedded firmware development.",
               knowsAbout: [
+                "VLSI Design",
+                "Design Verification",
+                "SystemVerilog",
+                "Verilog HDL",
+                "UVM",
+                "FPGA Prototyping",
+                "RTL Design",
                 "Embedded Systems",
-                "Cloud Computing",
-                "DevOps",
-                "VLSI Design Verification",
                 "STM32",
                 "AWS",
               ],
