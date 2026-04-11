@@ -3,10 +3,10 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ChevronDown, Download, FolderOpen, Mouse } from "lucide-react";
+import { motion as m } from "framer-motion";
 import Scene from "@/components/three/Scene";
 import MagneticButton from "@/components/ui/MagneticButton";
 import MeshGradient from "@/components/ui/MeshGradient";
-import TextScramble from "@/components/ui/TextScramble";
 import ScrollVelocityText from "@/components/ui/ScrollVelocityText";
 import { staggerContainer, staggerItem, fadeUp } from "@/lib/animations";
 
@@ -92,18 +92,29 @@ export default function Hero() {
           </motion.span>
         </motion.p>
 
-        {/* Large name with split-letter stagger + scramble on hover */}
+        {/* Large name with clean letter-by-letter stagger */}
         <div className="overflow-hidden">
           <motion.h1
             className="flex flex-wrap justify-center"
             variants={staggerItem}
           >
-            <TextScramble
-              text={nameText}
-              as="span"
-              className="inline-block text-5xl font-bold leading-tight tracking-tight text-text sm:text-7xl md:text-8xl lg:text-9xl"
-              speed={40}
-            />
+            <span className="inline-block text-5xl font-bold leading-tight tracking-tight text-text sm:text-7xl md:text-8xl lg:text-9xl">
+              {nameText.split("").map((char, i) => (
+                <m.span
+                  key={i}
+                  className="inline-block"
+                  initial={{ y: "110%", opacity: 0 }}
+                  animate={ready ? { y: "0%", opacity: 1 } : {}}
+                  transition={{
+                    duration: 0.5,
+                    delay: 0.6 + i * 0.035,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                >
+                  {char === " " ? "\u00A0" : char}
+                </m.span>
+              ))}
+            </span>
           </motion.h1>
         </div>
 
