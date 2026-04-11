@@ -9,7 +9,7 @@ import GlassCard from "@/components/ui/GlassCard";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 
-const filters = ["All", "VLSI", "Cloud", "Embedded"] as const;
+const filters = ["All", "VLSI", "Cloud", "Embedded", "Web"] as const;
 type Filter = (typeof filters)[number];
 
 const categoryGradients: Record<string, string> = {

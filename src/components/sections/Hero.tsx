@@ -15,8 +15,10 @@ const skillBadges = [
   "AWS",
   "Verilog",
   "STM32",
-  "Terraform",
+  "React",
   "Docker",
+  "Terraform",
+  "Python",
 ];
 
 const firstName = "KUSHAL";
