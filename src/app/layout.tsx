@@ -38,6 +38,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://kushalpitaliya.dev",
   },
+  verification: {
+    google: "IPrGre0AxtIPcQENkZXAdx4U5B-_AHp3n3IKRAmckPw",
+  },
   robots: {
     index: true,
     follow: true,
