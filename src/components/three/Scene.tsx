@@ -27,7 +27,7 @@ function SceneContent() {
       frameloop="always"
     >
       {!isMobile && <AuroraShader />}
-      <ParticleField count={isMobile ? 1200 : 2500} />
+      <ParticleField count={isMobile ? 600 : 2000} />
     </Canvas>
   );
 }

@@ -63,6 +63,8 @@ export default function Testimonials() {
 
         <motion.div
           className="relative min-h-[280px]"
+          aria-live="polite"
+          aria-atomic="true"
           variants={blurReveal}
           initial="hidden"
           whileInView="visible"

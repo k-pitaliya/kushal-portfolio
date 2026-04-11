@@ -35,6 +35,9 @@ export const metadata: Metadata = {
     "Embedded Systems",
   ],
   authors: [{ name: "Kushal Pitaliya" }],
+  alternates: {
+    canonical: "https://kushalpitaliya.dev",
+  },
   robots: {
     index: true,
     follow: true,
@@ -48,6 +51,14 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://kushalpitaliya.dev",
     siteName: "Kushal Pitaliya",
+    images: [
+      {
+        url: "https://kushalpitaliya.dev/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Kushal Pitaliya — VLSI Design Verification & Cloud Engineer",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",

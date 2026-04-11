@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, useCallback, type ReactNode } from "react";
-import gsap from "gsap";
+import { useRef, useState, type ReactNode } from "react";
+import { motion, useSpring, useMotionValue } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 interface MagneticButtonProps {
@@ -16,46 +16,31 @@ export default function MagneticButton({
   strength = 0.3,
 }: MagneticButtonProps) {
   const ref = useRef<HTMLDivElement>(null);
+  const x = useSpring(0, { stiffness: 150, damping: 15, mass: 0.1 });
+  const y = useSpring(0, { stiffness: 150, damping: 15, mass: 0.1 });
 
-  const handleMouseMove = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      const el = ref.current;
-      if (!el) return;
-
-      const rect = el.getBoundingClientRect();
-      const x = e.clientX - rect.left - rect.width / 2;
-      const y = e.clientY - rect.top - rect.height / 2;
-
-      gsap.to(el, {
-        x: x * strength,
-        y: y * strength,
-        duration: 0.4,
-        ease: "power2.out",
-      });
-    },
-    [strength]
-  );
-
-  const handleMouseLeave = useCallback(() => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const el = ref.current;
     if (!el) return;
+    const rect = el.getBoundingClientRect();
+    x.set((e.clientX - rect.left - rect.width / 2) * strength);
+    y.set((e.clientY - rect.top - rect.height / 2) * strength);
+  };
 
-    gsap.to(el, {
-      x: 0,
-      y: 0,
-      duration: 0.7,
-      ease: "elastic.out(1, 0.3)",
-    });
-  }, []);
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
 
   return (
-    <div
+    <motion.div
       ref={ref}
       className={cn("inline-block", className)}
+      style={{ x, y }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
       {children}
-    </div>
+    </motion.div>
   );
 }

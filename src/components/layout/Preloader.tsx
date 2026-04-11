@@ -12,7 +12,7 @@ export default function Preloader({ onComplete }: PreloaderProps) {
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    const duration = 2400;
+    const duration = 1600;
     const interval = 20;
     const steps = duration / interval;
     const increment = 100 / steps;
@@ -23,13 +23,15 @@ export default function Preloader({ onComplete }: PreloaderProps) {
       if (current >= 100) {
         current = 100;
         clearInterval(timer);
-        setTimeout(() => setIsVisible(false), 300);
+        setTimeout(() => setIsVisible(false), 200);
       }
       setProgress(Math.round(current));
     }, interval);
 
     return () => clearInterval(timer);
   }, []);
+
+  const skip = () => setIsVisible(false);
 
   const handleExitComplete = () => {
     onComplete();
@@ -41,7 +43,13 @@ export default function Preloader({ onComplete }: PreloaderProps) {
         <motion.div
           className="preloader flex-col gap-6"
           exit={{ clipPath: "inset(0 0 100% 0)" }}
-          transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
+          transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+          onClick={skip}
+          role="progressbar"
+          aria-valuenow={progress}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-label="Loading portfolio"
         >
           {/* Small monogram */}
           <motion.div
@@ -131,6 +139,16 @@ export default function Preloader({ onComplete }: PreloaderProps) {
               </motion.span>
             </div>
           </div>
+
+          {/* Skip hint */}
+          <motion.span
+            className="mt-6 font-mono text-[10px] tracking-widest text-text-dim/40"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8 }}
+          >
+            Click anywhere to skip
+          </motion.span>
         </motion.div>
       )}
     </AnimatePresence>

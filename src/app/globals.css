@@ -10,6 +10,8 @@
   --color-accent: #00BFFF;
   --color-accent-dark: #0099CC;
   --color-accent-glow: rgba(0, 191, 255, 0.2);
+  --color-accent-warm: #F59E0B;
+  --color-accent-warm-glow: rgba(245, 158, 11, 0.2);
   --color-glass: rgba(255, 255, 255, 0.05);
   --color-glass-border: rgba(255, 255, 255, 0.1);
   --color-glass-hover: rgba(255, 255, 255, 0.08);
@@ -301,6 +303,19 @@ body {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* Fluid typography — smooth scaling across viewports */
+h1 { font-size: clamp(2.25rem, 5vw + 1rem, 5rem); }
+h2 { font-size: clamp(1.75rem, 3vw + 0.5rem, 3.5rem); }
+h3 { font-size: clamp(1.25rem, 2vw + 0.25rem, 2rem); }
+
+/* Minimum 44px touch targets (WCAG 2.1 Level AAA) */
+@media (pointer: coarse) {
+  button, a, [role="tab"], [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
   }
 }
 

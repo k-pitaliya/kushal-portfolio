@@ -54,6 +54,8 @@ export default function Skills() {
         <LayoutGroup>
           <motion.div
             className="mb-12 flex flex-wrap gap-2"
+            role="tablist"
+            aria-label="Skill categories"
             initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
             whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             viewport={{ once: true, margin: "-60px" }}
@@ -62,6 +64,8 @@ export default function Skills() {
             {skillCategories.map((cat, i) => (
               <button
                 key={cat.title}
+                role="tab"
+                aria-selected={activeCategory === i}
                 onClick={() => setActiveCategory(i)}
                 className={cn(
                   "relative rounded-lg px-5 py-2.5 text-sm font-medium transition-colors",

@@ -13,6 +13,7 @@ import Navbar from "@/components/layout/Navbar";
 import ScrollProgress from "@/components/ui/ScrollProgress";
 import ScrollVelocityText from "@/components/ui/ScrollVelocityText";
 import SignalDivider from "@/components/ui/MarqueeDivider";
+import ErrorBoundary from "@/components/ui/ErrorBoundary";
 import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
 import Skills from "@/components/sections/Skills";
@@ -51,13 +52,21 @@ export default function Home() {
       <Navbar />
 
       <main id="main-content">
-        <Hero loaded={!isLoading} />
+        <ErrorBoundary>
+          <Hero loaded={!isLoading} />
+        </ErrorBoundary>
         <SignalDivider />
-        <About />
+        <ErrorBoundary>
+          <About />
+        </ErrorBoundary>
         <SignalDivider />
-        <Skills />
+        <ErrorBoundary>
+          <Skills />
+        </ErrorBoundary>
         <SignalDivider />
-        <Projects />
+        <ErrorBoundary>
+          <Projects />
+        </ErrorBoundary>
 
         {/* Scroll-velocity text band — speeds up with scroll */}
         <div className="border-y border-glass-border/30 bg-bg-secondary/50 py-2">
@@ -70,17 +79,29 @@ export default function Home() {
         </div>
 
         <SignalDivider />
-        <Experience />
+        <ErrorBoundary>
+          <Experience />
+        </ErrorBoundary>
         <SignalDivider />
-        <Education />
+        <ErrorBoundary>
+          <Education />
+        </ErrorBoundary>
         <SignalDivider />
-        <Certifications />
+        <ErrorBoundary>
+          <Certifications />
+        </ErrorBoundary>
         <SignalDivider />
-        <Blog />
+        <ErrorBoundary>
+          <Blog />
+        </ErrorBoundary>
         <SignalDivider />
-        <Testimonials />
+        <ErrorBoundary>
+          <Testimonials />
+        </ErrorBoundary>
         <SignalDivider />
-        <Contact />
+        <ErrorBoundary>
+          <Contact />
+        </ErrorBoundary>
       </main>
 
       <Footer />

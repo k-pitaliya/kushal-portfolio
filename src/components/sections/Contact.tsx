@@ -86,6 +86,8 @@ function FloatingField({
 
   const fieldProps = {
     ...register(id, { required: `${label} is required` }),
+    "aria-invalid": error ? true : undefined,
+    "aria-describedby": error ? `${id}-error` : undefined,
     onFocus: () => setFocused(true),
     onBlur: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setFocused(false);
@@ -109,7 +111,7 @@ function FloatingField({
         <input type={type} className={inputClasses} {...fieldProps} />
       )}
       <label className={labelClasses}>{label}</label>
-      {error && <p className="mt-1 text-xs text-red-400">{error}</p>}
+      {error && <p id={`${id}-error`} className="mt-1 text-xs text-red-400" role="alert">{error}</p>}
     </div>
   );
 }

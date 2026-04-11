@@ -152,11 +152,12 @@ export default function Projects() {
 /* Extracted filter bar */
 function FilterBar({ active, setActive }: { active: Filter; setActive: (f: Filter) => void }) {
   return (
-    <div className="mb-8 flex flex-wrap gap-3">
+    <div className="mb-8 flex flex-wrap gap-3" role="group" aria-label="Filter projects">
       {filters.map((f) => (
         <button
           key={f}
           onClick={() => setActive(f)}
+          aria-pressed={active === f}
           className={cn(
             "relative rounded-lg px-5 py-2 text-sm font-medium transition-all duration-300",
             active === f

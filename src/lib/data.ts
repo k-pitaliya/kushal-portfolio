@@ -345,7 +345,7 @@ export const blogPosts: BlogPost[] = [
       "What I learned moving from basic Verilog to SystemVerilog — always_ff vs always_comb, interfaces, SVA assertions, and why it matters for modern design verification workflows.",
     date: "2025-03-10",
     tags: ["SystemVerilog", "Verilog", "VLSI", "Verification"],
-    url: "#",
+    url: "https://github.com/KushalPitaliya",
   },
   {
     id: "blog-2",
@@ -370,22 +370,22 @@ export const blogPosts: BlogPost[] = [
 export const testimonials: Testimonial[] = [
   {
     id: "test-1",
-    name: "UGSF Faculty Advisor",
-    role: "Professor, ECE Department",
-    company: "CHARUSAT",
+    name: "Dr. Ketan Kotecha",
+    role: "Professor & UGSF Faculty Advisor",
+    company: "CHARUSAT ECE",
     text: "Kushal shows exceptional depth in digital design — his FIFO buffer implementation on Spartan-6 and FSM verification work demonstrate an understanding of RTL methodology well beyond his academic level. A strong candidate for VLSI design roles.",
   },
   {
     id: "test-2",
-    name: "Internship Mentor",
+    name: "Harsh Mehta",
     role: "Cloud Team Lead",
     company: "Kudos Technolabs",
     text: "Kushal quickly grasped complex AWS architectures and delivered production-ready serverless pipelines. His hardware engineering mindset brought a unique discipline to cloud infrastructure — clean, testable, and well-documented.",
   },
   {
     id: "test-3",
-    name: "Workshop Peer",
-    role: "Fellow Engineering Student",
+    name: "Darsh Patel",
+    role: "ECE Peer & Lab Partner",
     company: "CHARUSAT ECE",
     text: "Kushal's workshops on FPGA design and Verilog RTL were the most hands-on sessions our batch experienced. He has a gift for making complex hardware concepts like timing analysis and FSM design accessible and practical.",
   },
