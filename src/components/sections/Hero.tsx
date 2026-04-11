@@ -172,32 +172,50 @@ export default function Hero() {
         </motion.div>
       </motion.div>
 
-      {/* Skill badges — clean horizontal strip */}
-      <motion.div
-        className="absolute bottom-24 left-1/2 z-10 -translate-x-1/2 sm:bottom-28"
-        initial="hidden"
-        animate={ready ? "visible" : "hidden"}
-        variants={{
-          hidden: {},
-          visible: { transition: { staggerChildren: 0.08, delayChildren: 2 } },
-        }}
-      >
-        <div className="flex flex-wrap items-center justify-center gap-2.5">
-          {skillBadges.map((badge) => (
-            <motion.span
-              key={badge}
-              className="rounded-full border border-glass-border bg-glass/60 px-3.5 py-1.5 font-mono text-[11px] text-text-muted/70 backdrop-blur-sm transition-colors duration-300 hover:border-accent/40 hover:text-accent/80"
-              variants={{
-                hidden: { opacity: 0, y: 12, filter: "blur(4px)" },
-                visible: { opacity: 1, y: 0, filter: "blur(0px)" },
-              }}
-              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            >
-              {badge}
-            </motion.span>
-          ))}
-        </div>
-      </motion.div>
+      {/* Floating skill badges — symmetric 4+4 layout */}
+      {skillBadges.map((badge, i) => {
+        const positions = [
+          // Left column (top → bottom, evenly spaced)
+          "top-[18%] left-[5%]",
+          "top-[36%] left-[4%]",
+          "top-[54%] left-[6%]",
+          "top-[72%] left-[5%]",
+          // Right column (mirrored, slight offset for organic feel)
+          "top-[20%] right-[6%]",
+          "top-[38%] right-[5%]",
+          "top-[56%] right-[4%]",
+          "top-[70%] right-[6%]",
+        ];
+
+        return (
+          <motion.span
+            key={badge}
+            className={`absolute z-10 hidden rounded-full border border-glass-border bg-glass px-3 py-1.5 font-mono text-xs text-text-muted backdrop-blur-sm lg:inline-block ${positions[i]}`}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={
+              ready
+                ? {
+                    opacity: 0.5,
+                    scale: 1,
+                    y: [0, -6, 0],
+                  }
+                : {}
+            }
+            transition={{
+              opacity: { delay: 1.8 + i * 0.15, duration: 0.6 },
+              scale: { delay: 1.8 + i * 0.15, duration: 0.6 },
+              y: {
+                repeat: Infinity,
+                duration: 4 + i * 0.5,
+                ease: "easeInOut",
+                delay: 2.5 + i * 0.3,
+              },
+            }}
+          >
+            {badge}
+          </motion.span>
+        );
+      })}
 
       {/* Scroll indicator */}
       <motion.div
