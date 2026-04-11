@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion, useSpring } from "framer-motion";
+import { useEffect, useState, useRef } from "react";
+import { motion, useSpring, useMotionValue, useAnimationFrame } from "framer-motion";
 import { useMousePosition } from "@/hooks/useMousePosition";
 
 export default function CustomCursor() {
@@ -14,10 +14,30 @@ export default function CustomCursor() {
   const ringX = useSpring(0, springConfig);
   const ringY = useSpring(0, springConfig);
 
+  // Glow trail (slower spring = trails behind more)
+  const glowX = useSpring(0, { stiffness: 60, damping: 30, mass: 1.2 });
+  const glowY = useSpring(0, { stiffness: 60, damping: 30, mass: 1.2 });
+  const glowOpacity = useMotionValue(0);
+  const speed = useRef(0);
+
   useEffect(() => {
     ringX.set(x);
     ringY.set(y);
-  }, [x, y, ringX, ringY]);
+    glowX.set(x);
+    glowY.set(y);
+  }, [x, y, ringX, ringY, glowX, glowY]);
+
+  // Compute speed to modulate glow opacity
+  const prevPos = useRef({ x: 0, y: 0 });
+  useAnimationFrame(() => {
+    const dx = x - prevPos.current.x;
+    const dy = y - prevPos.current.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    speed.current = speed.current * 0.85 + dist * 0.15;
+    const opacity = Math.min(speed.current / 20, 0.35);
+    glowOpacity.set(opacity);
+    prevPos.current = { x, y };
+  });
 
   useEffect(() => {
     const isTouchDevice = window.matchMedia("(pointer: coarse)").matches;
@@ -74,6 +94,22 @@ export default function CustomCursor() {
 
   return (
     <>
+      {/* Glow trail — fades with speed */}
+      <motion.div
+        className="pointer-events-none fixed left-0 top-0 z-[9998] rounded-full"
+        style={{
+          width: 60,
+          height: 60,
+          x: glowX,
+          y: glowY,
+          translateX: "-50%",
+          translateY: "-50%",
+          opacity: glowOpacity,
+          background: "radial-gradient(circle, rgba(0,191,255,0.25) 0%, transparent 70%)",
+          filter: "blur(12px)",
+        }}
+      />
+
       {/* Minimal dot */}
       <motion.div
         className="pointer-events-none fixed left-0 top-0 z-[9999] rounded-full bg-white"

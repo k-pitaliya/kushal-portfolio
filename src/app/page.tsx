@@ -11,6 +11,7 @@ import KonamiEaster from "@/components/ui/KonamiEaster";
 import SoundToggle from "@/components/ui/SoundToggle";
 import Navbar from "@/components/layout/Navbar";
 import ScrollProgress from "@/components/ui/ScrollProgress";
+import ScrollVelocityText from "@/components/ui/ScrollVelocityText";
 import SignalDivider from "@/components/ui/MarqueeDivider";
 import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
@@ -57,6 +58,17 @@ export default function Home() {
         <Skills />
         <SignalDivider />
         <Projects />
+
+        {/* Scroll-velocity text band — speeds up with scroll */}
+        <div className="border-y border-glass-border/30 bg-bg-secondary/50 py-2">
+          <ScrollVelocityText
+            baseVelocity={-3}
+            className="font-mono text-sm font-medium uppercase tracking-[0.3em] text-text-dim/40"
+          >
+            VLSI Design · Cloud Architecture · RTL to Silicon · FPGA Prototyping · SystemVerilog · AWS · Terraform · Embedded Systems
+          </ScrollVelocityText>
+        </div>
+
         <SignalDivider />
         <Experience />
         <SignalDivider />

@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { ArrowUp, ArrowUpRight } from "lucide-react";
 import { navItems, socialLinks, siteConfig } from "@/lib/data";
-import { fadeUp, staggerContainer, staggerItem } from "@/lib/animations";
+import { fadeUp, staggerContainer, staggerItem, blurReveal } from "@/lib/animations";
 import MagneticButton from "@/components/ui/MagneticButton";
 
 function GithubIcon({ className }: { className?: string }) {
@@ -52,10 +52,10 @@ export default function Footer() {
         variants={staggerContainer}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
+        viewport={{ once: true, margin: "-80px" }}
       >
         {/* Big statement */}
-        <motion.div variants={staggerItem} className="mb-20 text-center">
+        <motion.div variants={blurReveal} className="mb-20 text-center">
           <p className="mb-6 font-mono text-xs uppercase tracking-[0.3em] text-text-dim">
             Have a project in mind?
           </p>
