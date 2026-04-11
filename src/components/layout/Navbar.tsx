@@ -89,7 +89,7 @@ export default function Navbar() {
           <MagneticButton strength={0.2}>
             <button
               onClick={() => handleNavClick("#home")}
-              className="mr-4 flex h-9 w-9 items-center justify-center rounded-full bg-accent font-bold text-bg text-sm transition-transform hover:scale-105"
+              className="mr-4 flex h-9 w-9 items-center justify-center rounded-full bg-accent font-bold text-bg text-sm ring-2 ring-accent/50 ring-offset-2 ring-offset-bg transition-all hover:scale-105 hover:ring-accent/80 hover:shadow-[0_0_16px_rgba(0,191,255,0.4)]"
             >
               KP
             </button>

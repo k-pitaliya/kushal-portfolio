@@ -2,23 +2,37 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { ChevronDown, Download, FolderOpen } from "lucide-react";
-import { motion as m } from "framer-motion";
+import { Download, FolderOpen } from "lucide-react";
 import Scene from "@/components/three/Scene";
 import MagneticButton from "@/components/ui/MagneticButton";
 import MeshGradient from "@/components/ui/MeshGradient";
 import ScrollVelocityText from "@/components/ui/ScrollVelocityText";
 import { staggerContainer, staggerItem, fadeUp } from "@/lib/animations";
 
-const skillBadges = [
-  "SystemVerilog",
-  "UVM",
-  "AWS",
-  "FPGA",
-  "Terraform",
-  "RTL Design",
-  "Serverless",
-  "Python",
+const m = motion;
+
+const typewriterRoles = [
+  "VLSI Design Verification Engineer",
+  "AWS Cloud Architect",
+  "FPGA Prototyping Specialist",
+  "RTL Design Engineer",
+  "SystemVerilog & UVM Expert",
+];
+
+/* Each badge is hand-placed to form a loose constellation around the hero.
+   Varying opacity + size creates depth; staggered float speeds feel organic. */
+const floatingBadges = [
+  // ── Left arc ──
+  { label: "SystemVerilog", pos: "top-[15%] left-[7%]",   opacity: 0.55, size: "text-xs",     drift: -8,  speed: 4.2 },
+  { label: "FPGA",          pos: "top-[42%] left-[3%]",   opacity: 0.35, size: "text-[10px]", drift: -5,  speed: 5.4 },
+  { label: "Terraform",     pos: "top-[68%] left-[6%]",   opacity: 0.4,  size: "text-[11px]", drift: -6,  speed: 4.8 },
+  // ── Right arc ──
+  { label: "UVM",            pos: "top-[17%] right-[6%]",  opacity: 0.5,  size: "text-xs",     drift: -7,  speed: 4.5 },
+  { label: "AWS",            pos: "top-[44%] right-[4%]",  opacity: 0.45, size: "text-[11px]", drift: -9,  speed: 3.8 },
+  { label: "RTL Design",    pos: "top-[70%] right-[5%]",  opacity: 0.35, size: "text-[10px]", drift: -5,  speed: 5.6 },
+  // ── Accent floaters (wider, fill the gaps) ──
+  { label: "Python",        pos: "top-[28%] left-[12%]",  opacity: 0.25, size: "text-[10px]", drift: -4,  speed: 6.0 },
+  { label: "Serverless",    pos: "top-[56%] right-[11%]", opacity: 0.25, size: "text-[10px]", drift: -4,  speed: 5.8 },
 ];
 
 const firstName = "KUSHAL";
@@ -26,11 +40,41 @@ const lastName = "PITALIYA";
 
 export default function Hero() {
   const [ready, setReady] = useState(false);
+  const [roleIndex, setRoleIndex] = useState(0);
+  const [displayText, setDisplayText] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => setReady(true), 100);
     return () => clearTimeout(timer);
   }, []);
+
+  // Typewriter effect
+  useEffect(() => {
+    const currentRole = typewriterRoles[roleIndex];
+    const speed = isDeleting ? 30 : 60;
+
+    if (!isDeleting && displayText === currentRole) {
+      const pause = setTimeout(() => setIsDeleting(true), 2200);
+      return () => clearTimeout(pause);
+    }
+
+    if (isDeleting && displayText === "") {
+      setIsDeleting(false);
+      setRoleIndex((prev) => (prev + 1) % typewriterRoles.length);
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      setDisplayText(
+        isDeleting
+          ? currentRole.substring(0, displayText.length - 1)
+          : currentRole.substring(0, displayText.length + 1)
+      );
+    }, speed);
+
+    return () => clearTimeout(timer);
+  }, [displayText, isDeleting, roleIndex]);
 
   const renderLetters = (text: string, baseDelay: number) =>
     text.split("").map((char, i) => (
@@ -82,7 +126,7 @@ export default function Hero() {
         >
           <span className="h-[1px] w-8 bg-accent/60" />
           <span className="font-mono text-xs uppercase tracking-[0.3em] text-accent">
-            VLSI Design Verification · Cloud Architecture
+            Open to VLSI & Cloud roles · 2026
           </span>
           <span className="h-[1px] w-8 bg-accent/60" />
         </motion.div>
@@ -135,13 +179,20 @@ export default function Hero() {
           </motion.p>
         </ScrollVelocityText>
 
-        {/* Sub-tagline */}
-        <motion.p
-          className="mx-auto mt-4 max-w-lg text-sm leading-relaxed text-text-dim sm:text-base"
+        {/* Typewriter role cycling */}
+        <motion.div
+          className="mx-auto mt-4 flex h-7 max-w-lg items-center justify-center"
           variants={staggerItem}
         >
-          VLSI Design & Verification · AWS Cloud Architecture · FPGA Prototyping
-        </motion.p>
+          <span className="font-mono text-sm tracking-wide text-text-dim sm:text-base">
+            {displayText}
+          </span>
+          <motion.span
+            className="ml-0.5 inline-block h-[18px] w-[2px] bg-accent"
+            animate={{ opacity: [1, 0] }}
+            transition={{ repeat: Infinity, duration: 0.6, repeatType: "reverse" as const }}
+          />
+        </motion.div>
 
         {/* CTA Buttons */}
         <motion.div
@@ -172,50 +223,35 @@ export default function Hero() {
         </motion.div>
       </motion.div>
 
-      {/* Floating skill badges — symmetric 4+4 layout */}
-      {skillBadges.map((badge, i) => {
-        const positions = [
-          // Left column (top → bottom, evenly spaced)
-          "top-[18%] left-[5%]",
-          "top-[36%] left-[4%]",
-          "top-[54%] left-[6%]",
-          "top-[72%] left-[5%]",
-          // Right column (mirrored, slight offset for organic feel)
-          "top-[20%] right-[6%]",
-          "top-[38%] right-[5%]",
-          "top-[56%] right-[4%]",
-          "top-[70%] right-[6%]",
-        ];
-
-        return (
-          <motion.span
-            key={badge}
-            className={`absolute z-10 hidden rounded-full border border-glass-border bg-glass px-3 py-1.5 font-mono text-xs text-text-muted backdrop-blur-sm lg:inline-block ${positions[i]}`}
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={
-              ready
-                ? {
-                    opacity: 0.5,
-                    scale: 1,
-                    y: [0, -6, 0],
-                  }
-                : {}
-            }
-            transition={{
-              opacity: { delay: 1.8 + i * 0.15, duration: 0.6 },
-              scale: { delay: 1.8 + i * 0.15, duration: 0.6 },
-              y: {
-                repeat: Infinity,
-                duration: 4 + i * 0.5,
-                ease: "easeInOut",
-                delay: 2.5 + i * 0.3,
-              },
-            }}
-          >
-            {badge}
-          </motion.span>
-        );
-      })}
+      {/* Floating skill constellation */}
+      {floatingBadges.map((badge, i) => (
+        <motion.span
+          key={badge.label}
+          className={`absolute z-10 hidden rounded-full border border-glass-border bg-glass px-3 py-1.5 font-mono ${badge.size} text-text-muted backdrop-blur-sm lg:inline-block ${badge.pos}`}
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={
+            ready
+              ? {
+                  opacity: badge.opacity,
+                  scale: 1,
+                  y: [0, badge.drift, 0],
+                }
+              : {}
+          }
+          transition={{
+            opacity: { delay: 1.8 + i * 0.12, duration: 0.8 },
+            scale: { delay: 1.8 + i * 0.12, duration: 0.8, ease: [0.22, 1, 0.36, 1] },
+            y: {
+              repeat: Infinity,
+              duration: badge.speed,
+              ease: "easeInOut",
+              delay: 2.2 + i * 0.25,
+            },
+          }}
+        >
+          {badge.label}
+        </motion.span>
+      ))}
 
       {/* Scroll indicator */}
       <motion.div
