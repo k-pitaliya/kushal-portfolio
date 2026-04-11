@@ -66,26 +66,28 @@ export default function Skills() {
           </div>
         </LayoutGroup>
 
-        {/* Skills Grid */}
+        {/* Skills Grid — RevealMask on wrapper, AnimatePresence inside */}
         <RevealMask direction="center">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeCategory}
-              className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
-              variants={staggerContainer}
-              initial="hidden"
-              animate="visible"
-              exit={{ opacity: 0, transition: { duration: 0.2 } }}
-            >
-              {skillCategories[activeCategory].skills.map((skill) => (
-                <motion.div key={skill.name} variants={staggerItem}>
-                  <GlassCard className="space-y-3">
-                    <SkillBar name={skill.name} level={skill.level} />
-                  </GlassCard>
-                </motion.div>
-              ))}
-            </motion.div>
-          </AnimatePresence>
+          <div>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeCategory}
+                className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+                variants={staggerContainer}
+                initial="hidden"
+                animate="visible"
+                exit={{ opacity: 0, transition: { duration: 0.2 } }}
+              >
+                {skillCategories[activeCategory].skills.map((skill) => (
+                  <motion.div key={skill.name} variants={staggerItem}>
+                    <GlassCard className="space-y-3">
+                      <SkillBar name={skill.name} level={skill.level} />
+                    </GlassCard>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </RevealMask>
       </div>
     </section>

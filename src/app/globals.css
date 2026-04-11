@@ -79,9 +79,7 @@ a, button, input, textarea, select, [role="button"] {
   border: 1px solid var(--color-glass-border);
 }
 
-.glass:hover {
-  background: var(--color-glass-hover);
-}
+/* glass hover handled by Framer Motion on interactive components */
 
 /* Glow effect */
 .glow {
@@ -196,18 +194,7 @@ a, button, input, textarea, select, [role="button"] {
   50% { transform: translate3d(-50px, -30px, 0) scale(1.2); }
 }
 
-/* Cursor trail dot — GPU accelerated */
-.cursor-trail-dot {
-  position: fixed;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9998;
-  background: var(--color-accent);
-  filter: blur(1px);
-  box-shadow: 0 0 6px var(--color-accent), 0 0 12px var(--color-accent-glow);
-  will-change: transform, opacity;
-  contain: layout style;
-}
+/* Cursor trail dot — kept for potential reuse */
 
 /* Command palette backdrop */
 .cmd-backdrop {

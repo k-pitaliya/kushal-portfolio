@@ -120,12 +120,14 @@ export default function Navbar() {
                     <motion.span
                       className="absolute bottom-1 left-3 right-3 h-[2px] rounded-full bg-accent"
                       variants={{
-                        rest: { width: 0 },
+                        rest: { scaleX: 0, opacity: 0 },
                         hover: {
-                          width: "100%",
+                          scaleX: 1,
+                          opacity: 1,
                           transition: { duration: 0.3, ease: "easeInOut" as const },
                         },
                       }}
+                      style={{ originX: 0.5 }}
                     />
                   </motion.button>
                 </MagneticButton>

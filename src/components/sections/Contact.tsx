@@ -158,7 +158,7 @@ export default function Contact() {
   return (
     <section id="contact" className="relative px-6 py-32 md:px-12 lg:px-24">
       <DotGrid className="absolute inset-0 h-full w-full opacity-40" />
-      <div className="mx-auto max-w-5xl">
+      <div className="relative z-10 mx-auto max-w-5xl">
         <SectionHeading number="09" title="Get In Touch" />
 
         <motion.div

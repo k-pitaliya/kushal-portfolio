@@ -42,6 +42,17 @@ export default function Projects() {
   const totalScrollWidth = filtered.length * (cardWidth + gap);
   const sectionHeight = isMobile || !windowWidth ? "auto" : `${totalScrollWidth + windowWidth}px`;
 
+  // Reset scroll to section top when filter changes (desktop only)
+  useEffect(() => {
+    if (isMobile || !sectionRef.current) return;
+    const rect = sectionRef.current.getBoundingClientRect();
+    const sectionTop = rect.top + window.scrollY;
+    if (window.scrollY > sectionTop) {
+      window.scrollTo({ top: sectionTop, behavior: "smooth" });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active]);
+
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end end"],

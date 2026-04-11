@@ -3,7 +3,6 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
 import { experiences } from "@/lib/data";
-import GlassCard from "@/components/ui/GlassCard";
 import SectionHeading from "@/components/ui/SectionHeading";
 
 function ExperienceCard({
@@ -30,13 +29,14 @@ function ExperienceCard({
   return (
     <div
       className="sticky"
-      style={{ top: `calc(120px + ${index * 28}px)`, zIndex: index + 1 }}
+      style={{ top: `calc(120px + ${index * 44}px)`, zIndex: index + 1 }}
     >
       <motion.div
         style={{ scale: finalScale, opacity: finalOpacity }}
         className="origin-top"
       >
-        <GlassCard className="mx-auto max-w-3xl border-accent/10 p-8 md:p-10">
+        {/* Opaque card — solid background so stacked cards properly hide content beneath */}
+        <div className="mx-auto max-w-3xl rounded-xl border border-glass-border bg-bg-secondary p-8 shadow-lg shadow-black/20 md:p-10">
           <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
             <div className="flex-1">
               <span className="mb-3 inline-block rounded-full bg-accent/15 px-3 py-1 text-xs font-medium text-accent">
@@ -57,7 +57,7 @@ function ExperienceCard({
               </li>
             ))}
           </ul>
-        </GlassCard>
+        </div>
       </motion.div>
     </div>
   );
