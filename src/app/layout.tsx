@@ -16,9 +16,9 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://kushalpitaliya.dev"),
-  title: "Kushal Pitaliya — VLSI & Embedded Systems Engineer",
+  title: "Kushal Pitaliya — VLSI Design Verification & Cloud Engineer",
   description:
-    "Aspiring VLSI Design & Verification Engineer — RTL design in Verilog/SystemVerilog, FPGA prototyping on Spartan-6, UVM verification methodology, and bare-metal embedded firmware. ECE student at CHARUSAT.",
+    "VLSI Design Verification (SystemVerilog · UVM · FPGA) × Cloud Architecture (AWS · Serverless · Terraform). ECE student at CHARUSAT building at the intersection of silicon and the cloud.",
   keywords: [
     "Kushal Pitaliya",
     "VLSI Design",
@@ -28,8 +28,11 @@ export const metadata: Metadata = {
     "Verilog",
     "UVM",
     "FPGA",
+    "AWS",
+    "Cloud Architecture",
+    "Serverless",
+    "Terraform",
     "Embedded Systems",
-    "STM32",
   ],
   authors: [{ name: "Kushal Pitaliya" }],
   robots: {
@@ -38,9 +41,9 @@ export const metadata: Metadata = {
     googleBot: { index: true, follow: true },
   },
   openGraph: {
-    title: "Kushal Pitaliya — VLSI & Embedded Systems Engineer",
+    title: "Kushal Pitaliya — VLSI Design Verification & Cloud Engineer",
     description:
-      "VLSI Design & Verification · RTL in Verilog/SystemVerilog · FPGA Prototyping · Embedded Firmware",
+      "VLSI Design Verification · Cloud Architecture · SystemVerilog · UVM · AWS · Terraform",
     type: "website",
     locale: "en_US",
     url: "https://kushalpitaliya.dev",

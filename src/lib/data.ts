@@ -12,9 +12,9 @@ import type {
 
 export const siteConfig = {
   name: "Kushal Pitaliya",
-  title: "Kushal Pitaliya — VLSI & Embedded Systems Engineer",
+  title: "Kushal Pitaliya — VLSI Design Verification & Cloud Engineer",
   description:
-    "Aspiring VLSI Design & Verification Engineer with hands-on RTL design, SystemVerilog verification, FPGA prototyping on Spartan-6, and bare-metal firmware development. ECE student at CHARUSAT.",
+    "VLSI Design Verification (SystemVerilog · UVM · FPGA) × Cloud Architecture (AWS · Serverless · Terraform). ECE student at CHARUSAT building at the intersection of silicon and the cloud.",
   url: "https://kushalpitaliya.dev",
   ogImage: "/images/og.png",
 };
@@ -49,15 +49,15 @@ export const socialLinks: SocialLink[] = [
 ];
 
 export const aboutData = {
-  headline: "VLSI Design & Verification · Embedded Systems",
+  headline: "VLSI Design Verification × Cloud Architecture",
   description: [
     "I'm Kushal Pitaliya — from B.Tech day one, digital electronics made the most sense to me. The idea that logic gates, clocking, and timing constraints could build real intelligence into silicon always felt more tangible than theory. That curiosity pushed me toward FPGA projects, then toward harder questions about those projects.",
     "Building a FIFO on hardware was one thing. Proving it was correct — systematically, across thousands of scenarios I never manually thought of — that's what led me to VLSI Design Verification. I now design and verify RTL in SystemVerilog, write UVM 1.2 testbenches with functional coverage, and prototype on Spartan-6 FPGAs.",
-    "Outside the lab, I serve as a UGSF Fellow at CHARUSAT — organizing technical talks, coordinating workshops, and leading FPGA design sessions. A cloud internship at Kudos Technolabs taught me how to build and ship real systems under deadlines. I believe good engineers build things. Great engineers prove their things work.",
+    "On the cloud side, I architect serverless pipelines on AWS — Lambda, Textract, DynamoDB, API Gateway — shipped a production document processing engine during my internship at Kudos Technolabs. I believe infrastructure should be as rigorously verified as silicon. Good engineers build things. Great engineers prove their things work.",
   ],
   stats: [
-    { label: "RTL Projects", value: 6 },
-    { label: "Technologies", value: 25 },
+    { label: "RTL & Cloud Projects", value: 12 },
+    { label: "Technologies", value: 30 },
     { label: "CGPA", value: 8.74 },
   ],
 };
@@ -130,6 +130,7 @@ export const projects: Project[] = [
     category: "vlsi",
     featured: true,
     image: "/images/projects/ai-eda.png",
+    github: "https://github.com/KushalPitaliya/ai-eda-playground",
   },
   {
     id: "fifo-memory-buffer",
@@ -151,6 +152,7 @@ export const projects: Project[] = [
     category: "vlsi",
     featured: true,
     image: "/images/projects/fsm.png",
+    github: "https://github.com/KushalPitaliya/FSM-Digital-Controller",
   },
   {
     id: "audio-spectrum-analyzer",
@@ -214,8 +216,9 @@ export const projects: Project[] = [
       "Fully serverless OCR pipeline: S3 uploads trigger Lambda → AWS Textract extracts structured data → DynamoDB stores metadata → SNS notifies downstream. IAM least-privilege throughout.",
     tags: ["AWS Textract", "Lambda", "S3", "DynamoDB", "SNS", "Python"],
     category: "cloud",
-    featured: false,
+    featured: true,
     image: "/images/projects/doc-processing.png",
+    github: "https://github.com/KushalPitaliya/intelligent-doc-engine",
   },
   {
     id: "terraform-iac",
@@ -226,6 +229,7 @@ export const projects: Project[] = [
     category: "cloud",
     featured: false,
     image: "/images/projects/terraform.png",
+    github: "https://github.com/KushalPitaliya/terraform-aws-infrastructure",
   },
   {
     id: "text-parsematch",

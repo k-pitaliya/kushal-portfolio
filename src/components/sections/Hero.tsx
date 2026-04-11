@@ -11,13 +11,13 @@ import ScrollVelocityText from "@/components/ui/ScrollVelocityText";
 import { staggerContainer, staggerItem, fadeUp } from "@/lib/animations";
 
 const skillBadges = [
-  "Verilog",
   "SystemVerilog",
-  "FPGA",
   "UVM",
-  "STM32",
-  "Embedded C",
+  "AWS",
+  "FPGA",
+  "Terraform",
   "RTL Design",
+  "Serverless",
   "Python",
 ];
 
@@ -82,7 +82,7 @@ export default function Hero() {
         >
           <span className="h-[1px] w-8 bg-accent/60" />
           <span className="font-mono text-xs uppercase tracking-[0.3em] text-accent">
-            VLSI Design · Verification · Embedded Systems
+            VLSI Design Verification · Cloud Architecture
           </span>
           <span className="h-[1px] w-8 bg-accent/60" />
         </motion.div>
@@ -130,8 +130,8 @@ export default function Hero() {
             className="mt-8 text-lg font-light tracking-wide text-text-muted sm:text-xl md:text-2xl"
             variants={staggerItem}
           >
-            I design <span className="font-medium text-text">silicon</span> and verify it works{" "}
-            <span className="font-medium text-text">flawlessly</span>
+            I design <span className="font-medium text-text">silicon</span> and architect the{" "}
+            <span className="font-medium text-text">cloud</span>
           </motion.p>
         </ScrollVelocityText>
 
@@ -140,7 +140,7 @@ export default function Hero() {
           className="mx-auto mt-4 max-w-lg text-sm leading-relaxed text-text-dim sm:text-base"
           variants={staggerItem}
         >
-          VLSI Design & Verification · FPGA Prototyping · Embedded Firmware
+          VLSI Design & Verification · AWS Cloud Architecture · FPGA Prototyping
         </motion.p>
 
         {/* CTA Buttons */}
@@ -181,6 +181,8 @@ export default function Hero() {
           "top-[60%] right-[4%]",
           "bottom-[22%] left-[8%]",
           "bottom-[18%] right-[7%]",
+          "top-[40%] left-[6%]",
+          "bottom-[30%] right-[5%]",
         ];
 
         return (

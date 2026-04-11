@@ -74,7 +74,7 @@ export default function About() {
                     KP
                   </span>
                   <span className="mt-2 text-xs font-medium uppercase tracking-[0.25em] text-text-dim">
-                    VLSI & Embedded Engineer
+                    VLSI · Cloud Engineer
                   </span>
                 </div>
                 {/* Glow overlay */}
