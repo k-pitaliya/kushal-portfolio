@@ -79,7 +79,15 @@ export default function Experience() {
     >
       <div className="mx-auto max-w-5xl">
         <SectionHeading number="04" title="Experience" />
-        <div className="mt-16 space-y-6">
+        <div className="relative mt-16 space-y-6">
+          {/* Vertical timeline line that draws on scroll */}
+          <motion.div
+            className="absolute -left-1 top-0 hidden h-full w-[2px] origin-top bg-gradient-to-b from-accent/50 via-accent/20 to-transparent md:left-6 md:block"
+            initial={{ scaleY: 0 }}
+            whileInView={{ scaleY: 1 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
+          />
           {experiences.map((exp, i) => (
             <ExperienceCard
               key={exp.id}

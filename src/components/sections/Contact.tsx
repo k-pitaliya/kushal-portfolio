@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { cn } from "@/lib/utils";
-import { fadeUp, staggerContainer, staggerItem } from "@/lib/animations";
+import { fadeUp, staggerContainer, staggerItem, blurReveal } from "@/lib/animations";
 import { socialLinks } from "@/lib/data";
 import MagneticButton from "@/components/ui/MagneticButton";
 import SectionHeading from "@/components/ui/SectionHeading";
@@ -176,10 +176,10 @@ export default function Contact() {
         {/* Big statement */}
         <motion.p
           className="mb-16 text-center text-3xl font-bold leading-tight text-text sm:text-4xl md:text-5xl"
-          variants={fadeUp}
+          variants={blurReveal}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: "-80px" }}
         >
           Have an idea? Let&apos;s turn it
           <br />

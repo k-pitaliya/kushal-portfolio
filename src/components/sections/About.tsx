@@ -3,7 +3,7 @@
 import { useRef, useCallback, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { fadeUp, staggerContainer, staggerItem } from "@/lib/animations";
+import { fadeUp, staggerContainer, staggerItem, blurReveal, blurStagger, blurStaggerItem } from "@/lib/animations";
 import { aboutData } from "@/lib/data";
 import AnimatedText from "@/components/ui/AnimatedText";
 import GlassCard from "@/components/ui/GlassCard";
@@ -94,19 +94,26 @@ export default function About() {
             </div>
           </motion.div>
 
-          {/* Description */}
-          <div className="flex flex-col justify-center space-y-6">
+          {/* Description — blur-reveal on scroll */}
+          <motion.div
+            className="flex flex-col justify-center space-y-6"
+            variants={blurStagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-80px" }}
+          >
             {aboutData.description.map((paragraph, i) => (
-              <AnimatedText
-                key={i}
-                text={paragraph}
-                as="p"
-                mode="words"
-                delay={i * 0.15}
-                className="text-base leading-relaxed text-text-muted md:text-lg"
-              />
+              <motion.div key={i} variants={blurStaggerItem}>
+                <AnimatedText
+                  text={paragraph}
+                  as="p"
+                  mode="words"
+                  delay={0}
+                  className="text-base leading-relaxed text-text-muted md:text-lg"
+                />
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
 
         {/* Stats */}

@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { fadeUp } from "@/lib/animations";
+import { fadeUp, blurReveal } from "@/lib/animations";
 import AnimatedText from "./AnimatedText";
 
 interface SectionHeadingProps {
@@ -24,7 +24,7 @@ export default function SectionHeading({
       <motion.span
         className="pointer-events-none absolute -top-12 left-0 select-none font-mono text-[10rem] font-bold leading-none text-transparent md:text-[14rem]"
         style={{ WebkitTextStroke: "1px rgba(255,255,255,0.04)" }}
-        variants={fadeUp}
+        variants={blurReveal}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}

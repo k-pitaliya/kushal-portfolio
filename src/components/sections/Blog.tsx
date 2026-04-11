@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { staggerContainer, staggerItem } from "@/lib/animations";
+import { staggerContainer, staggerItem, blurStagger, blurStaggerItem } from "@/lib/animations";
 import { blogPosts } from "@/lib/data";
 import GlassCard from "@/components/ui/GlassCard";
 import SectionHeading from "@/components/ui/SectionHeading";
@@ -26,13 +26,13 @@ export default function Blog() {
 
         <motion.div
           className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
-          variants={staggerContainer}
+          variants={blurStagger}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: "-80px" }}
         >
           {blogPosts.map((post, i) => (
-            <motion.div key={post.id} variants={staggerItem} className="group">
+            <motion.div key={post.id} variants={blurStaggerItem} className="group">
               <GlassCard
                 hover={false}
                 className="flex h-full flex-col overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(0,191,255,0.12)]"

@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { fadeUp } from "@/lib/animations";
+import { fadeUp, blurReveal } from "@/lib/animations";
 import { testimonials } from "@/lib/data";
 import SectionHeading from "@/components/ui/SectionHeading";
 
@@ -63,10 +63,10 @@ export default function Testimonials() {
 
         <motion.div
           className="relative min-h-[280px]"
-          variants={fadeUp}
+          variants={blurReveal}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: "-80px" }}
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
         >

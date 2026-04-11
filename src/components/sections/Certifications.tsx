@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { fadeUp } from "@/lib/animations";
+import { fadeUp, blurReveal } from "@/lib/animations";
 import { certifications } from "@/lib/data";
 import GlassCard from "@/components/ui/GlassCard";
 import Marquee from "@/components/ui/Marquee";
@@ -43,10 +43,10 @@ export default function Certifications() {
 
       <motion.div
         className="space-y-6"
-        variants={fadeUp}
+        variants={blurReveal}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
+        viewport={{ once: true, margin: "-80px" }}
       >
         <Marquee speed={35} direction="left" pauseOnHover>
           {row1.map((cert) => (

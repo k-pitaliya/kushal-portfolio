@@ -21,6 +21,40 @@ export const fadeUp: Variants = {
   },
 };
 
+// Blur-reveal — the premium scroll entrance
+export const blurReveal: Variants = {
+  hidden: { opacity: 0, y: 40, filter: "blur(12px)" },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+// Blur-reveal stagger container
+export const blurStagger: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+// Blur-reveal stagger child
+export const blurStaggerItem: Variants = {
+  hidden: { opacity: 0, y: 30, filter: "blur(10px)" },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
 // Fade down animation
 export const fadeDown: Variants = {
   hidden: { opacity: 0, y: -60 },

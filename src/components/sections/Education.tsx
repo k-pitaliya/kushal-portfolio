@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { fadeUp, staggerContainer, staggerItem } from "@/lib/animations";
+import { fadeUp, staggerContainer, staggerItem, blurReveal } from "@/lib/animations";
 import { education } from "@/lib/data";
 import SectionHeading from "@/components/ui/SectionHeading";
 
@@ -16,7 +16,7 @@ export default function Education() {
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: "-80px" }}
         >
           {education.map((edu) => (
             <motion.div key={edu.id} variants={staggerItem}>

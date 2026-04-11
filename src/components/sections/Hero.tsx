@@ -5,7 +5,6 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { Download, FolderOpen } from "lucide-react";
 import Scene from "@/components/three/Scene";
 import MagneticButton from "@/components/ui/MagneticButton";
-import MeshGradient from "@/components/ui/MeshGradient";
 import { staggerContainer, staggerItem, fadeUp } from "@/lib/animations";
 
 const m = motion;
@@ -114,14 +113,8 @@ export default function Hero() {
         <Scene />
       </div>
 
-      {/* Mesh gradient atmosphere */}
-      <div className="absolute inset-0 z-[0]">
-        <MeshGradient opacity={0.12} />
-      </div>
-
-      {/* Gradient overlays for readability */}
-      <div className="absolute inset-0 z-[1] bg-gradient-to-b from-bg/60 via-transparent to-bg" />
-      <div className="absolute inset-0 z-[1] bg-gradient-to-r from-bg/40 via-transparent to-bg/40" />
+      {/* Single clean gradient — no competing layers */}
+      <div className="absolute inset-0 z-[1] bg-gradient-to-b from-bg/50 via-bg/20 to-bg" />
 
       {/* Content — scroll parallax */}
       <motion.div
