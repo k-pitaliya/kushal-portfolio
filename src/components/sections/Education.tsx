@@ -27,7 +27,7 @@ export default function Education() {
                   {/* Timeline dot + line (mobile) */}
                   <div className="absolute left-0 top-1 h-full md:hidden">
                     <div className="h-3 w-3 rounded-full border-2 border-accent bg-bg" />
-                    <div className="ml-[5px] h-full w-[2px] bg-gradient-to-b from-accent/40 to-transparent" />
+                    <div className="ml-1 h-full w-0.5 bg-gradient-to-b from-accent/40 to-transparent" />
                   </div>
 
                   <span className="inline-block rounded-full bg-accent/15 px-4 py-1.5 text-xs font-medium tracking-wide text-accent">
@@ -43,11 +43,11 @@ export default function Education() {
                 {/* Right: Content */}
                 <div className="relative">
                   {/* Timeline dot (desktop) */}
-                  <div className="absolute -left-[21px] top-1 hidden md:block">
+                  <div className="absolute -left-5 top-1 hidden md:block">
                     <div className="h-3 w-3 rounded-full border-2 border-accent bg-bg shadow-[0_0_12px_rgba(0,191,255,0.4)]" />
                   </div>
                   {/* Desktop vertical line */}
-                  <div className="absolute -left-[16px] top-4 hidden h-[calc(100%-16px)] w-[2px] bg-gradient-to-b from-accent/30 to-transparent md:block" />
+                  <div className="absolute -left-3.5 top-4 hidden h-[calc(100%-1rem)] w-0.5 bg-gradient-to-b from-accent/30 to-transparent md:block" />
 
                   <div className="rounded-xl border border-glass-border bg-bg-secondary p-6 md:p-8">
                     <h3 className="text-2xl font-bold text-text">

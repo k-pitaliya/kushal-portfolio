@@ -91,10 +91,10 @@ export default function Hero() {
             className="flex flex-col items-center gap-0 leading-[0.9]"
             variants={staggerItem}
           >
-            <span className="inline-block text-6xl font-bold tracking-tight text-text sm:text-8xl md:text-9xl lg:text-[10rem]">
+            <span className="inline-block text-5xl font-bold tracking-tight text-text sm:text-7xl md:text-9xl lg:text-[10rem]">
               {renderLetters(firstName, 0.4)}
             </span>
-            <span className="inline-block text-6xl font-bold tracking-tight sm:text-8xl md:text-9xl lg:text-[10rem]">
+            <span className="inline-block text-5xl font-bold tracking-tight sm:text-7xl md:text-9xl lg:text-[10rem]">
               {lastName.split("").map((char, i) => (
                 <m.span
                   key={`last-${i}`}

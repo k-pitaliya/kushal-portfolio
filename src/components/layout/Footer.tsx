@@ -59,7 +59,7 @@ export default function Footer() {
           <p className="mb-4 font-mono text-xs uppercase tracking-[0.3em] text-text-dim">
             Have a project in mind?
           </p>
-          <h2 className="text-4xl font-bold leading-tight text-text sm:text-5xl md:text-7xl">
+          <h2 className="text-3xl font-bold leading-tight text-text sm:text-5xl md:text-6xl lg:text-7xl">
             Let&apos;s work
             <br />
             <span className="text-shimmer" style={{

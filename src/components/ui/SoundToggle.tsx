@@ -21,11 +21,11 @@ export default function SoundToggle() {
   return (
     <motion.button
       onClick={toggle}
-      className="fixed bottom-6 right-6 z-90 flex h-10 w-10 items-center justify-center rounded-full border border-glass-border bg-glass backdrop-blur-md transition-colors hover:border-accent"
+      className="fixed bottom-4 right-4 z-90 flex h-10 w-10 items-center justify-center rounded-full border border-glass-border bg-glass backdrop-blur-md transition-colors hover:border-accent sm:bottom-6 sm:right-6"
+      style={{ zIndex: 90, paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
       whileTap={{ scale: 0.85 }}
       whileHover={{ scale: 1.1 }}
       aria-label={enabled ? "Mute sound" : "Enable sound"}
-      style={{ zIndex: 90 }}
     >
       {enabled ? (
         /* Speaker on icon */

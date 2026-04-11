@@ -59,7 +59,7 @@ export default function Preloader({ onComplete }: PreloaderProps) {
               {"KUSHAL".split("").map((char, i) => (
                 <motion.span
                   key={`f-${i}`}
-                  className="inline-block text-3xl font-bold tracking-[0.2em] text-text sm:text-5xl"
+                  className="inline-block text-2xl font-bold tracking-[0.2em] text-text sm:text-4xl md:text-5xl"
                   initial={{ y: 80, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{
@@ -76,7 +76,7 @@ export default function Preloader({ onComplete }: PreloaderProps) {
               {"PITALIYA".split("").map((char, i) => (
                 <motion.span
                   key={`l-${i}`}
-                  className="inline-block text-3xl font-bold tracking-[0.2em] text-accent sm:text-5xl"
+                  className="inline-block text-2xl font-bold tracking-[0.2em] text-accent sm:text-4xl md:text-5xl"
                   initial={{ y: 80, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{

@@ -15,6 +15,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://kushalpitaliya.dev"),
   title: "Kushal Pitaliya — Engineer & Builder",
   description:
     "Aspiring VLSI Design Verification Engineer with expertise in Cloud/DevOps and Embedded Systems. Building the future at the intersection of hardware and software.",
@@ -27,12 +28,19 @@ export const metadata: Metadata = {
     "Portfolio",
   ],
   authors: [{ name: "Kushal Pitaliya" }],
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true },
+  },
   openGraph: {
     title: "Kushal Pitaliya — Engineer & Builder",
     description:
       "Aspiring VLSI Design Verification Engineer with expertise in Cloud/DevOps and Embedded Systems.",
     type: "website",
     locale: "en_US",
+    url: "https://kushalpitaliya.dev",
+    siteName: "Kushal Pitaliya",
   },
   twitter: {
     card: "summary_large_image",
@@ -53,6 +61,30 @@ export default function RootLayout({
       className={`${spaceGrotesk.variable} ${jetbrainsMono.variable}`}
     >
       <body className="bg-bg text-text antialiased">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              name: "Kushal Pitaliya",
+              url: "https://kushalpitaliya.dev",
+              jobTitle: "VLSI Design Verification Engineer",
+              description:
+                "Engineer & Builder specializing in VLSI, Cloud/DevOps, and Embedded Systems.",
+              knowsAbout: [
+                "VLSI Design Verification",
+                "Cloud Computing",
+                "DevOps",
+                "Embedded Systems",
+              ],
+              sameAs: [
+                "https://github.com/kushalpitaliya",
+                "https://linkedin.com/in/kushalpitaliya",
+              ],
+            }),
+          }}
+        />
         <div className="noise-overlay" aria-hidden="true" />
         {children}
       </body>
