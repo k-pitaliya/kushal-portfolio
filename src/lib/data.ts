@@ -51,9 +51,9 @@ export const socialLinks: SocialLink[] = [
 export const aboutData = {
   headline: "VLSI Design & Verification · Embedded Systems",
   description: [
-    "I'm Kushal Pitaliya — an Electronics & Communication Engineering student at CHARUSAT (CGPA 8.74) focused on VLSI Design & Verification. I design and verify RTL in Verilog and SystemVerilog, prototype on Spartan-6 FPGAs, and build assertion-based verification environments with UVM foundations.",
-    "As an Undergraduate Student Fellow (UGSF), I lead FPGA design workshops, contribute to digital design labs, and participated in the iChip 3.0 Verilog Hackathon. My work spans synthesizable FSMs, timing-aware RTL, and hardware-verified FIFO buffers — the building blocks of real silicon.",
-    "Beyond VLSI, I program STM32 microcontrollers at the register level and have deployed serverless architectures on AWS — giving me a hardware-to-cloud perspective that strengthens my understanding of the full system stack.",
+    "I'm Kushal Pitaliya — from B.Tech day one, digital electronics made the most sense to me. The idea that logic gates, clocking, and timing constraints could build real intelligence into silicon always felt more tangible than theory. That curiosity pushed me toward FPGA projects, then toward harder questions about those projects.",
+    "Building a FIFO on hardware was one thing. Proving it was correct — systematically, across thousands of scenarios I never manually thought of — that's what led me to VLSI Design Verification. I now design and verify RTL in SystemVerilog, write UVM 1.2 testbenches with functional coverage, and prototype on Spartan-6 FPGAs.",
+    "Outside the lab, I serve as a UGSF Fellow at CHARUSAT — organizing technical talks, coordinating workshops, and leading FPGA design sessions. A cloud internship at Kudos Technolabs taught me how to build and ship real systems under deadlines. I believe good engineers build things. Great engineers prove their things work.",
   ],
   stats: [
     { label: "RTL Projects", value: 6 },
@@ -66,12 +66,12 @@ export const skillCategories: SkillCategory[] = [
   {
     title: "VLSI & Digital Design",
     skills: [
-      { name: "Verilog HDL", level: 90 },
+      { name: "Verilog HDL / VHDL", level: 90 },
       { name: "SystemVerilog / SVA", level: 82 },
       { name: "RTL Design & Synthesis", level: 85 },
-      { name: "UVM Methodology", level: 70 },
+      { name: "UVM 1.2 Methodology", level: 70 },
+      { name: "Functional Coverage", level: 72 },
       { name: "FPGA Prototyping (Xilinx ISE/Vivado)", level: 80 },
-      { name: "Static Timing Analysis (STA)", level: 72 },
     ],
   },
   {
@@ -247,21 +247,21 @@ export const experiences: Experience[] = [
     role: "Cloud Technologies Intern",
     period: "May 2025 — July 2025",
     description: [
-      "Designed and deployed event-driven serverless architectures using AWS Lambda and S3 event triggers",
-      "Implemented fine-grained IAM policies and role-based access control for multi-service workflows",
-      "Set up SNS notification pipelines for asynchronous, decoupled service communication",
-      "Automated repetitive cloud operations using Python and shell scripts to reduce manual intervention",
+      "Designed and developed an Intelligent Document Processing Engine using AWS Lambda, Textract, DynamoDB, API Gateway, and S3",
+      "Built a fully functional frontend dashboard with file upload, real-time analytics, dynamic report generation, and search/filter capabilities",
+      "Automated extraction and analysis of text data from PDF and image documents using Amazon Textract",
+      "Delivered a self-driven project end-to-end — from architecture planning to deployment within the AWS Free Tier",
     ],
   },
   {
     id: "exp-ugsf",
     company: "CHARUSAT — ECE Department",
     role: "Undergraduate Student Fellow (UGSF)",
-    period: "Aug 2024 — Present",
+    period: "Jul 2025 — Present",
     description: [
-      "Selected under a merit-based fellowship focused on digital design, FPGA development, and embedded systems research",
+      "Merit-based fellowship focused on digital design, FPGA development, and embedded systems research",
       "Led hands-on workshops covering Verilog RTL design, FPGA prototyping on Xilinx, and PCB layout techniques",
-      "Contributed to RTL verification lab exercises including FSM design, testbench methodology, and timing analysis",
+      "Organized technical talks and managed events end-to-end — coordinating between speakers, student teams, and faculty",
       "Participated in iChip 3.0 Verilog Hackathon — collaborative RTL design challenge with timed problem-solving",
     ],
   },
@@ -303,7 +303,7 @@ export const education: Education[] = [
 export const certifications: Certification[] = [
   {
     id: "cert-digital-circuits",
-    name: "Design of Digital Circuits",
+    name: "Design of Digital Circuits with VHDL Programming",
     issuer: "L&T EduTech",
     date: "2024",
   },
@@ -321,7 +321,7 @@ export const certifications: Certification[] = [
   },
   {
     id: "cert-google-ai",
-    name: "Google AI Essentials",
+    name: "Google AI Essentials Specialization",
     issuer: "Google",
     date: "2025",
   },

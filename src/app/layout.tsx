@@ -77,16 +77,17 @@ export default function RootLayout({
               description:
                 "VLSI Design & Verification Engineer specializing in RTL design, SystemVerilog verification, FPGA prototyping, and embedded firmware development.",
               knowsAbout: [
-                "VLSI Design",
-                "Design Verification",
+                "VLSI Design Verification",
                 "SystemVerilog",
+                "UVM 1.2",
                 "Verilog HDL",
-                "UVM",
+                "Functional Coverage",
                 "FPGA Prototyping",
                 "RTL Design",
                 "Embedded Systems",
                 "STM32",
                 "AWS",
+                "Python",
               ],
               alumniOf: {
                 "@type": "CollegeOrUniversity",
