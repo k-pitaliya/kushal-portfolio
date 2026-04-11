@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://kushalpitaliya.dev"),
   title: "Kushal Pitaliya — Engineer & Builder",
   description:
-    "Aspiring VLSI Design Verification Engineer with expertise in Cloud/DevOps and Embedded Systems. Building the future at the intersection of hardware and software.",
+    "Electronics & Communication Engineering student at CHARUSAT with hands-on experience in Embedded Systems, Cloud/DevOps, and VLSI Design Verification. Building at the intersection of hardware and software.",
   keywords: [
     "Kushal Pitaliya",
     "VLSI",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Kushal Pitaliya — Engineer & Builder",
     description:
-      "Aspiring VLSI Design Verification Engineer with expertise in Cloud/DevOps and Embedded Systems.",
+      "ECE student at CHARUSAT — Embedded Systems, Cloud/DevOps, and VLSI Design Verification.",
     type: "website",
     locale: "en_US",
     url: "https://kushalpitaliya.dev",
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Kushal Pitaliya — Engineer & Builder",
     description:
-      "Aspiring VLSI Design Verification Engineer with expertise in Cloud/DevOps and Embedded Systems.",
+      "ECE student at CHARUSAT — Embedded Systems, Cloud/DevOps, and VLSI Design Verification.",
   },
 };
 
@@ -69,18 +69,24 @@ export default function RootLayout({
               "@type": "Person",
               name: "Kushal Pitaliya",
               url: "https://kushalpitaliya.dev",
-              jobTitle: "VLSI Design Verification Engineer",
+              jobTitle: "Electronics & Communication Engineering Student",
               description:
-                "Engineer & Builder specializing in VLSI, Cloud/DevOps, and Embedded Systems.",
+                "Engineer & Builder specializing in Embedded Systems, Cloud/DevOps, and VLSI Design Verification.",
               knowsAbout: [
-                "VLSI Design Verification",
+                "Embedded Systems",
                 "Cloud Computing",
                 "DevOps",
-                "Embedded Systems",
+                "VLSI Design Verification",
+                "STM32",
+                "AWS",
               ],
+              alumniOf: {
+                "@type": "CollegeOrUniversity",
+                name: "Charotar University of Science and Technology (CHARUSAT)",
+              },
               sameAs: [
-                "https://github.com/kushalpitaliya",
-                "https://linkedin.com/in/kushalpitaliya",
+                "https://github.com/KushalPitaliya",
+                "https://www.linkedin.com/in/kushalpitaliya06/",
               ],
             }),
           }}

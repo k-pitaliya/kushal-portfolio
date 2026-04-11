@@ -11,12 +11,12 @@ import ScrollVelocityText from "@/components/ui/ScrollVelocityText";
 import { staggerContainer, staggerItem, fadeUp } from "@/lib/animations";
 
 const skillBadges = [
-  "SystemVerilog",
+  "Embedded C",
   "AWS",
-  "Docker",
+  "Verilog",
   "STM32",
-  "Python",
-  "FPGA",
+  "Terraform",
+  "Docker",
 ];
 
 const firstName = "KUSHAL";
