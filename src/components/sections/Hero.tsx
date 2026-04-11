@@ -21,16 +21,16 @@ const typewriterRoles = [
    Varying opacity + size creates depth; staggered float speeds feel organic. */
 const floatingBadges = [
   // ── Left arc ──
-  { label: "SystemVerilog", pos: "top-[15%] left-[7%]",   opacity: 0.55, size: "text-xs",     drift: -8,  speed: 4.2 },
-  { label: "FPGA",          pos: "top-[42%] left-[3%]",   opacity: 0.35, size: "text-[10px]", drift: -5,  speed: 5.4 },
-  { label: "Terraform",     pos: "top-[68%] left-[6%]",   opacity: 0.4,  size: "text-[11px]", drift: -6,  speed: 4.8 },
+  { label: "SystemVerilog", pos: "top-[15%] left-[7%]",   opacity: 0.75, size: "text-xs",     drift: -8,  speed: 4.2 },
+  { label: "FPGA",          pos: "top-[42%] left-[3%]",   opacity: 0.55, size: "text-[10px]", drift: -5,  speed: 5.4 },
+  { label: "Terraform",     pos: "top-[68%] left-[6%]",   opacity: 0.6,  size: "text-[11px]", drift: -6,  speed: 4.8 },
   // ── Right arc ──
-  { label: "UVM",            pos: "top-[17%] right-[6%]",  opacity: 0.5,  size: "text-xs",     drift: -7,  speed: 4.5 },
-  { label: "AWS",            pos: "top-[44%] right-[4%]",  opacity: 0.45, size: "text-[11px]", drift: -9,  speed: 3.8 },
-  { label: "RTL Design",    pos: "top-[70%] right-[5%]",  opacity: 0.35, size: "text-[10px]", drift: -5,  speed: 5.6 },
+  { label: "UVM",            pos: "top-[17%] right-[6%]",  opacity: 0.7,  size: "text-xs",     drift: -7,  speed: 4.5 },
+  { label: "AWS",            pos: "top-[44%] right-[4%]",  opacity: 0.65, size: "text-[11px]", drift: -9,  speed: 3.8 },
+  { label: "RTL Design",    pos: "top-[70%] right-[5%]",  opacity: 0.55, size: "text-[10px]", drift: -5,  speed: 5.6 },
   // ── Accent floaters (wider, fill the gaps) ──
-  { label: "Python",        pos: "top-[28%] left-[12%]",  opacity: 0.25, size: "text-[10px]", drift: -4,  speed: 6.0 },
-  { label: "Serverless",    pos: "top-[56%] right-[11%]", opacity: 0.25, size: "text-[10px]", drift: -4,  speed: 5.8 },
+  { label: "Python",        pos: "top-[28%] left-[12%]",  opacity: 0.45, size: "text-[10px]", drift: -4,  speed: 6.0 },
+  { label: "Serverless",    pos: "top-[56%] right-[11%]", opacity: 0.45, size: "text-[10px]", drift: -4,  speed: 5.8 },
 ];
 
 const firstName = "KUSHAL";
@@ -236,7 +236,7 @@ export default function Hero({ loaded = true }: { loaded?: boolean }) {
       {floatingBadges.map((badge, i) => (
         <motion.span
           key={badge.label}
-          className={`absolute z-10 hidden rounded-full border border-glass-border bg-glass px-3 py-1.5 font-mono ${badge.size} text-text-muted backdrop-blur-sm lg:inline-block ${badge.pos}`}
+          className={`absolute z-10 hidden rounded-full border border-glass-border/60 bg-glass px-3 py-1.5 font-mono ${badge.size} text-text/90 backdrop-blur-sm lg:inline-block ${badge.pos}`}
           initial={{ opacity: 0, scale: 0.8 }}
           animate={
             ready
