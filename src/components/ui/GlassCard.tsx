@@ -21,13 +21,14 @@ export default function GlassCard({
       whileHover={
         hover
           ? {
-              scale: 1.02,
+              y: -6,
               boxShadow:
-                "0 0 30px rgba(0,191,255,0.15), 0 0 60px rgba(0,191,255,0.08)",
+                "0 0 30px rgba(0,191,255,0.12), 0 20px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08)",
+              borderColor: "rgba(0,191,255,0.2)",
             }
           : undefined
       }
-      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      transition={{ type: "spring", stiffness: 260, damping: 20 }}
     >
       {children}
     </motion.div>

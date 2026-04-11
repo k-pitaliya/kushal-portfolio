@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowUp, Mail, ExternalLink } from "lucide-react";
+import { ArrowUp, ArrowUpRight } from "lucide-react";
 import { navItems, socialLinks, siteConfig } from "@/lib/data";
 import { fadeUp, staggerContainer, staggerItem } from "@/lib/animations";
 import MagneticButton from "@/components/ui/MagneticButton";
@@ -34,7 +34,6 @@ const iconMap: Record<string, React.FC<{ className?: string }>> = {
   github: GithubIcon,
   linkedin: LinkedinIcon,
   twitter: TwitterIcon,
-  mail: Mail,
 };
 
 export default function Footer() {
@@ -43,19 +42,51 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative bg-bg-secondary">
+    <footer className="relative overflow-hidden bg-bg-secondary">
       {/* Top accent gradient line */}
-      <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-accent to-transparent" />
+      <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
 
+      {/* Large CTA section */}
       <motion.div
-        className="mx-auto max-w-6xl px-6 pb-10 pt-16"
+        className="mx-auto max-w-6xl px-6 pt-24 pb-16"
         variants={staggerContainer}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
       >
-        <div className="grid gap-12 md:grid-cols-3">
-          {/* Brand / Tagline */}
+        {/* Big statement */}
+        <motion.div variants={staggerItem} className="mb-16 text-center">
+          <p className="mb-4 font-mono text-xs uppercase tracking-[0.3em] text-text-dim">
+            Have a project in mind?
+          </p>
+          <h2 className="text-4xl font-bold leading-tight text-text sm:text-5xl md:text-7xl">
+            Let&apos;s work
+            <br />
+            <span className="text-shimmer" style={{
+              background: "linear-gradient(110deg, var(--color-accent) 45%, #fff 50%, var(--color-accent) 55%)",
+              backgroundSize: "200% 100%",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+              animation: "shimmer 3s ease-in-out infinite",
+            }}>together.</span>
+          </h2>
+          <div className="mt-8">
+            <MagneticButton>
+              <a
+                href="#contact"
+                className="group inline-flex items-center gap-2 rounded-full bg-accent px-8 py-4 text-sm font-semibold text-bg transition-all duration-300 hover:bg-accent-dark hover:shadow-[0_0_40px_rgba(0,191,255,0.3)]"
+              >
+                Start a conversation
+                <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              </a>
+            </MagneticButton>
+          </div>
+        </motion.div>
+
+        {/* Footer grid */}
+        <div className="grid gap-12 border-t border-glass-border pt-12 md:grid-cols-3">
+          {/* Brand */}
           <motion.div variants={staggerItem}>
             <h3 className="mb-3 text-2xl font-bold text-text">
               Kushal
@@ -68,10 +99,10 @@ export default function Footer() {
 
           {/* Quick links */}
           <motion.div variants={staggerItem}>
-            <h4 className="mb-4 text-sm font-semibold uppercase tracking-widest text-text-dim">
-              Quick Links
+            <h4 className="mb-4 text-xs font-semibold uppercase tracking-widest text-text-dim">
+              Navigation
             </h4>
-            <ul className="grid grid-cols-2 gap-2">
+            <ul className="grid grid-cols-2 gap-x-4 gap-y-2.5">
               {navItems.map((item) => (
                 <li key={item.href}>
                   <a
@@ -87,7 +118,7 @@ export default function Footer() {
 
           {/* Socials */}
           <motion.div variants={staggerItem}>
-            <h4 className="mb-4 text-sm font-semibold uppercase tracking-widest text-text-dim">
+            <h4 className="mb-4 text-xs font-semibold uppercase tracking-widest text-text-dim">
               Connect
             </h4>
             <div className="flex gap-3">
@@ -100,7 +131,7 @@ export default function Footer() {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={link.name}
-                      className="flex h-10 w-10 items-center justify-center rounded-full border border-glass-border bg-glass text-text-muted transition-all duration-300 hover:border-accent hover:text-accent hover:shadow-[0_0_20px_rgba(0,191,255,0.15)]"
+                      className="flex h-10 w-10 items-center justify-center rounded-full border border-glass-border bg-glass text-text-muted transition-all duration-300 hover:border-accent/40 hover:text-accent hover:shadow-[0_0_20px_rgba(0,191,255,0.12)]"
                     >
                       {Icon && <Icon className="h-4 w-4" />}
                     </a>
@@ -113,31 +144,22 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <motion.div
-          className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-glass-border pt-8 sm:flex-row"
+          className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-glass-border pt-6 sm:flex-row"
           variants={fadeUp}
         >
           <p className="text-xs text-text-dim">
-            © {new Date().getFullYear()} Kushal Pitaliya. Built with precision.
+            © {new Date().getFullYear()} Kushal Pitaliya. Crafted with precision.
           </p>
 
-          {/* Back to top */}
           <MagneticButton strength={0.25}>
             <button
               onClick={scrollToTop}
               className="group flex items-center gap-2 text-xs text-text-muted transition-colors hover:text-accent"
             >
               Back to top
-              <motion.span
-                className="inline-flex"
-                animate={{ y: [0, -3, 0] }}
-                transition={{
-                  repeat: Infinity,
-                  duration: 1.5,
-                  ease: "easeInOut",
-                }}
-              >
-                <ArrowUp className="h-3.5 w-3.5" />
-              </motion.span>
+              <span className="flex h-6 w-6 items-center justify-center rounded-full border border-glass-border transition-all group-hover:border-accent/40 group-hover:shadow-[0_0_10px_rgba(0,191,255,0.1)]">
+                <ArrowUp className="h-3 w-3" />
+              </span>
             </button>
           </MagneticButton>
         </motion.div>

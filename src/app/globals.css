@@ -108,12 +108,16 @@ body {
   background-size: 256px 256px;
 }
 
-/* Glass effect */
+/* Glass effect — layered depth */
 .glass {
   background: var(--color-glass);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
   border: 1px solid var(--color-glass-border);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.3),
+    0 4px 16px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 /* glass hover handled by Framer Motion on interactive components */
@@ -135,6 +139,21 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* Subtle text shimmer — applied to accent headings */
+.text-shimmer {
+  background: linear-gradient(110deg, var(--color-accent) 45%, #fff 50%, var(--color-accent) 55%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { background-position: 200% center; }
+  50% { background-position: 0% center; }
 }
 
 /* Animated gradient border */

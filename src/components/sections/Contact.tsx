@@ -161,6 +161,19 @@ export default function Contact() {
       <div className="relative z-10 mx-auto max-w-5xl">
         <SectionHeading number="09" title="Get In Touch" />
 
+        {/* Big statement */}
+        <motion.p
+          className="mb-16 text-center text-3xl font-bold leading-tight text-text sm:text-4xl md:text-5xl"
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
+          Have an idea? Let&apos;s turn it
+          <br />
+          into <span className="text-accent">reality.</span>
+        </motion.p>
+
         <motion.div
           className="grid gap-12 md:grid-cols-2 md:gap-16"
           variants={staggerContainer}

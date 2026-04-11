@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { ChevronDown, Download, FolderOpen, Mouse } from "lucide-react";
+import { ChevronDown, Download, FolderOpen } from "lucide-react";
 import { motion as m } from "framer-motion";
 import Scene from "@/components/three/Scene";
 import MagneticButton from "@/components/ui/MagneticButton";
@@ -19,17 +19,33 @@ const skillBadges = [
   "FPGA",
 ];
 
-const nameText = "KUSHAL PITALIYA";
-const subtitleParts = ["Engineer", "VLSI", "Cloud", "Embedded"];
+const firstName = "KUSHAL";
+const lastName = "PITALIYA";
 
 export default function Hero() {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    // Delay entrance until preloader is likely done
     const timer = setTimeout(() => setReady(true), 100);
     return () => clearTimeout(timer);
   }, []);
+
+  const renderLetters = (text: string, baseDelay: number) =>
+    text.split("").map((char, i) => (
+      <m.span
+        key={`${text}-${i}`}
+        className="inline-block"
+        initial={{ y: "120%", opacity: 0 }}
+        animate={ready ? { y: "0%", opacity: 1 } : {}}
+        transition={{
+          duration: 0.6,
+          delay: baseDelay + i * 0.04,
+          ease: [0.22, 1, 0.36, 1],
+        }}
+      >
+        {char === " " ? "\u00A0" : char}
+      </m.span>
+    ));
 
   return (
     <section
@@ -57,102 +73,84 @@ export default function Hero() {
         initial="hidden"
         animate={ready ? "visible" : "hidden"}
       >
-        {/* Intro line with typewriter feel */}
-        <motion.p
-          className="mb-4 font-mono text-sm tracking-[0.3em] text-accent sm:text-base"
+        {/* Mono label */}
+        <motion.div
+          className="mb-6 flex items-center justify-center gap-3"
           variants={staggerItem}
         >
-          <motion.span
-            animate={ready ? {
-              textShadow: [
-                "0 0 4px rgba(0,191,255,0.2)",
-                "0 0 20px rgba(0,191,255,0.5)",
-                "0 0 4px rgba(0,191,255,0.2)",
-              ],
-            } : {}}
-            transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
-          >
-            {"Hello, I'm".split("").map((char, i) => (
-              <motion.span
-                key={i}
-                initial={{ opacity: 0 }}
-                animate={ready ? { opacity: 1 } : {}}
-                transition={{ delay: 0.3 + i * 0.05, duration: 0.1 }}
-              >
-                {char}
-              </motion.span>
-            ))}
-          </motion.span>
-          <motion.span
-            className="ml-1 inline-block"
-            animate={{ opacity: [1, 0] }}
-            transition={{ repeat: Infinity, duration: 0.8, repeatType: "reverse" }}
-          >
-            |
-          </motion.span>
-        </motion.p>
+          <span className="h-[1px] w-8 bg-accent/60" />
+          <span className="font-mono text-xs uppercase tracking-[0.3em] text-accent">
+            Engineer · Builder · Creator
+          </span>
+          <span className="h-[1px] w-8 bg-accent/60" />
+        </motion.div>
 
-        {/* Large name with clean letter-by-letter stagger */}
+        {/* Large name — two lines for visual weight */}
         <div className="overflow-hidden">
           <motion.h1
-            className="flex flex-wrap justify-center"
+            className="flex flex-col items-center gap-0 leading-[0.9]"
             variants={staggerItem}
           >
-            <span className="inline-block text-5xl font-bold leading-tight tracking-tight text-text sm:text-7xl md:text-8xl lg:text-9xl">
-              {nameText.split("").map((char, i) => (
+            <span className="inline-block text-6xl font-bold tracking-tight text-text sm:text-8xl md:text-9xl lg:text-[10rem]">
+              {renderLetters(firstName, 0.4)}
+            </span>
+            <span className="inline-block text-6xl font-bold tracking-tight sm:text-8xl md:text-9xl lg:text-[10rem]">
+              {lastName.split("").map((char, i) => (
                 <m.span
-                  key={i}
-                  className="inline-block"
-                  initial={{ y: "110%", opacity: 0 }}
+                  key={`last-${i}`}
+                  className="inline-block text-shimmer"
+                  style={{
+                    background: "linear-gradient(110deg, var(--color-accent) 45%, #fff 50%, var(--color-accent) 55%)",
+                    backgroundSize: "200% 100%",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                    animation: "shimmer 3s ease-in-out infinite",
+                  }}
+                  initial={{ y: "120%", opacity: 0 }}
                   animate={ready ? { y: "0%", opacity: 1 } : {}}
                   transition={{
-                    duration: 0.5,
-                    delay: 0.6 + i * 0.035,
+                    duration: 0.6,
+                    delay: 0.7 + i * 0.04,
                     ease: [0.22, 1, 0.36, 1],
                   }}
                 >
-                  {char === " " ? "\u00A0" : char}
+                  {char}
                 </m.span>
               ))}
             </span>
           </motion.h1>
         </div>
 
-        {/* Subtitle with gradient + scroll velocity skew */}
+        {/* Bold statement tagline */}
         <ScrollVelocityText skewFactor={0.6}>
           <motion.p
-            className="mt-6 text-lg font-medium tracking-wide sm:text-xl md:text-2xl"
+            className="mt-8 text-lg font-light tracking-wide text-text-muted sm:text-xl md:text-2xl"
             variants={staggerItem}
           >
-            {subtitleParts.map((part, i) => (
-              <span key={part}>
-                {i > 0 && (
-                  <span className="mx-2 text-text-dim sm:mx-3">·</span>
-                )}
-                <span className="gradient-text">{part}</span>
-              </span>
-            ))}
+            I craft the bridge between{" "}
+            <span className="font-medium text-text">silicon</span> and the{" "}
+            <span className="font-medium text-text">cloud</span>
           </motion.p>
         </ScrollVelocityText>
 
-        {/* Tagline */}
+        {/* Sub-tagline */}
         <motion.p
-          className="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-text-muted sm:text-base"
+          className="mx-auto mt-4 max-w-lg text-sm leading-relaxed text-text-dim sm:text-base"
           variants={staggerItem}
         >
-          Building the future at the intersection of hardware and software —
-          from silicon to the cloud.
+          VLSI · Cloud Architecture · Embedded Systems
         </motion.p>
 
         {/* CTA Buttons */}
         <motion.div
-          className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
+          className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row"
           variants={staggerItem}
         >
           <MagneticButton>
             <a
               href="#projects"
-              className="group flex items-center gap-2 rounded-full bg-accent px-7 py-3 text-sm font-semibold text-bg transition-all duration-300 hover:bg-accent-dark hover:shadow-[0_0_30px_rgba(0,191,255,0.3)]"
+              className="group flex items-center gap-2 rounded-full bg-accent px-8 py-3.5 text-sm font-semibold text-bg transition-all duration-300 hover:bg-accent-dark hover:shadow-[0_0_40px_rgba(0,191,255,0.3)]"
             >
               <FolderOpen className="h-4 w-4 transition-transform group-hover:-translate-y-0.5" />
               View Projects
@@ -164,10 +162,10 @@ export default function Hero() {
               href="/resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-center gap-2 rounded-full border border-glass-border px-7 py-3 text-sm font-semibold text-text transition-all duration-300 hover:border-accent hover:text-accent"
+              className="group flex items-center gap-2 rounded-full border border-glass-border bg-glass px-8 py-3.5 text-sm font-semibold text-text transition-all duration-300 hover:border-accent/50 hover:text-accent hover:shadow-[0_0_30px_rgba(0,191,255,0.1)]"
             >
               <Download className="h-4 w-4 transition-transform group-hover:translate-y-0.5" />
-              Download Resume
+              Resume
             </a>
           </MagneticButton>
         </motion.div>
@@ -192,20 +190,20 @@ export default function Hero() {
             animate={
               ready
                 ? {
-                    opacity: 0.7,
+                    opacity: 0.5,
                     scale: 1,
-                    y: [0, -8, 0],
+                    y: [0, -6, 0],
                   }
                 : {}
             }
             transition={{
-              opacity: { delay: 1.5 + i * 0.15, duration: 0.5 },
-              scale: { delay: 1.5 + i * 0.15, duration: 0.5 },
+              opacity: { delay: 1.8 + i * 0.15, duration: 0.6 },
+              scale: { delay: 1.8 + i * 0.15, duration: 0.6 },
               y: {
                 repeat: Infinity,
-                duration: 3 + i * 0.5,
+                duration: 4 + i * 0.5,
                 ease: "easeInOut",
-                delay: 2 + i * 0.3,
+                delay: 2.5 + i * 0.3,
               },
             }}
           >
@@ -223,9 +221,9 @@ export default function Hero() {
         transition={{ delay: 2.5 }}
       >
         <motion.div
-          className="flex h-8 w-5 items-start justify-center rounded-full border border-text-dim p-1"
+          className="flex h-8 w-5 items-start justify-center rounded-full border border-text-dim/50 p-1"
           initial={{ opacity: 0 }}
-          animate={ready ? { opacity: 0.6 } : {}}
+          animate={ready ? { opacity: 0.5 } : {}}
           transition={{ delay: 2.5 }}
         >
           <motion.div
@@ -235,18 +233,12 @@ export default function Hero() {
           />
         </motion.div>
         <motion.span
-          className="flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.2em] text-text-dim"
+          className="font-mono text-[10px] uppercase tracking-[0.2em] text-text-dim/60"
           initial={{ opacity: 0 }}
-          animate={ready ? { opacity: 0.5 } : {}}
+          animate={ready ? { opacity: 1 } : {}}
           transition={{ delay: 2.7 }}
         >
           Scroll
-          <motion.span
-            animate={{ y: [0, 3, 0] }}
-            transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-          >
-            <ChevronDown className="h-3 w-3" />
-          </motion.span>
         </motion.span>
       </motion.div>
     </section>
