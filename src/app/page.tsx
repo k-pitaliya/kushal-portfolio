@@ -11,7 +11,7 @@ import KonamiEaster from "@/components/ui/KonamiEaster";
 import SoundToggle from "@/components/ui/SoundToggle";
 import Navbar from "@/components/layout/Navbar";
 import ScrollProgress from "@/components/ui/ScrollProgress";
-import MarqueeDivider from "@/components/ui/MarqueeDivider";
+import SignalDivider from "@/components/ui/MarqueeDivider";
 import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
 import Skills from "@/components/sections/Skills";
@@ -51,23 +51,23 @@ export default function Home() {
 
       <main id="main-content">
         <Hero />
-        <MarqueeDivider text="ABOUT" />
+        <SignalDivider />
         <About />
-        <MarqueeDivider text="SKILLS & TECHNOLOGIES" />
+        <SignalDivider />
         <Skills />
-        <MarqueeDivider text="SELECTED WORK" />
+        <SignalDivider />
         <Projects />
-        <MarqueeDivider text="EXPERIENCE" />
+        <SignalDivider />
         <Experience />
-        <MarqueeDivider text="EDUCATION" />
+        <SignalDivider />
         <Education />
-        <MarqueeDivider text="CERTIFICATIONS" />
+        <SignalDivider />
         <Certifications />
-        <MarqueeDivider text="WRITING" />
+        <SignalDivider />
         <Blog />
-        <MarqueeDivider text="TESTIMONIALS" />
+        <SignalDivider />
         <Testimonials />
-        <MarqueeDivider text="GET IN TOUCH" />
+        <SignalDivider />
         <Contact />
       </main>
 
