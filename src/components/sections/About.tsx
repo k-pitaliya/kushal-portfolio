@@ -43,7 +43,7 @@ export default function About() {
     <section
       id="about"
       ref={sectionRef}
-      className="relative px-6 py-32 md:px-12 lg:px-24"
+      className="relative px-6 py-40 md:px-12 lg:px-24 xl:py-48"
     >
       {/* Interactive dot grid background */}
       <DotGrid className="absolute inset-0 h-full w-full opacity-60" />

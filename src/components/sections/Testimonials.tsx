@@ -56,7 +56,7 @@ export default function Testimonials() {
   return (
     <section
       id="testimonials"
-      className="relative bg-bg-secondary px-6 py-32 md:px-12 lg:px-24"
+      className="relative bg-bg-secondary px-6 py-40 md:px-12 lg:px-24 xl:py-48"
     >
       <div className="mx-auto max-w-4xl">
         <SectionHeading number="08" title="What People Say" />

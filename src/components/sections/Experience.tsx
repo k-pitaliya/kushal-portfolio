@@ -74,7 +74,7 @@ export default function Experience() {
     <section
       id="experience"
       ref={sectionRef}
-      className="relative px-6 py-32 md:px-12 lg:px-24"
+      className="relative px-6 py-40 md:px-12 lg:px-24 xl:py-48"
       style={{ minHeight: `${experiences.length * 250 + 400}px` }}
     >
       <div className="mx-auto max-w-5xl">

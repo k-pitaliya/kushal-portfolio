@@ -35,7 +35,7 @@ export default function Certifications() {
   return (
     <section
       id="certifications"
-      className="relative px-6 py-32 md:px-12 lg:px-24"
+      className="relative px-6 py-40 md:px-12 lg:px-24 xl:py-48"
     >
       <div className="mx-auto max-w-6xl">
         <SectionHeading number="06" title="Certifications" />

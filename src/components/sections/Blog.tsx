@@ -20,7 +20,7 @@ function estimateReadTime(text: string): string {
 
 export default function Blog() {
   return (
-    <section id="blog" className="relative px-6 py-32 md:px-12 lg:px-24">
+    <section id="blog" className="relative px-6 py-40 md:px-12 lg:px-24 xl:py-48">
       <div className="mx-auto max-w-6xl">
         <SectionHeading number="07" title="Blog & Writing" />
 

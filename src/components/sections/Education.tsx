@@ -7,7 +7,7 @@ import SectionHeading from "@/components/ui/SectionHeading";
 
 export default function Education() {
   return (
-    <section id="education" className="relative px-6 py-32 md:px-12 lg:px-24">
+    <section id="education" className="relative px-6 py-40 md:px-12 lg:px-24 xl:py-48">
       <div className="mx-auto max-w-5xl">
         <SectionHeading number="05" title="Education" />
 

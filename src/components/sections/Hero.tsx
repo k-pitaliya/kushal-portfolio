@@ -1,12 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Download, FolderOpen } from "lucide-react";
 import Scene from "@/components/three/Scene";
 import MagneticButton from "@/components/ui/MagneticButton";
 import MeshGradient from "@/components/ui/MeshGradient";
-import ScrollVelocityText from "@/components/ui/ScrollVelocityText";
 import { staggerContainer, staggerItem, fadeUp } from "@/lib/animations";
 
 const m = motion;
@@ -43,6 +42,17 @@ export default function Hero() {
   const [roleIndex, setRoleIndex] = useState(0);
   const [displayText, setDisplayText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Scroll-driven parallax — hero fades/rises/shrinks as you scroll
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+  const contentY = useTransform(scrollYProgress, [0, 1], [0, -150]);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
+  const contentScale = useTransform(scrollYProgress, [0, 0.6], [1, 0.92]);
+  const badgeOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
 
   useEffect(() => {
     const timer = setTimeout(() => setReady(true), 100);
@@ -96,6 +106,7 @@ export default function Hero() {
   return (
     <section
       id="home"
+      ref={sectionRef}
       className="relative flex min-h-screen items-center justify-center overflow-hidden"
     >
       {/* 3D particle background */}
@@ -112,13 +123,16 @@ export default function Hero() {
       <div className="absolute inset-0 z-[1] bg-gradient-to-b from-bg/60 via-transparent to-bg" />
       <div className="absolute inset-0 z-[1] bg-gradient-to-r from-bg/40 via-transparent to-bg/40" />
 
-      {/* Content */}
+      {/* Content — scroll parallax */}
       <motion.div
         className="relative z-10 mx-auto max-w-6xl px-6 text-center"
-        variants={staggerContainer}
-        initial="hidden"
-        animate={ready ? "visible" : "hidden"}
+        style={{ y: contentY, opacity: contentOpacity, scale: contentScale }}
       >
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          animate={ready ? "visible" : "hidden"}
+        >
         {/* Mono label */}
         <motion.div
           className="mb-6 flex items-center justify-center gap-3"
@@ -137,10 +151,10 @@ export default function Hero() {
             className="flex flex-col items-center gap-0 leading-[0.9]"
             variants={staggerItem}
           >
-            <span className="inline-block text-5xl font-bold tracking-tight text-text sm:text-7xl md:text-9xl lg:text-[10rem]">
+            <span className="inline-block text-6xl font-bold tracking-tighter text-text sm:text-8xl md:text-9xl lg:text-[11rem]">
               {renderLetters(firstName, 0.4)}
             </span>
-            <span className="inline-block text-5xl font-bold tracking-tight sm:text-7xl md:text-9xl lg:text-[10rem]">
+            <span className="inline-block text-6xl font-bold tracking-tighter sm:text-8xl md:text-9xl lg:text-[11rem]">
               {lastName.split("").map((char, i) => (
                 <m.span
                   key={`last-${i}`}
@@ -168,16 +182,14 @@ export default function Hero() {
           </motion.h1>
         </div>
 
-        {/* Bold statement tagline */}
-        <ScrollVelocityText skewFactor={0.6}>
+        {/* Tagline */}
           <motion.p
-            className="mt-8 text-lg font-light tracking-wide text-text-muted sm:text-xl md:text-2xl"
+            className="mt-10 text-lg font-light tracking-wide text-text-muted sm:text-xl md:text-2xl"
             variants={staggerItem}
           >
             I design <span className="font-medium text-text">silicon</span> and architect the{" "}
             <span className="font-medium text-text">cloud</span>
           </motion.p>
-        </ScrollVelocityText>
 
         {/* Typewriter role cycling */}
         <motion.div
@@ -221,9 +233,11 @@ export default function Hero() {
             </a>
           </MagneticButton>
         </motion.div>
+        </motion.div>
       </motion.div>
 
-      {/* Floating skill constellation */}
+      {/* Floating badges — fade on scroll */}
+      <motion.div style={{ opacity: badgeOpacity }}>
       {floatingBadges.map((badge, i) => (
         <motion.span
           key={badge.label}
@@ -252,6 +266,7 @@ export default function Hero() {
           {badge.label}
         </motion.span>
       ))}
+      </motion.div>
 
       {/* Scroll indicator */}
       <motion.div

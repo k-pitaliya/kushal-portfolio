@@ -48,18 +48,18 @@ export default function Footer() {
 
       {/* Large CTA section */}
       <motion.div
-        className="mx-auto max-w-6xl px-6 pt-24 pb-16"
+        className="mx-auto max-w-6xl px-6 pt-32 pb-20"
         variants={staggerContainer}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
       >
         {/* Big statement */}
-        <motion.div variants={staggerItem} className="mb-16 text-center">
-          <p className="mb-4 font-mono text-xs uppercase tracking-[0.3em] text-text-dim">
+        <motion.div variants={staggerItem} className="mb-20 text-center">
+          <p className="mb-6 font-mono text-xs uppercase tracking-[0.3em] text-text-dim">
             Have a project in mind?
           </p>
-          <h2 className="text-3xl font-bold leading-tight text-text sm:text-5xl md:text-6xl lg:text-7xl">
+          <h2 className="text-4xl font-bold leading-[0.9] tracking-tight text-text sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl">
             Let&apos;s work
             <br />
             <span className="text-shimmer" style={{
@@ -71,7 +71,7 @@ export default function Footer() {
               animation: "shimmer 3s ease-in-out infinite",
             }}>together.</span>
           </h2>
-          <div className="mt-8">
+          <div className="mt-10">
             <MagneticButton>
               <a
                 href="#contact"

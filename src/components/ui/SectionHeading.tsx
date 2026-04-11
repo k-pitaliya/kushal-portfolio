@@ -19,11 +19,11 @@ export default function SectionHeading({
   className,
 }: SectionHeadingProps) {
   return (
-    <div className={cn("relative mb-16", className)}>
-      {/* Large background number */}
+    <div className={cn("relative mb-20", className)}>
+      {/* Large background number — bigger for premium feel */}
       <motion.span
-        className="pointer-events-none absolute -top-8 left-0 select-none font-mono text-[8rem] font-bold leading-none text-transparent md:text-[10rem]"
-        style={{ WebkitTextStroke: "1px rgba(255,255,255,0.05)" }}
+        className="pointer-events-none absolute -top-12 left-0 select-none font-mono text-[10rem] font-bold leading-none text-transparent md:text-[14rem]"
+        style={{ WebkitTextStroke: "1px rgba(255,255,255,0.04)" }}
         variants={fadeUp}
         initial="hidden"
         whileInView="visible"
@@ -33,9 +33,9 @@ export default function SectionHeading({
       </motion.span>
 
       {/* Accent left border + heading */}
-      <div className="relative flex items-start gap-4">
+      <div className="relative flex items-start gap-5">
         <motion.div
-          className="mt-1 h-12 w-1 shrink-0 rounded-full bg-accent"
+          className="mt-2 h-14 w-1 shrink-0 rounded-full bg-accent"
           initial={{ scaleY: 0 }}
           whileInView={{ scaleY: 1 }}
           viewport={{ once: true }}
@@ -48,12 +48,12 @@ export default function SectionHeading({
             text={title}
             as="h2"
             mode="words"
-            className="text-3xl font-bold text-text md:text-4xl lg:text-5xl"
+            className="text-4xl font-bold tracking-tight text-text md:text-5xl lg:text-7xl"
           />
 
           {subtitle && (
             <motion.p
-              className="mt-3 max-w-xl text-base text-text-muted md:text-lg"
+              className="mt-4 max-w-xl text-base text-text-muted md:text-lg"
               variants={fadeUp}
               initial="hidden"
               whileInView="visible"

@@ -168,7 +168,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="relative px-6 py-32 md:px-12 lg:px-24">
+    <section id="contact" className="relative px-6 py-40 md:px-12 lg:px-24 xl:py-48">
       <DotGrid className="absolute inset-0 h-full w-full opacity-40" />
       <div className="relative z-10 mx-auto max-w-5xl">
         <SectionHeading number="09" title="Get In Touch" />

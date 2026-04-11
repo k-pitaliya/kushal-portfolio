@@ -11,6 +11,7 @@ import KonamiEaster from "@/components/ui/KonamiEaster";
 import SoundToggle from "@/components/ui/SoundToggle";
 import Navbar from "@/components/layout/Navbar";
 import ScrollProgress from "@/components/ui/ScrollProgress";
+import MarqueeDivider from "@/components/ui/MarqueeDivider";
 import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
 import Skills from "@/components/sections/Skills";
@@ -22,10 +23,6 @@ import Blog from "@/components/sections/Blog";
 import Testimonials from "@/components/sections/Testimonials";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/layout/Footer";
-
-function SectionDivider() {
-  return <div className="section-divider mx-auto w-full max-w-5xl" aria-hidden="true" />;
-}
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
@@ -54,23 +51,23 @@ export default function Home() {
 
       <main id="main-content">
         <Hero />
-        <SectionDivider />
+        <MarqueeDivider text="ABOUT" />
         <About />
-        <SectionDivider />
+        <MarqueeDivider text="SKILLS & TECHNOLOGIES" />
         <Skills />
-        <SectionDivider />
+        <MarqueeDivider text="SELECTED WORK" />
         <Projects />
-        <SectionDivider />
+        <MarqueeDivider text="EXPERIENCE" />
         <Experience />
-        <SectionDivider />
+        <MarqueeDivider text="EDUCATION" />
         <Education />
-        <SectionDivider />
+        <MarqueeDivider text="CERTIFICATIONS" />
         <Certifications />
-        <SectionDivider />
+        <MarqueeDivider text="WRITING" />
         <Blog />
-        <SectionDivider />
+        <MarqueeDivider text="TESTIMONIALS" />
         <Testimonials />
-        <SectionDivider />
+        <MarqueeDivider text="GET IN TOUCH" />
         <Contact />
       </main>
 

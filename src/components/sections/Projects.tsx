@@ -67,7 +67,7 @@ export default function Projects() {
   // MOBILE: simple vertical layout
   if (isMobile) {
     return (
-      <section id="projects" className="relative px-6 py-32">
+      <section id="projects" className="relative px-6 py-40 xl:py-48">
         <div className="mx-auto max-w-6xl">
           <SectionHeading number="03" title="Featured Projects" />
           <FilterBar active={active} setActive={setActive} />
@@ -80,9 +80,9 @@ export default function Projects() {
               animate="visible"
               exit={{ opacity: 0, transition: { duration: 0.2 } }}
             >
-              {filtered.map((project) => (
+              {filtered.map((project, idx) => (
                 <motion.div key={project.id} variants={staggerItem}>
-                  <ProjectCard project={project} />
+                  <ProjectCard project={project} index={idx} />
                 </motion.div>
               ))}
             </motion.div>
@@ -124,7 +124,7 @@ export default function Projects() {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1, duration: 0.5 }}
               >
-                <ProjectCard project={project} />
+                <ProjectCard project={project} index={i} />
               </motion.div>
             ))}
           </motion.div>
@@ -172,16 +172,24 @@ function FilterBar({ active, setActive }: { active: Filter; setActive: (f: Filte
 }
 
 /* Extracted project card */
-function ProjectCard({ project }: { project: typeof projects[number] }) {
+function ProjectCard({ project, index }: { project: typeof projects[number]; index?: number }) {
+  const num = index !== undefined ? String(index + 1).padStart(2, "0") : "";
   return (
     <GlassCard
       hover={false}
-      className="group h-full overflow-hidden transition-all duration-500 hover:-translate-y-3 hover:shadow-[0_20px_60px_rgba(0,0,0,0.4),0_0_40px_rgba(0,191,255,0.1)] hover:border-accent/20"
+      className="group relative h-full overflow-hidden transition-all duration-500 hover:-translate-y-3 hover:shadow-[0_20px_60px_rgba(0,0,0,0.4),0_0_40px_rgba(0,191,255,0.1)] hover:border-accent/20"
     >
-      {/* Gradient preview — larger, with hover overlay */}
+      {/* Large project number */}
+      {num && (
+        <span className="absolute -top-2 right-4 z-0 select-none font-mono text-[5rem] font-bold leading-none text-white/[0.03] transition-colors duration-500 group-hover:text-accent/[0.06]">
+          {num}
+        </span>
+      )}
+
+      {/* Gradient preview — taller for impact */}
       <div
         className={cn(
-          "relative mb-5 flex h-52 items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br transition-all duration-700",
+          "relative mb-5 flex h-60 items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br transition-all duration-700",
           categoryGradients[project.category] ?? categoryGradients.other
         )}
       >
