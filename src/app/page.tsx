@@ -51,7 +51,7 @@ export default function Home() {
       <Navbar />
 
       <main id="main-content">
-        <Hero />
+        <Hero loaded={!isLoading} />
         <SignalDivider />
         <About />
         <SignalDivider />

@@ -206,10 +206,10 @@ export default function Contact() {
             </div>
 
             <a
-              href="mailto:kushal@example.com"
+              href="mailto:pitaliyakushal@gmail.com"
               className="inline-block text-lg font-medium text-accent transition-colors hover:text-accent-dark"
             >
-              kushal@example.com
+              pitaliyakushal@gmail.com
             </a>
 
             <div className="flex gap-4">

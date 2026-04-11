@@ -17,7 +17,7 @@ export default function GlassCard({
 }: GlassCardProps) {
   return (
     <motion.div
-      className={cn("glass gradient-border rounded-xl p-6", className)}
+      className={cn("glass gradient-border card-shine rounded-xl p-6", className)}
       whileHover={
         hover
           ? {

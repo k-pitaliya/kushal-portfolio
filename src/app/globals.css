@@ -198,6 +198,33 @@ body {
   display: inline-block;
 }
 
+/* Premium card hover shine — diagonal light sweep */
+.card-shine {
+  position: relative;
+  overflow: hidden;
+}
+.card-shine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.03) 45%,
+    rgba(255, 255, 255, 0.06) 50%,
+    rgba(255, 255, 255, 0.03) 55%,
+    transparent 60%
+  );
+  transform: translateX(-100%);
+  transition: transform 0s;
+  pointer-events: none;
+  z-index: 10;
+}
+.card-shine:hover::after {
+  transform: translateX(100%);
+  transition: transform 0.7s ease;
+}
+
 /* Horizontal scroll section */
 .horizontal-scroll {
   display: flex;

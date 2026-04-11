@@ -36,7 +36,7 @@ const floatingBadges = [
 const firstName = "KUSHAL";
 const lastName = "PITALIYA";
 
-export default function Hero() {
+export default function Hero({ loaded = true }: { loaded?: boolean }) {
   const [ready, setReady] = useState(false);
   const [roleIndex, setRoleIndex] = useState(0);
   const [displayText, setDisplayText] = useState("");
@@ -53,10 +53,12 @@ export default function Hero() {
   const contentScale = useTransform(scrollYProgress, [0, 0.6], [1, 0.92]);
   const badgeOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
 
+  // Only start hero animations after preloader is done
   useEffect(() => {
-    const timer = setTimeout(() => setReady(true), 100);
+    if (!loaded) return;
+    const timer = setTimeout(() => setReady(true), 200);
     return () => clearTimeout(timer);
-  }, []);
+  }, [loaded]);
 
   // Typewriter effect
   useEffect(() => {
