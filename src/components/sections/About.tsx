@@ -2,8 +2,7 @@
 
 import { useRef, useCallback, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { cn } from "@/lib/utils";
-import { fadeUp, staggerContainer, staggerItem, blurReveal, blurStagger, blurStaggerItem } from "@/lib/animations";
+import { staggerContainer, staggerItem, blurStagger, blurStaggerItem } from "@/lib/animations";
 import { aboutData } from "@/lib/data";
 import AnimatedText from "@/components/ui/AnimatedText";
 import GlassCard from "@/components/ui/GlassCard";
@@ -50,7 +49,7 @@ export default function About() {
       <div className="mx-auto max-w-6xl">
         <SectionHeading number="01" title="About Me" />
 
-        <div className="grid gap-12 md:grid-cols-2 md:gap-16">
+        <div className="grid gap-12 md:grid-cols-2 md:gap-12 lg:gap-16">
           {/* Photo with 3D tilt */}
           <motion.div style={{ y: photoY }} className="flex justify-center">
             <div
@@ -61,7 +60,7 @@ export default function About() {
               style={{ perspective: 800 }}
             >
               <motion.div
-                className="relative h-80 w-72 overflow-hidden rounded-2xl border border-accent/30 shadow-[0_0_40px_rgba(0,191,255,0.15)] md:h-96 md:w-80"
+                className="relative h-80 w-72 overflow-hidden rounded-2xl border border-accent/30 shadow-[0_0_40px_rgba(0,191,255,0.15)] md:h-96 md:w-80 lg:h-[28rem] lg:w-96"
                 animate={{
                   rotateX: tilt.rotateX,
                   rotateY: tilt.rotateY,
@@ -74,7 +73,7 @@ export default function About() {
                     KP
                   </span>
                   <span className="mt-2 text-xs font-medium uppercase tracking-[0.25em] text-text-dim">
-                    VLSI · Cloud Engineer
+                    VLSI · DV Engineer
                   </span>
                 </div>
                 {/* Glow overlay */}
@@ -118,7 +117,7 @@ export default function About() {
 
         {/* Stats */}
         <motion.div
-          className="mt-20 grid grid-cols-1 gap-6 sm:grid-cols-3"
+          className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 md:mt-20 md:grid-cols-3 md:gap-8"
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
@@ -126,7 +125,7 @@ export default function About() {
         >
           {aboutData.stats.map((stat) => (
             <motion.div key={stat.label} variants={staggerItem}>
-              <GlassCard className="flex flex-col items-center py-8 text-center">
+              <GlassCard className="flex min-h-[160px] flex-col items-center justify-center text-center md:min-h-[180px]">
                 <Counter
                   value={stat.value}
                   suffix="+"

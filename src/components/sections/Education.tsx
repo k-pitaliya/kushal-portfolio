@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { fadeUp, staggerContainer, staggerItem, blurReveal } from "@/lib/animations";
+import { staggerContainer, staggerItem } from "@/lib/animations";
 import { education } from "@/lib/data";
 import SectionHeading from "@/components/ui/SectionHeading";
 
@@ -21,7 +21,7 @@ export default function Education() {
           {education.map((edu) => (
             <motion.div key={edu.id} variants={staggerItem}>
               {/* Timeline card with left accent */}
-              <div className="relative grid gap-8 md:grid-cols-[1fr_2fr]">
+              <div className="relative grid gap-8 md:grid-cols-[auto_1fr] md:gap-12">
                 {/* Left: Meta info */}
                 <div className="relative pl-8 md:pl-0 md:text-right">
                   {/* Timeline dot + line (mobile) */}
@@ -49,7 +49,7 @@ export default function Education() {
                   {/* Desktop vertical line */}
                   <div className="absolute -left-3.5 top-4 hidden h-[calc(100%-1rem)] w-0.5 bg-gradient-to-b from-accent/30 to-transparent md:block" />
 
-                  <div className="rounded-xl border border-glass-border bg-bg-secondary p-6 md:p-8">
+                  <div className="rounded-xl border border-glass-border bg-bg-secondary p-6 md:p-8 lg:p-10">
                     <h3 className="text-2xl font-bold text-text">
                       {edu.institution}
                     </h3>
@@ -60,14 +60,14 @@ export default function Education() {
                     {/* Coursework */}
                     {edu.coursework && edu.coursework.length > 0 && (
                       <div className="mt-6">
-                        <h4 className="mb-3 text-xs font-semibold uppercase tracking-widest text-text-dim">
+                        <h4 className="mb-4 text-xs font-semibold uppercase tracking-widest text-text-dim">
                           Key Coursework
                         </h4>
-                        <div className="flex flex-wrap gap-2">
+                        <div className="flex flex-wrap gap-2.5">
                           {edu.coursework.map((course) => (
                             <span
                               key={course}
-                              className="rounded-full border border-glass-border bg-glass px-3 py-1 text-xs text-text-muted transition-colors duration-200 hover:border-accent/30 hover:text-accent"
+                              className="inline-flex items-center whitespace-nowrap rounded-full border border-glass-border bg-glass px-3 py-1.5 text-xs font-medium text-text-muted transition-colors duration-200 hover:border-accent/30 hover:text-accent"
                             >
                               {course}
                             </span>
@@ -79,7 +79,7 @@ export default function Education() {
                     {/* Achievements */}
                     {edu.achievements && edu.achievements.length > 0 && (
                       <div className="mt-6">
-                        <h4 className="mb-3 text-xs font-semibold uppercase tracking-widest text-text-dim">
+                        <h4 className="mb-4 text-xs font-semibold uppercase tracking-widest text-text-dim">
                           Achievements
                         </h4>
                         <ul className="space-y-2">

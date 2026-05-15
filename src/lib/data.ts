@@ -12,11 +12,11 @@ import type {
 
 export const siteConfig = {
   name: "Kushal Pitaliya",
-  title: "Kushal Pitaliya — VLSI Design Verification & Cloud Engineer",
+  title: "Kushal Pitaliya — VLSI Design Verification Engineer",
   description:
-    "VLSI Design Verification (SystemVerilog · UVM · FPGA) × Cloud Architecture (AWS · Serverless · Terraform). ECE student at CHARUSAT building at the intersection of silicon and the cloud.",
-  url: "https://kushalpitaliya.dev",
-  ogImage: "/images/og.png",
+    "RTL · SystemVerilog · UVM 1.2 · SVA · Coverage-driven verification. ECE undergrad at CHARUSAT specializing in functional verification of digital IPs. 41 bugs found and fixed across two full UVM testbenches.",
+  url: "https://kushalpitaliya.vercel.app",
+  ogImage: "/og-image.png",
 };
 
 export const navItems: NavItem[] = [
@@ -33,7 +33,7 @@ export const navItems: NavItem[] = [
 export const socialLinks: SocialLink[] = [
   {
     name: "GitHub",
-    url: "https://github.com/KushalPitaliya",
+    url: "https://github.com/k-pitaliya",
     icon: "github",
   },
   {
@@ -49,224 +49,175 @@ export const socialLinks: SocialLink[] = [
 ];
 
 export const aboutData = {
-  headline: "VLSI Design Verification × Cloud Architecture",
+  headline: "Design Verification — built to find bugs",
   description: [
-    "I'm Kushal Pitaliya — from B.Tech day one, digital electronics made the most sense to me. The idea that logic gates, clocking, and timing constraints could build real intelligence into silicon always felt more tangible than theory. That curiosity pushed me toward FPGA projects, then toward harder questions about those projects.",
-    "Building a FIFO on hardware was one thing. Proving it was correct — systematically, across thousands of scenarios I never manually thought of — that's what led me to VLSI Design Verification. I now design and verify RTL in SystemVerilog, write UVM 1.2 testbenches with functional coverage, and prototype on Spartan-6 FPGAs.",
-    "On the cloud side, I architect serverless pipelines on AWS — Lambda, Textract, DynamoDB, API Gateway — shipped a production document processing engine during my internship at Kudos Technolabs. I believe infrastructure should be as rigorously verified as silicon. Good engineers build things. Great engineers prove their things work.",
+    "I'm Kushal Pitaliya, an ECE undergrad at CHARUSAT. Digital electronics clicked for me from day one — the idea that logic gates, clock domains, and timing constraints could build real intelligence into silicon felt more concrete than any other branch of engineering.",
+    "Building a FIFO on FPGA was one thing. Proving it correct — systematically, across thousands of stimuli I never manually thought of — that's what pulled me toward Design Verification. I write SystemVerilog RTL, build UVM 1.2 testbenches with constrained-random stimulus, close functional coverage, and write SVA properties to lock down protocol invariants.",
+    "Over the last six months I've shipped two full UVM verification environments — an AXI4-Lite 4×4 crossbar (25 bugs found and fixed, full rewrite May 2026) and an I2C protocol DUT (16 bugs found and fixed, 17 covergroups, ~89 coverage points, 95%+ predicted closure). Both projects have published EDA Playground flows so the work is reproducible, not a screenshot.",
   ],
   stats: [
-    { label: "RTL & Cloud Projects", value: 12 },
-    { label: "Technologies", value: 30 },
-    { label: "CGPA", value: 8.74 },
+    { label: "Bugs found & fixed", value: 41 },
+    { label: "UVM components", value: 32 },
+    { label: "Coverage points", value: 89 },
   ],
 };
 
 export const skillCategories: SkillCategory[] = [
   {
-    title: "VLSI & Digital Design",
+    title: "VLSI Design Verification",
     skills: [
-      { name: "Verilog HDL / VHDL", level: 90 },
-      { name: "SystemVerilog / SVA", level: 82 },
-      { name: "RTL Design & Synthesis", level: 85 },
-      { name: "UVM 1.2 Methodology", level: 70 },
-      { name: "Functional Coverage", level: 72 },
-      { name: "FPGA Prototyping (Xilinx ISE/Vivado)", level: 80 },
+      { name: "SystemVerilog (logic, interfaces, packages, clocking)", level: 85 },
+      { name: "UVM 1.2 (agents, sequencers, scoreboards, virtual sequences)", level: 80 },
+      { name: "Constrained-Random Verification", level: 78 },
+      { name: "Functional Coverage (covergroups, cross, ignore_bins)", level: 80 },
+      { name: "SVA Assertions (immediate, concurrent, bind)", level: 75 },
+      { name: "RTL Design (FSMs, datapath, parameterized)", level: 85 },
+      { name: "Protocol Verification (I2C, AXI4-Lite, AMBA APB/AHB)", level: 80 },
+      { name: "Scoreboard Architecture (analysis ports, reference models)", level: 75 },
     ],
   },
   {
     title: "Embedded Systems",
     skills: [
-      { name: "Embedded C / C++", level: 90 },
-      { name: "STM32 / ARM Cortex-M", level: 85 },
-      { name: "AVR (ATmega32)", level: 85 },
-      { name: "UART / I2C / SPI / CAN", level: 85 },
-      { name: "RTOS Concepts", level: 70 },
-      { name: "PCB Design (Proteus)", level: 65 },
+      { name: "Embedded C / Bare-Metal Firmware", level: 88 },
+      { name: "STM32 / ARM Cortex-M (HAL, LL, register-level)", level: 85 },
+      { name: "AVR (ATmega32)", level: 82 },
+      { name: "I2C / SPI / UART / CAN", level: 85 },
+      { name: "Interrupts, DMA, Timers, ADC", level: 80 },
+      { name: "CMSIS-DSP / FFT / Signal Chain", level: 70 },
     ],
   },
   {
-    title: "Cloud & DevOps",
+    title: "Tools & Languages",
     skills: [
-      { name: "AWS (Lambda, S3, EC2, VPC)", level: 80 },
-      { name: "Docker & Kubernetes", level: 80 },
-      { name: "Terraform (IaC)", level: 75 },
-      { name: "SAM / CloudFormation", level: 75 },
-      { name: "CI/CD (CodePipeline, GitHub Actions)", level: 75 },
-      { name: "Linux & Shell Scripting", level: 85 },
-    ],
-  },
-  {
-    title: "Programming & Web",
-    skills: [
-      { name: "Python", level: 85 },
-      { name: "C / C++", level: 90 },
-      { name: "JavaScript (ES6+)", level: 78 },
-      { name: "React + Vite", level: 72 },
-      { name: "Node.js / Express", level: 70 },
-      { name: "MongoDB", level: 68 },
-    ],
-  },
-  {
-    title: "EDA & Dev Tools",
-    skills: [
-      { name: "Xilinx ISE / Vivado", level: 80 },
-      { name: "ModelSim / Icarus Verilog", level: 78 },
-      { name: "STM32CubeIDE / Keil", level: 85 },
-      { name: "Git / GitHub", level: 90 },
-      { name: "MATLAB / Simulink", level: 70 },
-      { name: "GNU Make / CMake", level: 75 },
+      { name: "ModelSim / QuestaSim / Riviera-PRO", level: 78 },
+      { name: "Xilinx Vivado / ISE (Spartan-6)", level: 78 },
+      { name: "EDA Playground (UVM 1.2)", level: 85 },
+      { name: "GNU Make / Regression Scripts", level: 78 },
+      { name: "Git / GitHub / GitHub Actions", level: 88 },
+      { name: "Linux / Bash / Python automation", level: 82 },
+      { name: "C / C++ / Python", level: 85 },
     ],
   },
 ];
 
 export const projects: Project[] = [
   {
-    id: "ai-eda-playground",
-    title: "AI-Driven EDA Playground",
+    id: "axi-xbar-uvm",
+    title: "AXI4-Lite 4×4 Crossbar UVM Testbench",
     description:
-      "Browser-based RTL design environment where natural language prompts generate Verilog modules, auto-generate testbenches, run simulation via Icarus Verilog, and self-correct bugs autonomously.",
-    tags: ["SystemVerilog", "AI/LLM", "Icarus Verilog", "Next.js", "Python"],
+      "Full UVM 1.2 verification environment for a 4-master × 4-slave AXI4-Lite crossbar with round-robin arbitration and DECERR handling. Order-tolerant scoreboard, reference model, functional coverage, and 8 directed/stress tests covering simultaneous-write, RAW hazard, starvation, and unmapped-address corners. Full rewrite May 2026 — 25 bugs identified and fixed.",
+    longDescription:
+      "Dual-target flow: QuestaSim/VCS/Xcelium via Makefile regression, plus a flat-file Riviera-PRO build for EDA Playground. Master and slave agents, virtual sequencer, configuration object, and 5 documented bug categories (interface-in-package, UVM phase misuse, multi-driver loops, scoreboard race demotion, refmodel ordering).",
+    tags: ["SystemVerilog", "UVM 1.2", "AXI4-Lite", "Scoreboard", "Reference Model", "EDA Playground"],
     category: "vlsi",
     featured: true,
-    image: "/images/projects/ai-eda.png",
-    github: "https://github.com/KushalPitaliya/ai-eda-playground",
+    image: "/images/projects/axi-xbar.png",
+    github: "https://github.com/k-pitaliya/axi-xbar-uvm-tb",
+    live: "https://github.com/k-pitaliya/axi-xbar-uvm-tb/tree/main/eda_playground",
+    metrics: [
+      { label: "Bugs found & fixed", value: "25" },
+      { label: "UVM tests", value: "8" },
+      { label: "Coverage groups", value: "3" },
+    ],
   },
   {
-    id: "fifo-memory-buffer",
-    title: "Synchronous FIFO Memory Buffer",
+    id: "i2c-protocol-dv",
+    title: "I2C Protocol UVM Verification",
     description:
-      "Hardware-verified 8-bit Synchronous FIFO on Xilinx Spartan-6 FPGA with robust signal debouncing, power-on reset logic, and real-time status monitoring. Directed and randomized testbenches.",
-    tags: ["Verilog HDL", "Spartan-6 FPGA", "Xilinx ISE", "Testbench"],
+      "Full UVM 1.2 verification of an I2C slave controller (7-bit address, 8-register bank, clock stretching) with master BFM, dual-direction agents, and self-checking scoreboard with shadow register bank. 17 functional covergroups, ~89 coverage points, 7 SVA protocol assertions, and 18 directed/random/stress tests. 16 RTL bugs identified and fixed; 95%+ predicted coverage closure.",
+    longDescription:
+      "Architecture: PASSIVE slave agent with check-before-set config_db override pattern, per-byte ACK/NACK tracking in the monitor, scoreboard with address validation (S1) + data integrity (S2-S3) + transaction count (S4) + NACK suppression (S5). Coverage model: dir, size buckets, address ranges, protocol (START/STOP/rep-START), ACK, byte-NACK, clock-stretch, rep-depth, and 6 cross covergroups.",
+    tags: ["SystemVerilog", "UVM 1.2", "I2C", "SVA", "Functional Coverage", "BFM"],
     category: "vlsi",
     featured: true,
-    image: "/images/projects/fifo.png",
-    github: "https://github.com/KushalPitaliya/Spartan6-Synchronous-FIFO",
+    image: "/images/projects/i2c-uvm.png",
+    github: "https://github.com/k-pitaliya/i2c-protocol-dv",
+    live: "https://github.com/k-pitaliya/i2c-protocol-dv/tree/main/eda_playground",
+    metrics: [
+      { label: "Bugs found & fixed", value: "16" },
+      { label: "Covergroups", value: "17" },
+      { label: "Predicted closure", value: "95%+" },
+    ],
   },
   {
     id: "fsm-controller",
-    title: "FSM-Based Digital Controller",
+    title: "FSM Controller with Assertion-Based Verification",
     description:
-      "Multi-state Mealy/Moore FSM in SystemVerilog with clock-driven structured testbenches and assertions. Strictly synthesizable with always_ff/always_comb constructs and full coverage.",
-    tags: ["SystemVerilog", "FSM", "SVA Assertions", "Synthesis"],
+      "Multi-state Mealy/Moore FSM in SystemVerilog using strict 3-block coding style (state register, next-state logic, output logic). SVA assertions verify state transition correctness, output timing, and corner cases (reset during active state, illegal-state recovery, back-to-back transitions).",
+    tags: ["SystemVerilog", "FSM", "SVA", "Synthesizable RTL"],
     category: "vlsi",
     featured: true,
     image: "/images/projects/fsm.png",
     github: "https://github.com/KushalPitaliya/FSM-Digital-Controller",
   },
   {
-    id: "audio-spectrum-analyzer",
-    title: "Audio Spectrum Analyzer",
+    id: "fifo-memory-buffer",
+    title: "Synchronous FIFO on Spartan-6",
     description:
-      "Real-time 8-band spectrum visualizer on bare-metal STM32. Captures audio via I2S MEMS mic, processes with 512-point FFT (CMSIS-DSP), applies AGC, and renders on SSD1306 OLED at ~24 FPS.",
-    tags: ["STM32", "Embedded C", "CMSIS-DSP", "I2S", "DMA", "OLED"],
+      "Parameterized synchronous FIFO with configurable depth and data width, hardware-verified on Xilinx Spartan-6 FPGA. Layered SystemVerilog testbench with separate driver, monitor, and checker. Directed and randomized stimulus for full/empty boundary, pointer wraparound, and back-to-back burst stress.",
+    tags: ["Verilog HDL", "SystemVerilog TB", "Spartan-6 FPGA", "Xilinx ISE"],
+    category: "vlsi",
+    featured: true,
+    image: "/images/projects/fifo.png",
+    github: "https://github.com/KushalPitaliya/Spartan6-Synchronous-FIFO",
+  },
+  {
+    id: "audio-spectrum-analyzer",
+    title: "Audio Spectrum Analyzer (STM32 Bare-Metal)",
+    description:
+      "Real-time 8-band spectrum visualizer on bare-metal STM32F411. Captures audio via I2S MEMS mic, processes with 512-point CMSIS-DSP FFT, applies automatic gain control, and renders on SSD1306 OLED at ~24 FPS. Double-buffered DMA for zero-CPU continuous sampling.",
+    tags: ["STM32", "Embedded C", "CMSIS-DSP", "I2S", "DMA", "FFT"],
     category: "embedded",
-    featured: false,
+    featured: true,
     image: "/images/projects/audio-spectrum.png",
     github: "https://github.com/KushalPitaliya/audio-spectrum-analyzer-stm32",
   },
   {
     id: "ultrasonic-distance-system",
-    title: "Ultrasonic Distance Measurement",
+    title: "Ultrasonic Distance Measurement (AVR)",
     description:
-      "Real-time distance measurement using AVR ATmega32 with HC-SR04 sensor. Interrupt-driven echo detection, Timer1 input capture for precision, custom LCD driver, and UART serial output.",
-    tags: ["AVR", "Embedded C", "UART", "Timers", "Interrupts"],
+      "Interrupt-driven distance measurement on AVR ATmega32 with HC-SR04 sensor. External interrupts (INT0/INT1) for echo capture, 16-bit Timer1 input-capture for precision pulse-width measurement, custom register-level LCD driver, UART telemetry at 9600 baud.",
+    tags: ["AVR ATmega32", "Embedded C", "Interrupts", "Timer Input Capture", "UART"],
     category: "embedded",
     featured: false,
     image: "/images/projects/ultrasonic.png",
     github: "https://github.com/KushalPitaliya/ATmega32-Ultrasonic-Distance-Meter",
   },
-  {
-    id: "control-system-analyzer",
-    title: "Control System Analyzer",
-    description:
-      "Interactive web tool for control system analysis — step/impulse/ramp responses, Bode/Nyquist/Polar plots, Root Locus, and Routh-Hurwitz stability. 24 unit tests with Vitest.",
-    tags: ["JavaScript", "Vite", "Chart.js", "MathJax", "Vitest"],
-    category: "web",
-    featured: false,
-    image: "/images/projects/control-system.png",
-    github: "https://github.com/KushalPitaliya/Control_system_analyzer",
-  },
-  {
-    id: "semicon-summit",
-    title: "Semiconductor Summit 2.0",
-    description:
-      "Full-stack event website for a semiconductor conference with React + Vite frontend and Node.js/MongoDB backend. Automated PDF receipt parsing, role-based dashboards, and email automation.",
-    tags: ["React", "Vite", "Node.js", "MongoDB", "Nodemailer", "REST API"],
-    category: "web",
-    featured: false,
-    image: "/images/projects/semicon-summit.png",
-    github: "https://github.com/KushalPitaliya/Semicon-Summit-2.0",
-  },
-  {
-    id: "serverless-cicd-pipeline",
-    title: "Serverless CI/CD Pipeline",
-    description:
-      "Task Manager REST API with fully automated CI/CD: GitHub → CodePipeline → CodeBuild → CloudFormation → Lambda + API Gateway + DynamoDB. CloudWatch alarms and SNS notifications included.",
-    tags: ["AWS Lambda", "API Gateway", "DynamoDB", "SAM", "CodePipeline", "Python"],
-    category: "cloud",
-    featured: false,
-    image: "/images/projects/serverless-cicd.png",
-    github: "https://github.com/KushalPitaliya/serverless-cicd-pipeline",
-  },
-  {
-    id: "document-processing-engine",
-    title: "Intelligent Document Processing Engine",
-    description:
-      "Fully serverless OCR pipeline: S3 uploads trigger Lambda → AWS Textract extracts structured data → DynamoDB stores metadata → SNS notifies downstream. IAM least-privilege throughout.",
-    tags: ["AWS Textract", "Lambda", "S3", "DynamoDB", "SNS", "Python"],
-    category: "cloud",
-    featured: true,
-    image: "/images/projects/doc-processing.png",
-    github: "https://github.com/KushalPitaliya/intelligent-doc-engine",
-  },
-  {
-    id: "terraform-iac",
-    title: "Cloud Infrastructure as Code",
-    description:
-      "Reusable Terraform modules for VPC, EC2, S3, and IAM. Remote state backends with DynamoDB locking, variable-driven multi-environment configs, and CI-validated terraform plan.",
-    tags: ["Terraform", "AWS", "VPC", "EC2", "S3", "IAM"],
-    category: "cloud",
-    featured: false,
-    image: "/images/projects/terraform.png",
-    github: "https://github.com/KushalPitaliya/terraform-aws-infrastructure",
-  },
-  {
-    id: "text-parsematch",
-    title: "text-parsematch (PyPI Package)",
-    description:
-      "Published Python package for processing text inputs with pattern matching, retry mechanisms, and schema validation. Returns structured and validated outputs for data extraction workflows.",
-    tags: ["Python", "PyPI", "Pattern Matching", "Schema Validation"],
-    category: "other",
-    featured: false,
-    image: "/images/projects/text-parsematch.png",
-    github: "https://github.com/KushalPitaliya/text-parsematch",
-  },
 ];
 
 export const experiences: Experience[] = [
   {
-    id: "exp-kudos",
-    company: "Kudos Technolabs",
-    role: "Cloud Technologies Intern",
-    period: "May 2025 — July 2025",
+    id: "exp-charusat-vlsi-2026",
+    company: "CHARUSAT — VLSI Summer Internship 2026",
+    role: "Design Verification Intern (Faculty-led)",
+    period: "May 2026 — Present",
     description: [
-      "Designed and developed an Intelligent Document Processing Engine using AWS Lambda, Textract, DynamoDB, API Gateway, and S3",
-      "Built a fully functional frontend dashboard with file upload, real-time analytics, dynamic report generation, and search/filter capabilities",
-      "Automated extraction and analysis of text data from PDF and image documents using Amazon Textract",
-      "Delivered a self-driven project end-to-end — from architecture planning to deployment within the AWS Free Tier",
+      "Shipping two full UVM 1.2 verification environments — AXI4-Lite 4×4 crossbar and I2C slave controller — both with documented bug reports, coverage closure analysis, and reproducible EDA Playground flows",
+      "Built reusable UVM infrastructure: virtual sequencers, layered scoreboards with reference models, per-byte coverage tracking, and SVA property libraries for protocol invariants",
+      "Authored verification plans, coverage closure reports, and a 5-part debug walkthrough series mentored by faculty — turning bug analysis into systematic methodology rather than one-off fixes",
     ],
   },
   {
     id: "exp-ugsf",
     company: "CHARUSAT — ECE Department",
     role: "Undergraduate Student Fellow (UGSF)",
-    period: "Jul 2025 — Present",
+    period: "Aug 2024 — Present",
     description: [
-      "Merit-based fellowship focused on digital design, FPGA development, and embedded systems research",
-      "Led hands-on workshops covering Verilog RTL design, FPGA prototyping on Xilinx, and PCB layout techniques",
-      "Organized technical talks and managed events end-to-end — coordinating between speakers, student teams, and faculty",
-      "Participated in iChip 3.0 Verilog Hackathon — collaborative RTL design challenge with timed problem-solving",
+      "Merit-based fellowship focused on digital design, FPGA prototyping, and verification methodology research",
+      "Led hands-on workshops on Verilog RTL, Xilinx FPGA bring-up, and PCB layout for 50+ students",
+      "Participated in iChip 3.0 Verilog Hackathon — timed collaborative RTL design challenge",
+      "Coordinated technical talks and managed end-to-end logistics between faculty, speakers, and student teams",
+    ],
+  },
+  {
+    id: "exp-kudos",
+    company: "Kudos Technolabs",
+    role: "Engineering Intern (Cloud Track)",
+    period: "May 2025 — Jul 2025",
+    description: [
+      "Delivered a production document-processing pipeline end-to-end — architecture, implementation, deployment — applied verification-style discipline (test plans, IAM least-privilege, failure injection) to cloud infrastructure",
+      "Wrote Python automation for Linux server orchestration; strengthened core software engineering practice (systematic debugging, structured logging, reproducible builds) transferable to verification environments",
     ],
   },
 ];
@@ -277,7 +228,7 @@ export const education: Education[] = [
     institution: "Charotar University of Science and Technology (CHARUSAT)",
     degree: "Bachelor of Technology",
     field: "Electronics & Communication Engineering",
-    period: "2023 — Present",
+    period: "2023 — 2027 (Expected)",
     gpa: "8.74 / 10",
     coursework: [
       "Digital VLSI Design",
@@ -288,10 +239,10 @@ export const education: Education[] = [
       "Data Structures & Algorithms",
     ],
     achievements: [
-      "Undergraduate Student Fellow (UGSF) — Merit-based selection for digital design research",
-      "iChip 3.0 Verilog Hackathon — RTL design challenge participant",
+      "Undergraduate Student Fellow (UGSF) — merit-based selection for digital design research",
+      "VLSI Summer Internship 2026 (Faculty-led) — Design Verification track",
+      "iChip 3.0 Verilog Hackathon — RTL design challenge",
       "Second Runner-up — Idea Show 3.0",
-      "Odoo x CHARUSAT Hackathon 2025 — Participant",
     ],
   },
   {
@@ -317,24 +268,6 @@ export const certifications: Certification[] = [
     issuer: "CHARUSAT",
     date: "2024",
   },
-  {
-    id: "cert-aws",
-    name: "AWS Cloud Technical Essentials",
-    issuer: "Coursera",
-    date: "2025",
-  },
-  {
-    id: "cert-google-ai",
-    name: "Google AI Essentials Specialization",
-    issuer: "Google",
-    date: "2025",
-  },
-  {
-    id: "cert-gcp",
-    name: "Google Cloud Essentials",
-    issuer: "Google Cloud",
-    date: "2025",
-  },
 ];
 
 export const blogPosts: BlogPost[] = [
@@ -342,28 +275,28 @@ export const blogPosts: BlogPost[] = [
     id: "blog-1",
     title: "From Verilog to SystemVerilog: A Practical Transition Guide",
     excerpt:
-      "What I learned moving from basic Verilog to SystemVerilog — always_ff vs always_comb, interfaces, SVA assertions, and why it matters for modern design verification workflows.",
-    date: "2025-03-10",
+      "Moving from basic Verilog to SystemVerilog — always_ff vs always_comb, interfaces, SVA assertions, and why it matters for modern design verification.",
+    date: "2026-03-10",
     tags: ["SystemVerilog", "Verilog", "VLSI", "Verification"],
-    url: "https://github.com/KushalPitaliya",
+    url: "https://github.com/k-pitaliya",
   },
   {
     id: "blog-2",
     title: "Building a Synchronous FIFO: From RTL to FPGA Verification",
     excerpt:
-      "A deep dive into designing, simulating, and hardware-verifying an 8-bit FIFO on Spartan-6 — signal debouncing, power-on reset, directed testbenches, and lessons learned.",
-    date: "2025-05-20",
+      "Designing, simulating, and hardware-verifying an 8-bit FIFO on Spartan-6 — signal debouncing, power-on reset, directed testbenches, and the bugs only hardware finds.",
+    date: "2026-04-20",
     tags: ["Verilog", "FPGA", "Spartan-6", "Xilinx ISE"],
     url: "https://github.com/KushalPitaliya/Spartan6-Synchronous-FIFO",
   },
   {
     id: "blog-3",
-    title: "Building a Bare-Metal Audio Spectrum Analyzer on STM32",
+    title: "Closing Coverage on an I2C UVM Testbench: 89 Points, 17 Covergroups",
     excerpt:
-      "How I built an 8-band real-time spectrum visualizer from scratch — I2S microphone, CMSIS-DSP FFT, AGC, and SSD1306 OLED rendering at 24 FPS on a $5 microcontroller.",
-    date: "2025-06-15",
-    tags: ["STM32", "Embedded C", "DSP", "Bare-Metal"],
-    url: "https://github.com/KushalPitaliya/audio-spectrum-analyzer-stm32",
+      "How I expanded an 8-covergroup model into 17 with cross coverage, traced every bin to a test, and predicted 95%+ closure analytically when no simulator was available locally.",
+    date: "2026-05-12",
+    tags: ["UVM", "Functional Coverage", "SystemVerilog", "Verification"],
+    url: "https://github.com/k-pitaliya/i2c-protocol-dv",
   },
 ];
 
@@ -377,13 +310,6 @@ export const testimonials: Testimonial[] = [
   },
   {
     id: "test-2",
-    name: "Harsh Mehta",
-    role: "Cloud Team Lead",
-    company: "Kudos Technolabs",
-    text: "Kushal quickly grasped complex AWS architectures and delivered production-ready serverless pipelines. His hardware engineering mindset brought a unique discipline to cloud infrastructure — clean, testable, and well-documented.",
-  },
-  {
-    id: "test-3",
     name: "Darsh Patel",
     role: "ECE Peer & Lab Partner",
     company: "CHARUSAT ECE",

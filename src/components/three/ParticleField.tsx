@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useMemo, useEffect } from "react";
+import { useRef, useMemo, useEffect, useState } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
@@ -29,7 +29,7 @@ export default function ParticleField({ count = DEFAULT_COUNT }: { count?: numbe
     return () => window.removeEventListener("pointermove", onPointerMove);
   }, [onPointerMove]);
 
-  const { positions, basePositions, sizes, opacities } = useMemo(() => {
+  const [particleData] = useState(() => {
     const positions = new Float32Array(count * 3);
     const basePositions = new Float32Array(count * 3);
     const sizes = new Float32Array(count);
@@ -57,7 +57,9 @@ export default function ParticleField({ count = DEFAULT_COUNT }: { count?: numbe
     }
 
     return { positions, basePositions, sizes, opacities };
-  }, [count]);
+  });
+
+  const { positions, basePositions, sizes, opacities } = particleData;
 
   useFrame(({ clock }) => {
     if (!pointsRef.current) return;

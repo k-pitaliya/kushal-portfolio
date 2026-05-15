@@ -9,20 +9,21 @@ import GlassCard from "@/components/ui/GlassCard";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 
-const filters = ["All", "VLSI", "Embedded", "Cloud", "Web"] as const;
+const filters = ["All", "VLSI", "Embedded"] as const;
 type Filter = (typeof filters)[number];
 
 const categoryGradients: Record<string, string> = {
   vlsi: "from-purple-500/30 to-blue-500/30",
-  cloud: "from-cyan-500/30 to-emerald-500/30",
   embedded: "from-orange-500/30 to-red-500/30",
-  web: "from-pink-500/30 to-violet-500/30",
+  tools: "from-teal-500/30 to-cyan-500/30",
   other: "from-gray-500/30 to-zinc-500/30",
 };
 
 export default function Projects() {
   const [active, setActive] = useState<Filter>("All");
   const isMobile = useMediaQuery("(max-width: 768px)");
+  const isTablet = useMediaQuery("(max-width: 1023px)");
+  const useVerticalLayout = isMobile || isTablet;
   const sectionRef = useRef<HTMLElement>(null);
   const [windowWidth, setWindowWidth] = useState(0);
 
@@ -40,11 +41,11 @@ export default function Projects() {
   const cardWidth = 420;
   const gap = 24;
   const totalScrollWidth = filtered.length * (cardWidth + gap);
-  const sectionHeight = isMobile || !windowWidth ? "auto" : `${totalScrollWidth + windowWidth}px`;
+  const sectionHeight = useVerticalLayout || !windowWidth ? "auto" : `${totalScrollWidth + windowWidth}px`;
 
   // Reset scroll to section top when filter changes (desktop only)
   useEffect(() => {
-    if (isMobile || !sectionRef.current) return;
+    if (useVerticalLayout || !sectionRef.current) return;
     const rect = sectionRef.current.getBoundingClientRect();
     const sectionTop = rect.top + window.scrollY;
     if (window.scrollY > sectionTop) {
@@ -64,8 +65,8 @@ export default function Projects() {
     [0, -(totalScrollWidth - (windowWidth * 0.6 || 800))]
   );
 
-  // MOBILE: simple vertical layout
-  if (isMobile) {
+  // MOBILE / TABLET: simple vertical layout
+  if (useVerticalLayout) {
     return (
       <section id="projects" className="relative px-6 py-40 xl:py-48">
         <div className="mx-auto max-w-6xl">
@@ -112,7 +113,7 @@ export default function Projects() {
         {/* Horizontal track */}
         <div className="flex flex-1 items-center">
           <motion.div
-            className="flex gap-6 pl-12 pr-[40vw] lg:pl-24"
+            className="flex items-stretch gap-6 pl-12 pr-[40vw] lg:pl-24"
             style={{ x }}
           >
             {filtered.map((project, i) => (
@@ -122,7 +123,7 @@ export default function Projects() {
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.5 }}
+                transition={{ delay: i * 0.06, duration: 0.5 }}
               >
                 <ProjectCard project={project} index={i} />
               </motion.div>
@@ -172,13 +173,36 @@ function FilterBar({ active, setActive }: { active: Filter; setActive: (f: Filte
   );
 }
 
-/* Extracted project card */
+/* Extracted project card with 3D tilt on hover */
 function ProjectCard({ project, index }: { project: typeof projects[number]; index?: number }) {
   const num = index !== undefined ? String(index + 1).padStart(2, "0") : "";
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const card = cardRef.current;
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    card.style.transform = `perspective(800px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg) translateY(-12px) scale(1.02)`;
+  };
+
+  const handleMouseLeave = () => {
+    const card = cardRef.current;
+    if (card) card.style.transform = "perspective(800px) rotateY(0) rotateX(0) translateY(0) scale(1)";
+  };
+
   return (
+    <div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="h-full"
+      style={{ transition: "transform 0.4s cubic-bezier(0.23,1,0.32,1)", transformStyle: "preserve-3d" }}
+    >
     <GlassCard
       hover={false}
-      className="group relative h-full overflow-hidden transition-all duration-500 hover:-translate-y-3 hover:shadow-[0_20px_60px_rgba(0,0,0,0.4),0_0_40px_rgba(0,191,255,0.1)] hover:border-accent/20"
+      className="group relative flex h-full flex-col overflow-hidden transition-all duration-500 hover:shadow-[0_20px_60px_rgba(0,0,0,0.4),0_0_40px_rgba(0,191,255,0.12)] hover:border-accent/20"
     >
       {/* Large project number */}
       {num && (
@@ -190,7 +214,7 @@ function ProjectCard({ project, index }: { project: typeof projects[number]; ind
       {/* Gradient preview — taller for impact */}
       <div
         className={cn(
-          "relative mb-5 flex h-60 items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br transition-all duration-700",
+          "relative mb-4 flex h-52 items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br transition-all duration-700 md:h-56",
           categoryGradients[project.category] ?? categoryGradients.other
         )}
       >
@@ -224,9 +248,27 @@ function ProjectCard({ project, index }: { project: typeof projects[number]; ind
       </span>
 
       <h3 className="mb-2 text-lg font-semibold text-text transition-colors group-hover:text-accent">{project.title}</h3>
-      <p className="mb-4 text-sm leading-relaxed text-text-muted">{project.description}</p>
 
-      <div className="flex flex-wrap gap-2">
+      {/* Verification metrics: prominent for DV recruiters */}
+      {project.metrics && project.metrics.length > 0 && (
+        <div className="mb-3 grid grid-cols-3 gap-2">
+          {project.metrics.map((m) => (
+            <div
+              key={m.label}
+              className="rounded-md border border-glass-border bg-glass/40 px-2 py-1.5 text-center"
+            >
+              <div className="font-mono text-sm font-semibold text-accent">{m.value}</div>
+              <div className="font-mono text-[9px] uppercase tracking-wide text-text-dim leading-tight mt-0.5">
+                {m.label}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <p className="mb-4 line-clamp-3 text-sm leading-relaxed text-text-muted">{project.description}</p>
+
+      <div className="mt-auto flex flex-wrap gap-2">
         {project.tags.map((tag) => (
           <span key={tag} className="rounded-full bg-accent/8 px-3 py-1 text-xs text-accent/80">
             {tag}
@@ -234,5 +276,6 @@ function ProjectCard({ project, index }: { project: typeof projects[number]; ind
         ))}
       </div>
     </GlassCard>
+    </div>
   );
 }

@@ -21,9 +21,9 @@ function SkillBar({ level, name }: { level: number; name: string }) {
           {label}
         </span>
       </div>
-      <div className="h-1.5 overflow-hidden rounded-full bg-glass">
+      <div className="h-1.5 overflow-hidden rounded-full bg-glass shadow-[inset_0_0_4px_rgba(0,191,255,0.1)]">
         <motion.div
-          className="relative h-full rounded-full bg-accent"
+          className="relative h-full rounded-full bg-gradient-to-r from-accent to-accent/80"
           initial={{ width: 0 }}
           whileInView={{ width: `${level}%` }}
           viewport={{ once: true, margin: "-50px" }}
@@ -35,7 +35,8 @@ function SkillBar({ level, name }: { level: number; name: string }) {
             delay: 0.2,
           }}
         >
-          <div className="absolute inset-0 rounded-full shadow-[0_0_8px_rgba(0,191,255,0.4)]" />
+          <div className="absolute inset-0 rounded-full shadow-[0_0_10px_rgba(0,191,255,0.5)]" />
+          <div className="absolute inset-0 rounded-full bg-[linear-gradient(90deg,transparent_0%,rgba(255,255,255,0.15)_50%,transparent_100%)] bg-[length:200%_100%] animate-[bar-shimmer_2s_ease-in-out_infinite]" />
         </motion.div>
       </div>
     </div>
@@ -78,7 +79,7 @@ export default function Skills() {
                 {activeCategory === i && (
                   <motion.div
                     layoutId="skill-tab-underline"
-                    className="absolute bottom-0 left-0 h-0.5 w-full rounded-full bg-accent"
+                    className="absolute bottom-0 left-0 h-0.5 w-full rounded-full bg-accent shadow-[0_0_10px_rgba(0,191,255,0.3)]"
                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
                   />
                 )}
@@ -93,7 +94,7 @@ export default function Skills() {
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeCategory}
-                className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+                className="grid gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3"
                 variants={blurStagger}
                 initial="hidden"
                 animate="visible"

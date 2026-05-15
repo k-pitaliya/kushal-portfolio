@@ -25,6 +25,12 @@ export default function CommandPalette() {
     item.label.toLowerCase().includes(query.toLowerCase())
   );
 
+  const prevQueryRef = useRef(query);
+  if (query !== prevQueryRef.current) {
+    prevQueryRef.current = query;
+    if (activeIndex !== 0) setActiveIndex(0);
+  }
+
   const close = useCallback(() => {
     setOpen(false);
     setQuery("");
@@ -40,7 +46,7 @@ export default function CommandPalette() {
     [close]
   );
 
-  // Cmd+K / Ctrl+K toggle
+  // Cmd+K / Ctrl+K toggles the palette
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
@@ -65,10 +71,10 @@ export default function CommandPalette() {
     }
   }, [open]);
 
-  // Reset active index on filter change
-  useEffect(() => {
+  const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value);
     setActiveIndex(0);
-  }, [query]);
+  };
 
   // Keyboard nav inside palette
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -128,7 +134,7 @@ export default function CommandPalette() {
                 placeholder="Navigate to…"
                 className="w-full bg-transparent text-sm text-text outline-none placeholder:text-text-dim"
                 value={query}
-                onChange={(e) => setQuery(e.target.value)}
+                onChange={handleQueryChange}
               />
               <kbd className="shrink-0 rounded-md border border-glass-border bg-glass px-2 py-0.5 font-mono text-[10px] text-text-dim">
                 ESC

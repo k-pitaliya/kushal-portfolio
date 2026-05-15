@@ -75,10 +75,10 @@ export default function Footer() {
             <MagneticButton>
               <a
                 href="#contact"
-                className="group inline-flex items-center gap-2 rounded-full bg-accent px-8 py-4 text-sm font-semibold text-bg transition-all duration-300 hover:bg-accent-dark hover:shadow-[0_0_40px_rgba(0,191,255,0.3)]"
+                className="group inline-flex items-center gap-2 rounded-full bg-accent px-8 py-4 text-sm font-semibold text-bg transition-all duration-300 hover:-translate-y-1 hover:bg-accent-dark hover:shadow-[0_0_40px_rgba(0,191,255,0.3)]"
               >
                 Start a conversation
-                <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:rotate-12" />
               </a>
             </MagneticButton>
           </div>
@@ -107,9 +107,10 @@ export default function Footer() {
                 <li key={item.href}>
                   <a
                     href={item.href}
-                    className="text-sm text-text-muted transition-colors duration-300 hover:text-accent"
+                    className="group/link relative text-sm text-text-muted transition-colors duration-300 hover:text-accent"
                   >
                     {item.label}
+                    <span className="absolute -bottom-0.5 left-0 h-[1px] w-0 bg-accent/50 transition-all duration-300 group-hover/link:w-full" />
                   </a>
                 </li>
               ))}
@@ -131,7 +132,7 @@ export default function Footer() {
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={link.name}
-                      className="flex h-10 w-10 items-center justify-center rounded-full border border-glass-border bg-glass text-text-muted transition-all duration-300 hover:border-accent/40 hover:text-accent hover:shadow-[0_0_20px_rgba(0,191,255,0.12)]"
+                       className="flex h-10 w-10 items-center justify-center rounded-full border border-glass-border bg-glass text-text-muted transition-all duration-300 hover:border-accent/40 hover:text-accent hover:scale-110 hover:-translate-y-1 hover:rotate-6 hover:shadow-[0_0_20px_rgba(0,191,255,0.12)]"
                     >
                       {Icon && <Icon className="h-4 w-4" />}
                     </a>
@@ -158,7 +159,7 @@ export default function Footer() {
             >
               Back to top
               <span className="flex h-6 w-6 items-center justify-center rounded-full border border-glass-border transition-all group-hover:border-accent/40 group-hover:shadow-[0_0_10px_rgba(0,191,255,0.1)]">
-                <ArrowUp className="h-3 w-3" />
+                <ArrowUp className="h-3 w-3 transition-transform group-hover:-translate-y-0.5" />
               </span>
             </button>
           </MagneticButton>

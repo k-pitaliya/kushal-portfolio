@@ -15,6 +15,8 @@ export default function DotGrid({ className }: DotGridProps) {
   const lastMoveRef = useRef(0);
   const activeRef = useRef(false);
 
+  const drawRef = useRef<() => void>(() => {});
+
   const draw = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -48,7 +50,6 @@ export default function DotGrid({ className }: DotGridProps) {
         const radius = 1.2 + t * 2.5;
         const alpha = 0.12 + t * 0.65;
 
-        // Interpolate color: dim gray to accent blue
         const r = Math.round(85 + t * (0 - 85));
         const g = Math.round(85 + t * (191 - 85));
         const b = Math.round(85 + t * (255 - 85));
@@ -60,13 +61,16 @@ export default function DotGrid({ className }: DotGridProps) {
       }
     }
 
-    // Continue animating if mouse moved recently
     if (Date.now() - lastMoveRef.current < 2000) {
-      rafRef.current = requestAnimationFrame(draw);
+      rafRef.current = requestAnimationFrame(drawRef.current);
     } else {
       activeRef.current = false;
     }
   }, []);
+
+  useEffect(() => {
+    drawRef.current = draw;
+  }, [draw]);
 
   useEffect(() => {
     if (isTouch) return;

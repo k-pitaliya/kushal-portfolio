@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { fadeUp, blurReveal } from "@/lib/animations";
+import { blurReveal } from "@/lib/animations";
 import { certifications } from "@/lib/data";
 import GlassCard from "@/components/ui/GlassCard";
 import Marquee from "@/components/ui/Marquee";
@@ -17,9 +17,9 @@ function CertBadge({
   date: string;
 }) {
   return (
-    <GlassCard className="w-72 shrink-0 cursor-default px-5 py-4 transition-shadow hover:shadow-[0_0_30px_rgba(0,191,255,0.2)]">
-      <h4 className="text-sm font-semibold text-text">{name}</h4>
-      <p className="mt-1 text-xs text-text-muted">{issuer}</p>
+    <GlassCard className="w-64 shrink-0 cursor-default px-4 py-3 transition-shadow hover:shadow-[0_0_30px_rgba(0,191,255,0.2)] md:w-72 md:px-5 md:py-4">
+      <h4 className="text-sm font-semibold leading-snug text-text">{name}</h4>
+      <p className="mt-2 text-xs leading-snug text-text-muted">{issuer}</p>
       <span className="mt-2 inline-block rounded-full bg-accent/15 px-2.5 py-0.5 text-[10px] font-medium text-accent">
         {date}
       </span>
@@ -42,7 +42,7 @@ export default function Certifications() {
       </div>
 
       <motion.div
-        className="space-y-6"
+        className="space-y-8 md:space-y-10"
         variants={blurReveal}
         initial="hidden"
         whileInView="visible"

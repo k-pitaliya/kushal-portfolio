@@ -36,8 +36,8 @@ function ExperienceCard({
         className="origin-top"
       >
         {/* Opaque card — solid background so stacked cards properly hide content beneath */}
-        <div className="mx-auto max-w-3xl rounded-xl border border-glass-border bg-bg-secondary p-8 shadow-lg shadow-black/20 md:p-10">
-          <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+        <div className="mx-auto max-w-3xl rounded-xl border border-glass-border bg-bg-secondary p-6 shadow-lg shadow-black/20 md:p-8 lg:p-10">
+          <div className="flex flex-col items-start gap-4 md:flex-row md:items-start md:justify-between md:gap-6">
             <div className="flex-1">
               <span className="mb-3 inline-block rounded-full bg-accent/15 px-3 py-1 text-xs font-medium text-accent">
                 {exp.period}
@@ -45,14 +45,14 @@ function ExperienceCard({
               <h3 className="text-xl font-bold text-text md:text-2xl">{exp.role}</h3>
               <p className="mt-1 text-sm text-text-muted">{exp.company}</p>
             </div>
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-accent/10 font-mono text-lg font-bold text-accent">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-accent/10 font-mono text-base font-bold text-accent md:h-12 md:w-12 md:text-lg">
               {String(index + 1).padStart(2, "0")}
             </div>
           </div>
-          <ul className="mt-6 space-y-3">
+          <ul className="mt-8 space-y-4">
             {exp.description.map((item, j) => (
               <li key={j} className="flex items-start gap-3 text-sm leading-relaxed text-text-muted">
-                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
                 {item}
               </li>
             ))}

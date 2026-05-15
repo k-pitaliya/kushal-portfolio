@@ -1,3 +1,8 @@
+export interface ProjectMetric {
+  label: string;
+  value: string;
+}
+
 export interface Project {
   id: string;
   title: string;
@@ -5,10 +10,11 @@ export interface Project {
   longDescription?: string;
   image: string;
   tags: string[];
-  category: "vlsi" | "cloud" | "embedded" | "web" | "other";
+  category: "vlsi" | "embedded" | "tools" | "other";
   github?: string;
   live?: string;
   featured: boolean;
+  metrics?: ProjectMetric[];
 }
 
 export interface Experience {

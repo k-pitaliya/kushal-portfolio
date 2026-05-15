@@ -97,7 +97,7 @@ export default function Navbar() {
 
           {/* Desktop nav links */}
           <LayoutGroup>
-          <ul className="hidden items-center gap-1 md:flex">
+          <ul className="hidden items-center gap-1 md:flex" role="navigation">
             {navItems.map((item) => (
               <li key={item.href}>
                 <MagneticButton strength={0.15}>
@@ -110,7 +110,7 @@ export default function Navbar() {
                   >
                     <span
                       className={cn(
-                        "relative z-10 transition-colors duration-300",
+                        "relative z-10 transition-colors duration-300 tracking-[0.02em]",
                         activeSection === item.href.slice(1)
                           ? "text-accent"
                           : "text-text-muted hover:text-text"
@@ -121,7 +121,7 @@ export default function Navbar() {
                     {/* Active section indicator */}
                     {activeSection === item.href.slice(1) && (
                       <motion.span
-                        className="absolute bottom-1 left-3 right-3 h-[2px] rounded-full bg-accent"
+                        className="absolute bottom-1 left-3 right-3 h-[2px] rounded-full bg-accent shadow-[0_0_8px_rgba(0,191,255,0.4)]"
                         layoutId="navbar-active-underline"
                         transition={{ type: "spring", stiffness: 380, damping: 30 }}
                       />

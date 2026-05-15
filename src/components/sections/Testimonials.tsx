@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { fadeUp, blurReveal } from "@/lib/animations";
+import { blurReveal } from "@/lib/animations";
 import { testimonials } from "@/lib/data";
 import SectionHeading from "@/components/ui/SectionHeading";
 
@@ -13,6 +13,7 @@ export default function Testimonials() {
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
   const [progress, setProgress] = useState(0);
+  // eslint-disable-next-line react-hooks/purity -- Date.now is used for animation timing ref init
   const startRef = useRef(Date.now());
   const rafRef = useRef<number>(0);
 
@@ -47,6 +48,7 @@ export default function Testimonials() {
 
   const goTo = (i: number) => {
     setCurrent(i);
+    // eslint-disable-next-line react-hooks/purity -- inside event handler, not render
     startRef.current = Date.now();
     setProgress(0);
   };
@@ -62,7 +64,7 @@ export default function Testimonials() {
         <SectionHeading number="08" title="What People Say" />
 
         <motion.div
-          className="relative min-h-[280px]"
+          className="relative min-h-[320px] md:min-h-[360px]"
           aria-live="polite"
           aria-atomic="true"
           variants={blurReveal}
@@ -73,7 +75,7 @@ export default function Testimonials() {
           onMouseLeave={() => setPaused(false)}
         >
           {/* Decorative quote marks */}
-          <span className="pointer-events-none absolute -left-2 -top-4 select-none text-[8rem] font-bold leading-none text-accent/8 md:-left-8">
+          <span className="pointer-events-none absolute -left-1 -top-2 select-none text-[6rem] font-bold leading-none text-accent/8 md:-left-8 md:-top-4 md:text-[8rem]">
             &ldquo;
           </span>
 
@@ -95,7 +97,7 @@ export default function Testimonials() {
                 </div>
                 <div>
                   <p className="font-semibold text-text">{t.name}</p>
-                  <p className="text-sm text-text-muted">
+                  <p className="text-sm leading-relaxed text-text-muted">
                     {t.role}, {t.company}
                   </p>
                 </div>
@@ -106,7 +108,7 @@ export default function Testimonials() {
           {/* Navigation dots + progress */}
           <div className="mt-12 flex flex-col items-center gap-4">
             {/* Progress bar */}
-            <div className="h-[2px] w-full max-w-xs overflow-hidden rounded-full bg-glass-border">
+            <div className="h-[2px] w-full max-w-sm overflow-hidden rounded-full bg-glass-border md:max-w-md">
               <motion.div
                 className="h-full rounded-full bg-accent"
                 style={{ width: `${progress * 100}%` }}
@@ -114,17 +116,17 @@ export default function Testimonials() {
             </div>
 
             {/* Dots */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 md:gap-3">
               {testimonials.map((_, i) => (
                 <button
                   key={i}
                   onClick={() => goTo(i)}
                   aria-label={`Go to testimonial ${i + 1}`}
                   className={cn(
-                    "rounded-full transition-all duration-300",
+                    "h-2.5 w-2.5 rounded-full transition-all duration-300",
                     i === current
-                      ? "h-2.5 w-2.5 bg-accent shadow-[0_0_10px_rgba(0,191,255,0.5)]"
-                      : "h-2 w-2 bg-text-dim hover:bg-text-muted"
+                      ? "bg-accent shadow-[0_0_10px_rgba(0,191,255,0.5)]"
+                      : "bg-text-dim hover:bg-text-muted hover:shadow-[0_0_6px_rgba(0,191,255,0.15)]"
                   )}
                 />
               ))}

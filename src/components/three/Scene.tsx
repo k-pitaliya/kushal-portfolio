@@ -1,19 +1,22 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import ParticleField from "./ParticleField";
 import AuroraShader from "./AuroraShader";
 import dynamic from "next/dynamic";
 
 function SceneContent() {
-  const [isMobile, setIsMobile] = useState(false);
-  const [prefersReduced, setPrefersReduced] = useState(false);
-
-  useEffect(() => {
-    setIsMobile(window.matchMedia("(max-width: 768px)").matches || window.matchMedia("(pointer: coarse)").matches);
-    setPrefersReduced(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
-  }, []);
+  const [isMobile] = useState(() =>
+    typeof window !== "undefined"
+      ? window.matchMedia("(max-width: 768px)").matches || window.matchMedia("(pointer: coarse)").matches
+      : false
+  );
+  const [prefersReduced] = useState(() =>
+    typeof window !== "undefined"
+      ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      : false
+  );
 
   if (prefersReduced) return null;
 

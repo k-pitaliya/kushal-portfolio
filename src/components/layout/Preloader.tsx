@@ -53,10 +53,10 @@ export default function Preloader({ onComplete }: PreloaderProps) {
         >
           {/* Small monogram */}
           <motion.div
-            className="mb-8 flex h-16 w-16 items-center justify-center rounded-full border border-accent/30"
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="mb-8 flex h-16 w-16 items-center justify-center rounded-full border border-accent/30 shadow-[0_0_20px_rgba(0,191,255,0.15)]"
+            initial={{ scale: 0, opacity: 0, rotate: -180 }}
+            animate={{ scale: 1, opacity: 1, rotate: 0 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           >
             <span className="text-xl font-bold text-accent">KP</span>
           </motion.div>
@@ -111,9 +111,9 @@ export default function Preloader({ onComplete }: PreloaderProps) {
 
           {/* Progress bar */}
           <div className="mt-8 w-48 sm:w-64">
-            <div className="h-[1px] w-full overflow-hidden bg-glass-border">
+            <div className="h-[2px] w-full overflow-hidden rounded-full bg-glass-border">
               <motion.div
-                className="h-full bg-accent"
+                className="h-full rounded-full bg-accent shadow-[0_0_8px_rgba(0,191,255,0.5)]"
                 style={{ width: `${progress}%` }}
                 transition={{ duration: 0.05 }}
               />
@@ -144,8 +144,8 @@ export default function Preloader({ onComplete }: PreloaderProps) {
           <motion.span
             className="mt-6 font-mono text-[10px] tracking-widest text-text-dim/40"
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.8 }}
+            animate={{ opacity: [0, 0.4, 0.7, 0.4] }}
+            transition={{ delay: 0.8, duration: 2, repeat: Infinity, repeatDelay: 0.5 }}
           >
             Click anywhere to skip
           </motion.span>

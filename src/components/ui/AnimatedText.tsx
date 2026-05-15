@@ -4,6 +4,17 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { letterStagger, letter, textReveal } from "@/lib/animations";
 
+const motionComponents = {
+  h1: motion.h1,
+  h2: motion.h2,
+  h3: motion.h3,
+  h4: motion.h4,
+  h5: motion.h5,
+  h6: motion.h6,
+  p: motion.p,
+  span: motion.span,
+} as const;
+
 type HeadingTag = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 type TextTag = "p" | "span";
 type Tag = HeadingTag | TextTag;
@@ -25,7 +36,7 @@ export default function AnimatedText({
   delay = 0,
   once = true,
 }: AnimatedTextProps) {
-  const MotionTag = motion.create(Tag);
+  const MotionTag = motionComponents[Tag];
 
   if (mode === "letters") {
     return (

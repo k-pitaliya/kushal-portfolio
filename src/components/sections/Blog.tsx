@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { staggerContainer, staggerItem, blurStagger, blurStaggerItem } from "@/lib/animations";
+import { blurStagger, blurStaggerItem } from "@/lib/animations";
 import { blogPosts } from "@/lib/data";
 import GlassCard from "@/components/ui/GlassCard";
 import SectionHeading from "@/components/ui/SectionHeading";
@@ -35,11 +35,11 @@ export default function Blog() {
             <motion.div key={post.id} variants={blurStaggerItem} className="group">
               <GlassCard
                 hover={false}
-                className="flex h-full flex-col overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(0,191,255,0.12)]"
+                className="flex h-full min-h-[380px] flex-col overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(0,191,255,0.12)] md:min-h-[420px]"
               >
                 {/* Gradient Header */}
                 <div
-                  className={`mb-5 flex h-36 items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br ${
+                  className={`mb-4 flex h-32 items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br md:h-36 ${
                     tagGradients[i % tagGradients.length]
                   } transition-transform duration-500 group-hover:scale-[1.02]`}
                 >
@@ -48,9 +48,9 @@ export default function Blog() {
                   </span>
                 </div>
 
-                {/* Date + Read time + Tags */}
-                <div className="mb-3 flex flex-wrap items-center gap-2">
-                  <span className="text-xs text-text-dim">
+                {/* Date + Read time */}
+                <div className="mb-3 flex items-baseline gap-2">
+                  <span className="text-xs leading-6 text-text-dim">
                     {new Date(post.date).toLocaleDateString("en-US", {
                       year: "numeric",
                       month: "short",
@@ -58,13 +58,17 @@ export default function Blog() {
                     })}
                   </span>
                   <span className="text-text-dim">·</span>
-                  <span className="text-xs text-text-dim">
+                  <span className="text-xs leading-6 text-text-dim">
                     {estimateReadTime(post.excerpt)}
                   </span>
+                </div>
+
+                {/* Tags */}
+                <div className="mb-3 flex flex-wrap gap-2">
                   {post.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="rounded-full bg-accent/10 px-2.5 py-0.5 text-[10px] text-accent"
+                      className="rounded-full bg-accent/10 px-2.5 py-0.5 text-[10px] font-medium text-accent"
                     >
                       {tag}
                     </span>
@@ -75,14 +79,14 @@ export default function Blog() {
                 <h3 className="mb-2 text-lg font-semibold text-text transition-colors duration-300 group-hover:text-accent">
                   {post.title}
                 </h3>
-                <p className="mb-4 flex-1 text-sm leading-relaxed text-text-muted">
+                <p className="mb-4 line-clamp-3 flex-1 text-sm leading-relaxed text-text-muted">
                   {post.excerpt}
                 </p>
 
                 {/* Read More */}
                 <a
                   href={post.url}
-                  className="group/link inline-flex items-center gap-1.5 text-sm font-medium text-accent transition-colors hover:text-accent-dark"
+                  className="group/link mt-auto inline-flex items-center gap-1.5 text-sm font-medium text-accent transition-colors hover:text-accent-dark"
                 >
                   Read More
                   <span className="inline-block transition-transform duration-200 group-hover/link:translate-x-1">

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { cn } from "@/lib/utils";
-import { fadeUp, staggerContainer, staggerItem, blurReveal } from "@/lib/animations";
+import { staggerContainer, staggerItem, blurReveal } from "@/lib/animations";
 import { socialLinks } from "@/lib/data";
 import MagneticButton from "@/components/ui/MagneticButton";
 import SectionHeading from "@/components/ui/SectionHeading";
@@ -209,9 +209,12 @@ export default function Contact() {
 
             <a
               href="mailto:pitaliyakushal@gmail.com"
-              className="inline-block text-lg font-medium text-accent transition-colors hover:text-accent-dark"
+              className="group/email inline-flex items-center gap-2 text-lg font-medium text-accent transition-colors hover:text-accent-dark"
             >
-              pitaliyakushal@gmail.com
+              <span className="relative">
+                pitaliyakushal@gmail.com
+                <span className="absolute -bottom-0.5 left-0 h-[1px] w-0 bg-accent transition-all duration-300 group-hover/email:w-full" />
+              </span>
             </a>
 
             <div className="flex gap-4">
@@ -221,7 +224,7 @@ export default function Contact() {
                     href={link.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex h-11 w-11 items-center justify-center rounded-lg border border-glass-border bg-glass text-text-muted transition-colors hover:border-accent/40 hover:text-accent"
+                    className="flex h-11 w-11 items-center justify-center rounded-lg border border-glass-border bg-glass text-text-muted transition-all duration-300 hover:border-accent/40 hover:text-accent hover:scale-110 hover:-translate-y-1 hover:shadow-[0_0_16px_rgba(0,191,255,0.15)]"
                     aria-label={link.name}
                   >
                     {socialIcons[link.icon] ?? link.name}
@@ -265,13 +268,17 @@ export default function Contact() {
                 )}
               >
                 {submitting ? (
-                  <motion.span
-                    className="inline-flex gap-1"
-                    animate={{ opacity: [1, 0.5, 1] }}
-                    transition={{ duration: 1.2, repeat: Infinity }}
-                  >
-                    Sending...
-                  </motion.span>
+                  <span className="inline-flex items-center gap-1.5">
+                    Sending
+                    {[0, 1, 2].map((i) => (
+                      <motion.span
+                        key={i}
+                        className="inline-block h-1 w-1 rounded-full bg-bg"
+                        animate={{ opacity: [0, 1, 0] }}
+                        transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }}
+                      />
+                    ))}
+                  </span>
                 ) : (
                   "Send Message"
                 )}

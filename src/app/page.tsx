@@ -11,8 +11,8 @@ import KonamiEaster from "@/components/ui/KonamiEaster";
 import SoundToggle from "@/components/ui/SoundToggle";
 import Navbar from "@/components/layout/Navbar";
 import ScrollProgress from "@/components/ui/ScrollProgress";
-import ScrollVelocityText from "@/components/ui/ScrollVelocityText";
 import SignalDivider from "@/components/ui/MarqueeDivider";
+import FloatingCTA from "@/components/ui/FloatingCTA";
 import ErrorBoundary from "@/components/ui/ErrorBoundary";
 import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
@@ -49,9 +49,11 @@ export default function Home() {
       <KonamiEaster />
       <SoundToggle />
       <ScrollProgress />
+      <FloatingCTA />
       <Navbar />
 
       <main id="main-content">
+        <h1 className="sr-only">Kushal Pitaliya — VLSI Design Verification Engineer Portfolio</h1>
         <ErrorBoundary>
           <Hero loaded={!isLoading} />
         </ErrorBoundary>
@@ -67,16 +69,6 @@ export default function Home() {
         <ErrorBoundary>
           <Projects />
         </ErrorBoundary>
-
-        {/* Scroll-velocity text band — speeds up with scroll */}
-        <div className="border-y border-glass-border/30 bg-bg-secondary/50 py-2">
-          <ScrollVelocityText
-            baseVelocity={-3}
-            className="font-mono text-sm font-medium uppercase tracking-[0.3em] text-text-dim/40"
-          >
-            VLSI Design · Cloud Architecture · RTL to Silicon · FPGA Prototyping · SystemVerilog · AWS · Terraform · Embedded Systems
-          </ScrollVelocityText>
-        </div>
 
         <SignalDivider />
         <ErrorBoundary>

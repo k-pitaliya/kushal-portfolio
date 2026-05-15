@@ -15,28 +15,30 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://kushalpitaliya.dev"),
-  title: "Kushal Pitaliya — VLSI Design Verification & Cloud Engineer",
+  metadataBase: new URL("https://kushalpitaliya.vercel.app"),
+  title: "Kushal Pitaliya — VLSI Design Verification Engineer",
   description:
-    "VLSI Design Verification (SystemVerilog · UVM · FPGA) × Cloud Architecture (AWS · Serverless · Terraform). ECE student at CHARUSAT building at the intersection of silicon and the cloud.",
+    "RTL · SystemVerilog · UVM 1.2 · SVA · Coverage-driven verification. ECE undergrad at CHARUSAT — 41 bugs found and fixed across full UVM testbenches for I2C and AXI4-Lite.",
   keywords: [
     "Kushal Pitaliya",
-    "VLSI Design",
-    "Design Verification",
+    "VLSI Design Verification",
+    "Design Verification Engineer",
     "RTL Design",
     "SystemVerilog",
-    "Verilog",
-    "UVM",
-    "FPGA",
-    "AWS",
-    "Cloud Architecture",
-    "Serverless",
-    "Terraform",
+    "Verilog HDL",
+    "UVM 1.2",
+    "SVA Assertions",
+    "Functional Coverage",
+    "FPGA Prototyping",
+    "AXI4-Lite",
+    "I2C Protocol Verification",
     "Embedded Systems",
+    "STM32",
+    "EDA Playground",
   ],
   authors: [{ name: "Kushal Pitaliya" }],
   alternates: {
-    canonical: "https://kushalpitaliya.dev",
+    canonical: "https://kushalpitaliya.vercel.app",
   },
   verification: {
     google: "IPrGre0AxtIPcQENkZXAdx4U5B-_AHp3n3IKRAmckPw",
@@ -47,27 +49,27 @@ export const metadata: Metadata = {
     googleBot: { index: true, follow: true },
   },
   openGraph: {
-    title: "Kushal Pitaliya — VLSI Design Verification & Cloud Engineer",
+    title: "Kushal Pitaliya — VLSI Design Verification Engineer",
     description:
-      "VLSI Design Verification · Cloud Architecture · SystemVerilog · UVM · AWS · Terraform",
+      "UVM testbench architecture · SystemVerilog · SVA · coverage-driven RTL verification. 41 bugs found and fixed.",
     type: "website",
     locale: "en_US",
-    url: "https://kushalpitaliya.dev",
+    url: "https://kushalpitaliya.vercel.app",
     siteName: "Kushal Pitaliya",
     images: [
       {
-        url: "https://kushalpitaliya.dev/og-image.png",
+        url: "https://kushalpitaliya.vercel.app/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Kushal Pitaliya — VLSI Design Verification & Cloud Engineer",
+        alt: "Kushal Pitaliya — VLSI Design Verification Engineer",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Kushal Pitaliya — VLSI & Embedded Systems Engineer",
+    title: "Kushal Pitaliya — VLSI Design Verification Engineer",
     description:
-      "VLSI Design & Verification · RTL in Verilog/SystemVerilog · FPGA Prototyping · Embedded Firmware",
+      "RTL · SystemVerilog · UVM 1.2 · SVA · coverage-driven verification of digital IPs.",
   },
 };
 
@@ -89,21 +91,23 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "Person",
               name: "Kushal Pitaliya",
-              url: "https://kushalpitaliya.dev",
-              jobTitle: "Aspiring VLSI Design & Verification Engineer",
+              url: "https://kushalpitaliya.vercel.app",
+              jobTitle: "VLSI Design Verification Engineer",
               description:
-                "VLSI Design & Verification Engineer specializing in RTL design, SystemVerilog verification, FPGA prototyping, and embedded firmware development.",
+                "VLSI Design Verification Engineer specializing in UVM 1.2 testbench architecture, SystemVerilog Assertions, functional coverage closure, and RTL design.",
               knowsAbout: [
                 "VLSI Design Verification",
                 "SystemVerilog",
                 "UVM 1.2",
+                "SVA Assertions",
                 "Verilog HDL",
                 "Functional Coverage",
                 "FPGA Prototyping",
                 "RTL Design",
+                "AXI4-Lite",
+                "I2C Protocol",
                 "Embedded Systems",
                 "STM32",
-                "AWS",
                 "Python",
               ],
               alumniOf: {
@@ -111,7 +115,7 @@ export default function RootLayout({
                 name: "Charotar University of Science and Technology (CHARUSAT)",
               },
               sameAs: [
-                "https://github.com/KushalPitaliya",
+                "https://github.com/k-pitaliya",
                 "https://www.linkedin.com/in/kushalpitaliya06/",
               ],
             }),

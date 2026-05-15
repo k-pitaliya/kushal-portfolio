@@ -11,10 +11,10 @@ const m = motion;
 
 const typewriterRoles = [
   "VLSI Design Verification Engineer",
-  "AWS Cloud Architect",
-  "FPGA Prototyping Specialist",
+  "UVM Testbench Architect",
   "RTL Design Engineer",
-  "SystemVerilog & UVM Expert",
+  "SystemVerilog & SVA Practitioner",
+  "FPGA Prototyping Specialist",
 ];
 
 /* Each badge is hand-placed to form a loose constellation around the hero.
@@ -23,14 +23,14 @@ const floatingBadges = [
   // ── Left arc ──
   { label: "SystemVerilog", pos: "top-[15%] left-[7%]",   opacity: 0.75, size: "text-xs",     drift: -8,  speed: 4.2 },
   { label: "FPGA",          pos: "top-[42%] left-[3%]",   opacity: 0.55, size: "text-[10px]", drift: -5,  speed: 5.4 },
-  { label: "Terraform",     pos: "top-[68%] left-[6%]",   opacity: 0.6,  size: "text-[11px]", drift: -6,  speed: 4.8 },
+  { label: "SVA",           pos: "top-[68%] left-[6%]",   opacity: 0.6,  size: "text-[11px]", drift: -6,  speed: 4.8 },
   // ── Right arc ──
-  { label: "UVM",            pos: "top-[17%] right-[6%]",  opacity: 0.7,  size: "text-xs",     drift: -7,  speed: 4.5 },
-  { label: "AWS",            pos: "top-[44%] right-[4%]",  opacity: 0.65, size: "text-[11px]", drift: -9,  speed: 3.8 },
+  { label: "UVM 1.2",        pos: "top-[17%] right-[6%]",  opacity: 0.7,  size: "text-xs",     drift: -7,  speed: 4.5 },
+  { label: "I2C",            pos: "top-[44%] right-[4%]",  opacity: 0.65, size: "text-[11px]", drift: -9,  speed: 3.8 },
   { label: "RTL Design",    pos: "top-[70%] right-[5%]",  opacity: 0.55, size: "text-[10px]", drift: -5,  speed: 5.6 },
   // ── Accent floaters (wider, fill the gaps) ──
-  { label: "Python",        pos: "top-[28%] left-[12%]",  opacity: 0.45, size: "text-[10px]", drift: -4,  speed: 6.0 },
-  { label: "Serverless",    pos: "top-[56%] right-[11%]", opacity: 0.45, size: "text-[10px]", drift: -4,  speed: 5.8 },
+  { label: "Coverage",      pos: "top-[28%] left-[12%]",  opacity: 0.45, size: "text-[10px]", drift: -4,  speed: 6.0 },
+  { label: "AXI4-Lite",     pos: "top-[56%] right-[11%]", opacity: 0.45, size: "text-[10px]", drift: -4,  speed: 5.8 },
 ];
 
 const firstName = "KUSHAL";
@@ -51,7 +51,7 @@ export default function Hero({ loaded = true }: { loaded?: boolean }) {
   const contentY = useTransform(scrollYProgress, [0, 1], [0, -150]);
   const contentOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
   const contentScale = useTransform(scrollYProgress, [0, 0.6], [1, 0.92]);
-  const badgeOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
+  const badgeOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
 
   // Only start hero animations after preloader is done
   useEffect(() => {
@@ -70,10 +70,12 @@ export default function Hero({ loaded = true }: { loaded?: boolean }) {
       return () => clearTimeout(pause);
     }
 
-    if (isDeleting && displayText === "") {
-      setIsDeleting(false);
-      setRoleIndex((prev) => (prev + 1) % typewriterRoles.length);
-      return;
+if (isDeleting && displayText === "") {
+      const t = setTimeout(() => {
+        setIsDeleting(false);
+        setRoleIndex((prev) => (prev + 1) % typewriterRoles.length);
+      }, 0);
+      return () => clearTimeout(t);
     }
 
     const timer = setTimeout(() => {
@@ -160,7 +162,7 @@ export default function Hero({ loaded = true }: { loaded?: boolean }) {
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
                     backgroundClip: "text",
-                    animation: "shimmer 3s ease-in-out infinite",
+                    animation: "shimmer 2s ease-in-out infinite",
                   }}
                   initial={{ y: "120%", opacity: 0 }}
                   animate={ready ? { y: "0%", opacity: 1 } : {}}
@@ -209,7 +211,7 @@ export default function Hero({ loaded = true }: { loaded?: boolean }) {
           <MagneticButton>
             <a
               href="#projects"
-              className="group flex items-center gap-2 rounded-full bg-accent px-8 py-3.5 text-sm font-semibold text-bg transition-all duration-300 hover:bg-accent-dark hover:shadow-[0_0_40px_rgba(0,191,255,0.3)]"
+              className="group flex items-center gap-2 rounded-full bg-accent px-8 py-3.5 text-sm font-semibold text-bg transition-all duration-300 hover:-translate-y-1 hover:bg-accent-dark hover:shadow-[0_0_40px_rgba(0,191,255,0.3)]"
             >
               <FolderOpen className="h-4 w-4 transition-transform group-hover:-translate-y-0.5" />
               View Projects
@@ -221,7 +223,7 @@ export default function Hero({ loaded = true }: { loaded?: boolean }) {
               href="/resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex items-center gap-2 rounded-full border border-glass-border bg-glass px-8 py-3.5 text-sm font-semibold text-text transition-all duration-300 hover:border-accent/50 hover:text-accent hover:shadow-[0_0_30px_rgba(0,191,255,0.1)]"
+              className="group flex items-center gap-2 rounded-full border border-glass-border bg-glass px-8 py-3.5 text-sm font-semibold text-text transition-all duration-300 hover:-translate-y-1 hover:border-accent/50 hover:text-accent hover:shadow-[0_0_30px_rgba(0,191,255,0.1)]"
             >
               <Download className="h-4 w-4 transition-transform group-hover:translate-y-0.5" />
               Resume
@@ -236,7 +238,7 @@ export default function Hero({ loaded = true }: { loaded?: boolean }) {
       {floatingBadges.map((badge, i) => (
         <motion.span
           key={badge.label}
-          className={`absolute z-10 hidden rounded-full border border-glass-border/60 bg-glass px-3 py-1.5 font-mono ${badge.size} text-text/90 backdrop-blur-sm lg:inline-block ${badge.pos}`}
+          className={`absolute z-10 hidden rounded-full border border-glass-border/60 bg-glass px-3 py-1.5 font-mono ${badge.size} text-text/90 backdrop-blur-sm xl:inline-block ${badge.pos}`}
           initial={{ opacity: 0, scale: 0.8 }}
           animate={
             ready
@@ -263,7 +265,7 @@ export default function Hero({ loaded = true }: { loaded?: boolean }) {
       ))}
       </motion.div>
 
-      {/* Scroll indicator */}
+      {/* Scroll indicator — auto-hides after 3s */}
       <motion.div
         className="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2"
         variants={fadeUp}
@@ -274,8 +276,8 @@ export default function Hero({ loaded = true }: { loaded?: boolean }) {
         <motion.div
           className="flex h-8 w-5 items-start justify-center rounded-full border border-text-dim/50 p-1"
           initial={{ opacity: 0 }}
-          animate={ready ? { opacity: 0.5 } : {}}
-          transition={{ delay: 2.5 }}
+          animate={ready ? { opacity: [0, 0.5, 0.5, 0] } : {}}
+          transition={{ delay: 2.5, duration: 4, times: [0, 0.1, 0.7, 1] }}
         >
           <motion.div
             className="h-1.5 w-1 rounded-full bg-accent"
@@ -286,8 +288,8 @@ export default function Hero({ loaded = true }: { loaded?: boolean }) {
         <motion.span
           className="font-mono text-[10px] uppercase tracking-[0.2em] text-text-dim/60"
           initial={{ opacity: 0 }}
-          animate={ready ? { opacity: 1 } : {}}
-          transition={{ delay: 2.7 }}
+          animate={ready ? { opacity: [0, 1, 1, 0] } : {}}
+          transition={{ delay: 2.7, duration: 4, times: [0, 0.1, 0.65, 1] }}
         >
           Scroll
         </motion.span>

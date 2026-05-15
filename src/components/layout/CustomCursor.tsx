@@ -8,13 +8,14 @@ export default function CustomCursor() {
   const { x, y } = useMousePosition();
   const [isHovering, setIsHovering] = useState(false);
   const [isClicking, setIsClicking] = useState(false);
-  const [isTouch, setIsTouch] = useState(false);
+  const [isTouch] = useState(() =>
+    typeof window !== "undefined" ? window.matchMedia("(pointer: coarse)").matches : false
+  );
 
   const springConfig = { stiffness: 250, damping: 24, mass: 0.4 };
   const ringX = useSpring(0, springConfig);
   const ringY = useSpring(0, springConfig);
 
-  // Glow trail (slower spring = trails behind more)
   const glowX = useSpring(0, { stiffness: 60, damping: 30, mass: 1.2 });
   const glowY = useSpring(0, { stiffness: 60, damping: 30, mass: 1.2 });
   const glowOpacity = useMotionValue(0);
@@ -27,7 +28,6 @@ export default function CustomCursor() {
     glowY.set(y);
   }, [x, y, ringX, ringY, glowX, glowY]);
 
-  // Compute speed to modulate glow opacity
   const prevPos = useRef({ x: 0, y: 0 });
   useAnimationFrame(() => {
     const dx = x - prevPos.current.x;
@@ -40,9 +40,7 @@ export default function CustomCursor() {
   });
 
   useEffect(() => {
-    const isTouchDevice = window.matchMedia("(pointer: coarse)").matches;
-    setIsTouch(isTouchDevice);
-    if (isTouchDevice) return;
+    if (isTouch) return;
 
     const handleMouseDown = () => setIsClicking(true);
     const handleMouseUp = () => setIsClicking(false);
@@ -86,7 +84,7 @@ export default function CustomCursor() {
       document.removeEventListener("mouseover", handleMouseOver);
       document.removeEventListener("mouseout", handleMouseOut);
     };
-  }, []);
+  }, [isTouch]);
 
   if (isTouch) return null;
 
