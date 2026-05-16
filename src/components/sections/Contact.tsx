@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Mail } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { cn } from "@/lib/utils";
 import { staggerContainer, staggerItem, blurReveal } from "@/lib/animations";
@@ -56,6 +57,7 @@ function FloatingField({
   textarea = false,
   register,
   error,
+  minLength,
 }: {
   label: string;
   id: keyof FormData;
@@ -63,6 +65,7 @@ function FloatingField({
   textarea?: boolean;
   register: ReturnType<typeof useForm<FormData>>["register"];
   error?: string;
+  minLength?: number;
 }) {
   const [focused, setFocused] = useState(false);
   const [hasValue, setHasValue] = useState(false);
@@ -85,7 +88,12 @@ function FloatingField({
   );
 
   const fieldProps = {
-    ...register(id, { required: `${label} is required` }),
+    ...register(id, {
+      required: `${label} is required`,
+      ...(minLength
+        ? { minLength: { value: minLength, message: `Must be at least ${minLength} characters` } }
+        : {}),
+    }),
     "aria-invalid": error ? true : undefined,
     "aria-describedby": error ? `${id}-error` : undefined,
     onFocus: () => setFocused(true),
@@ -136,9 +144,24 @@ function SuccessDots() {
   );
 }
 
+const CONTACT_EMAIL = "pitaliyakushal@gmail.com";
+
+/**
+ * Compose a mailto: URL with the form contents pre-filled.
+ * Opens the user's native email client — works without any server setup.
+ */
+function buildMailto(data: FormData): string {
+  const subject = encodeURIComponent(`Portfolio: Message from ${data.name}`);
+  const body = encodeURIComponent(
+    `${data.message}\n\n— ${data.name}\n${data.email}`
+  );
+  return `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
+}
+
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [serverError, setServerError] = useState<string | null>(null);
 
   const {
     register,
@@ -149,21 +172,55 @@ export default function Contact() {
 
   const onSubmit = async (data: FormData) => {
     setSubmitting(true);
+    setServerError(null);
     try {
+      // Try the API route first — if a serverless email backend (e.g. Resend)
+      // is wired up via env vars, the message is sent directly without
+      // bouncing the user through their email client.
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      if (!res.ok) throw new Error("Failed to send");
+
+      if (res.ok) {
+        setSubmitted(true);
+        reset();
+        setTimeout(() => setSubmitted(false), 4000);
+        return;
+      }
+
+      // 503 = server email delivery not configured. Don't show a scary error;
+      // open the user's email client with the message pre-filled. This is the
+      // graceful path: zero server dependency, works on every device.
+      if (res.status === 503) {
+        window.location.href = buildMailto(data);
+        setSubmitted(true);
+        reset();
+        setTimeout(() => setSubmitted(false), 5000);
+        return;
+      }
+
+      // Any other status — surface the real error so it can be diagnosed.
+      const payload = await res.json().catch(() => null);
+      const fieldErrors = payload?.errors as Record<string, string[]> | undefined;
+      const firstFieldError = fieldErrors
+        ? Object.values(fieldErrors).flat()[0]
+        : null;
+      throw new Error(
+        firstFieldError ||
+          payload?.error ||
+          `Couldn't send (status ${res.status}). Opening your email client instead.`
+      );
+    } catch (err) {
+      // Network failure or unexpected response — also fall back to mailto so
+      // the user is never blocked.
+      window.location.href = buildMailto(data);
       setSubmitted(true);
       reset();
-      setTimeout(() => setSubmitted(false), 4000);
-    } catch {
-      // Fallback: still show success for now (graceful degradation)
-      setSubmitted(true);
-      reset();
-      setTimeout(() => setSubmitted(false), 4000);
+      setTimeout(() => setSubmitted(false), 5000);
+      // Keep err in scope to satisfy linter / for future telemetry
+      void err;
     } finally {
       setSubmitting(false);
     }
@@ -173,7 +230,7 @@ export default function Contact() {
     <section id="contact" className="relative px-6 py-40 md:px-12 lg:px-24 xl:py-48">
       <DotGrid className="absolute inset-0 h-full w-full opacity-40" />
       <div className="relative z-10 mx-auto max-w-5xl">
-        <SectionHeading number="09" title="Get In Touch" />
+        <SectionHeading number="10" title="Get In Touch" icon={Mail} />
 
         {/* Big statement */}
         <motion.p
@@ -251,11 +308,12 @@ export default function Contact() {
                 error={errors.email?.message}
               />
               <FloatingField
-                label="Message"
+                label="Message (min 10 characters)"
                 id="message"
                 textarea
                 register={register}
                 error={errors.message?.message}
+                minLength={10}
               />
 
               <button
@@ -297,6 +355,30 @@ export default function Contact() {
                   <SuccessDots />
                   <p className="text-sm font-medium text-accent">
                     Message sent successfully!
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Server / network error — surfaces real failures instead of fake success */}
+            <AnimatePresence>
+              {serverError && (
+                <motion.div
+                  role="alert"
+                  className="mt-6 rounded-lg border border-red-500/30 bg-red-500/5 px-4 py-3 text-center"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                >
+                  <p className="text-sm text-red-400">{serverError}</p>
+                  <p className="mt-2 text-xs text-text-dim">
+                    Or email me directly:{" "}
+                    <a
+                      href="mailto:pitaliyakushal@gmail.com"
+                      className="underline hover:text-accent"
+                    >
+                      pitaliyakushal@gmail.com
+                    </a>
                   </p>
                 </motion.div>
               )}

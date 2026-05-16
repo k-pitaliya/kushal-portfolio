@@ -52,24 +52,36 @@ export async function POST(request: Request) {
 
     const { name, email, subject, message } = parsed.data;
 
-    if (resend) {
-      await resend.emails.send({
-        from: FROM_EMAIL,
-        to: TO_EMAIL,
-        replyTo: email,
-        subject: subject || `Portfolio: Message from ${name}`,
-        text: `From: ${name} (${email})\n\n${message}`,
-        html: `<div style="font-family:sans-serif;max-width:600px;margin:0 auto">
-          <h2 style="color:#00BFFF">New Portfolio Message</h2>
-          <p><strong>Name:</strong> ${name}</p>
-          <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
-          <hr style="border-color:#eee" />
-          <pre style="white-space:pre-wrap;font-family:inherit">${message}</pre>
-        </div>`,
+    if (!resend) {
+      console.warn("[Contact Form] RESEND_API_KEY not set — message NOT delivered:", {
+        name,
+        email,
+        subject,
+        message,
       });
-    } else {
-      console.log("[Contact Form] RESEND_API_KEY not set — logging:", { name, email, subject, message });
+      return NextResponse.json(
+        {
+          error:
+            "Email delivery is not configured on the server. Please email pitaliyakushal@gmail.com directly.",
+        },
+        { status: 503 }
+      );
     }
+
+    await resend.emails.send({
+      from: FROM_EMAIL,
+      to: TO_EMAIL,
+      replyTo: email,
+      subject: subject || `Portfolio: Message from ${name}`,
+      text: `From: ${name} (${email})\n\n${message}`,
+      html: `<div style="font-family:sans-serif;max-width:600px;margin:0 auto">
+        <h2 style="color:#00BFFF">New Portfolio Message</h2>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
+        <hr style="border-color:#eee" />
+        <pre style="white-space:pre-wrap;font-family:inherit">${message}</pre>
+      </div>`,
+    });
 
     return NextResponse.json(
       { success: true, message: "Message sent! I'll get back to you soon." },

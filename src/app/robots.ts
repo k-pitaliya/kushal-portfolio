@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://kushalpitaliya.dev/sitemap.xml",
+    sitemap: "https://kushalpitaliya.vercel.app/sitemap.xml",
   };
 }

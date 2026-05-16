@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { GraduationCap } from "lucide-react";
 import { staggerContainer, staggerItem } from "@/lib/animations";
 import { education } from "@/lib/data";
 import SectionHeading from "@/components/ui/SectionHeading";
@@ -9,7 +10,7 @@ export default function Education() {
   return (
     <section id="education" className="relative px-6 py-40 md:px-12 lg:px-24 xl:py-48">
       <div className="mx-auto max-w-5xl">
-        <SectionHeading number="05" title="Education" />
+        <SectionHeading number="06" title="Education" icon={GraduationCap} />
 
         <motion.div
           className="space-y-12"

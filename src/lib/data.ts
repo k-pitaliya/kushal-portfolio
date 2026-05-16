@@ -16,7 +16,7 @@ export const siteConfig = {
   description:
     "RTL · SystemVerilog · UVM 1.2 · SVA · Coverage-driven verification. ECE undergrad at CHARUSAT specializing in functional verification of digital IPs. 41 bugs found and fixed across two full UVM testbenches.",
   url: "https://kushalpitaliya.vercel.app",
-  ogImage: "/og-image.png",
+  ogImage: "/og-image.jpg",
 };
 
 export const navItems: NavItem[] = [
@@ -270,33 +270,80 @@ export const certifications: Certification[] = [
   },
 ];
 
+export interface MethodologyCategory {
+  title: string;
+  items: string[];
+}
+
+export const methodologyData: MethodologyCategory[] = [
+  {
+    title: "Verification Methodology",
+    items: [
+      "UVM 1.2 — agents, sequencers, scoreboards, virtual sequences",
+      "Constrained-random + directed test strategy",
+      "Coverage-driven closure (functional, cross, ignore_bins)",
+      "SVA property binding for protocol invariants",
+      "Reference model + analysis-port scoreboard architecture",
+    ],
+  },
+  {
+    title: "Tools in Practice",
+    items: [
+      "QuestaSim — full regression + UCDB merge",
+      "Aldec Riviera-PRO — EDA Playground mirror flow",
+      "ModelSim — waveform debug",
+      "Icarus Verilog — quick syntax + smoke runs",
+      "Xilinx Vivado / ISE — Spartan-6 FPGA prototyping",
+    ],
+  },
+  {
+    title: "Workflow & Documentation",
+    items: [
+      "Spec → testplan → coverage model → regression → bug filing → RCA",
+      "Markdown-first bug reports (BUG_REPORT.md, FINAL_ANALYSIS_REPORT.md)",
+      "Coverage closure reports with bin-level traceability",
+      "Reproducible flows — Makefile + flat EDA Playground mirror",
+    ],
+  },
+  {
+    title: "Languages & Build",
+    items: [
+      "SystemVerilog, Verilog HDL — RTL + testbench",
+      "C, C++ — embedded firmware, BFM-style models",
+      "Python — automation, regression scripts, data tooling",
+      "GNU Make — multi-file builds, regression matrix",
+      "Git / GitHub — public repos with CI-ready structure",
+    ],
+  },
+];
+
 export const blogPosts: BlogPost[] = [
   {
-    id: "blog-1",
-    title: "From Verilog to SystemVerilog: A Practical Transition Guide",
+    id: "writeup-i2c-coverage",
+    title: "Closing Coverage on an I2C UVM Testbench — 89 Points, 17 Covergroups",
     excerpt:
-      "Moving from basic Verilog to SystemVerilog — always_ff vs always_comb, interfaces, SVA assertions, and why it matters for modern design verification.",
-    date: "2026-03-10",
-    tags: ["SystemVerilog", "Verilog", "VLSI", "Verification"],
-    url: "https://github.com/k-pitaliya",
-  },
-  {
-    id: "blog-2",
-    title: "Building a Synchronous FIFO: From RTL to FPGA Verification",
-    excerpt:
-      "Designing, simulating, and hardware-verifying an 8-bit FIFO on Spartan-6 — signal debouncing, power-on reset, directed testbenches, and the bugs only hardware finds.",
-    date: "2026-04-20",
-    tags: ["Verilog", "FPGA", "Spartan-6", "Xilinx ISE"],
-    url: "https://github.com/KushalPitaliya/Spartan6-Synchronous-FIFO",
-  },
-  {
-    id: "blog-3",
-    title: "Closing Coverage on an I2C UVM Testbench: 89 Points, 17 Covergroups",
-    excerpt:
-      "How I expanded an 8-covergroup model into 17 with cross coverage, traced every bin to a test, and predicted 95%+ closure analytically when no simulator was available locally.",
+      "Analytical coverage closure assessment. Expanded an 8-covergroup model to 17 with cross-coverage, traced every bin to a directed/random test, identified 5 documented holes, and predicted 95%+ closure without a local simulator. The methodology, not just the numbers.",
     date: "2026-05-12",
-    tags: ["UVM", "Functional Coverage", "SystemVerilog", "Verification"],
-    url: "https://github.com/k-pitaliya/i2c-protocol-dv",
+    tags: ["UVM", "Functional Coverage", "SystemVerilog"],
+    url: "https://github.com/k-pitaliya/i2c-protocol-dv/blob/main/docs/COVERAGE_CLOSURE_REPORT.md",
+  },
+  {
+    id: "writeup-axi-debug",
+    title: "25 Bugs in an AI-Generated AXI4-Lite Crossbar — A Debug Walkthrough",
+    excerpt:
+      "Took an AI-drafted AXI4-Lite crossbar testbench from compile-broken to fully verified. Five debug lessons: interface-in-package, multi-driver loops, scoreboard race demotion, refmodel ordering, UVM phase misuse. Every fix traced to a root cause, not a patch.",
+    date: "2026-05-12",
+    tags: ["AXI4-Lite", "UVM", "Debug", "Bug Analysis"],
+    url: "https://github.com/k-pitaliya/axi-xbar-uvm-tb/blob/main/docs/04_DEBUG_LESSONS.md",
+  },
+  {
+    id: "writeup-i2c-bugs",
+    title: "I2C Slave Controller — 16 RTL Bugs, 9 Categories, Documented",
+    excerpt:
+      "Full bug report from a faculty-led I2C UVM verification project. Critical issues: shift register capturing ACK as data, TX mode driving high-Z, clock-stretch returning to wrong state, SCL stuck-low in master. Every bug with severity, repro, and the fix that landed.",
+    date: "2026-05-11",
+    tags: ["I2C", "RTL Debug", "Verification", "SystemVerilog"],
+    url: "https://github.com/k-pitaliya/i2c-protocol-dv/blob/main/docs/BUG_REPORT.md",
   },
 ];
 

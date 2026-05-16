@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { FileText } from "lucide-react";
 import { blurStagger, blurStaggerItem } from "@/lib/animations";
 import { blogPosts } from "@/lib/data";
 import GlassCard from "@/components/ui/GlassCard";
@@ -22,7 +23,7 @@ export default function Blog() {
   return (
     <section id="blog" className="relative px-6 py-40 md:px-12 lg:px-24 xl:py-48">
       <div className="mx-auto max-w-6xl">
-        <SectionHeading number="07" title="Blog & Writing" />
+        <SectionHeading number="08" title="Selected Writeups" subtitle="Engineering writeups, debug walkthroughs, and methodology notes. Hosted on GitHub for free, public access." icon={FileText} />
 
         <motion.div
           className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
@@ -86,12 +87,22 @@ export default function Blog() {
                 {/* Read More */}
                 <a
                   href={post.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="group/link mt-auto inline-flex items-center gap-1.5 text-sm font-medium text-accent transition-colors hover:text-accent-dark"
+                  aria-label={`Read the full writeup: ${post.title}`}
                 >
-                  Read More
-                  <span className="inline-block transition-transform duration-200 group-hover/link:translate-x-1">
-                    →
-                  </span>
+                  Read on GitHub
+                  <svg
+                    className="h-3.5 w-3.5 transition-transform duration-200 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2.5}
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                  </svg>
                 </a>
               </GlassCard>
             </motion.div>

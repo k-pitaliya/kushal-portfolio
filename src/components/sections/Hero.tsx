@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { Download, FolderOpen } from "lucide-react";
 import Scene from "@/components/three/Scene";
 import MagneticButton from "@/components/ui/MagneticButton";
+import ResumePreviewModal from "@/components/ui/ResumePreviewModal";
 import { staggerContainer, staggerItem, fadeUp } from "@/lib/animations";
 
 const m = motion;
@@ -41,6 +42,7 @@ export default function Hero({ loaded = true }: { loaded?: boolean }) {
   const [roleIndex, setRoleIndex] = useState(0);
   const [displayText, setDisplayText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
+  const [resumeOpen, setResumeOpen] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
   // Scroll-driven parallax — hero fades/rises/shrinks as you scroll
@@ -137,7 +139,7 @@ if (isDeleting && displayText === "") {
         >
           <span className="h-[1px] w-8 bg-accent/60" />
           <span className="font-mono text-xs uppercase tracking-[0.3em] text-accent">
-            Open to VLSI & Cloud roles · 2026
+            Open to VLSI / Design Verification roles
           </span>
           <span className="h-[1px] w-8 bg-accent/60" />
         </motion.div>
@@ -184,8 +186,8 @@ if (isDeleting && displayText === "") {
             className="mt-10 text-lg font-light tracking-wide text-text-muted sm:text-xl md:text-2xl"
             variants={staggerItem}
           >
-            I design <span className="font-medium text-text">silicon</span> and architect the{" "}
-            <span className="font-medium text-text">cloud</span>
+            I design <span className="font-medium text-text">silicon</span> and verify it before{" "}
+            <span className="font-medium text-text">tape-out</span>
           </motion.p>
 
         {/* Typewriter role cycling */}
@@ -219,15 +221,16 @@ if (isDeleting && displayText === "") {
           </MagneticButton>
 
           <MagneticButton>
-            <a
-              href="/resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              type="button"
+              onClick={() => setResumeOpen(true)}
+              aria-haspopup="dialog"
+              aria-expanded={resumeOpen}
               className="group flex items-center gap-2 rounded-full border border-glass-border bg-glass px-8 py-3.5 text-sm font-semibold text-text transition-all duration-300 hover:-translate-y-1 hover:border-accent/50 hover:text-accent hover:shadow-[0_0_30px_rgba(0,191,255,0.1)]"
             >
               <Download className="h-4 w-4 transition-transform group-hover:translate-y-0.5" />
               Resume
-            </a>
+            </button>
           </MagneticButton>
         </motion.div>
         </motion.div>
@@ -294,6 +297,10 @@ if (isDeleting && displayText === "") {
           Scroll
         </motion.span>
       </motion.div>
+
+      {/* Resume preview modal — rendered outside the parallax wrapper so
+          it isn't fading/translating on scroll. */}
+      <ResumePreviewModal open={resumeOpen} onClose={() => setResumeOpen(false)} />
     </section>
   );
 }

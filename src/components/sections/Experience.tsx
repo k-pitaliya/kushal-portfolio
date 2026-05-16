@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
+import { Briefcase } from "lucide-react";
 import { experiences } from "@/lib/data";
 import SectionHeading from "@/components/ui/SectionHeading";
 
@@ -78,7 +79,7 @@ export default function Experience() {
       style={{ minHeight: `${experiences.length * 250 + 400}px` }}
     >
       <div className="mx-auto max-w-5xl">
-        <SectionHeading number="04" title="Experience" />
+        <SectionHeading number="05" title="Experience" icon={Briefcase} />
         <div className="relative mt-16 space-y-6">
           {/* Vertical timeline line that draws on scroll */}
           <motion.div

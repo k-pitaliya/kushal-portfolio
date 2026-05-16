@@ -15,8 +15,10 @@ import SignalDivider from "@/components/ui/MarqueeDivider";
 import FloatingCTA from "@/components/ui/FloatingCTA";
 import ErrorBoundary from "@/components/ui/ErrorBoundary";
 import Hero from "@/components/sections/Hero";
+import CredibilityStrip from "@/components/ui/CredibilityStrip";
 import About from "@/components/sections/About";
 import Skills from "@/components/sections/Skills";
+import Methodology from "@/components/sections/Methodology";
 import Projects from "@/components/sections/Projects";
 import Experience from "@/components/sections/Experience";
 import Education from "@/components/sections/Education";
@@ -52,10 +54,12 @@ export default function Home() {
       <FloatingCTA />
       <Navbar />
 
-      <main id="main-content">
-        <h1 className="sr-only">Kushal Pitaliya — VLSI Design Verification Engineer Portfolio</h1>
+      <main id="main-content" aria-label="Kushal Pitaliya — VLSI Design Verification Engineer Portfolio">
         <ErrorBoundary>
           <Hero loaded={!isLoading} />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <CredibilityStrip />
         </ErrorBoundary>
         <SignalDivider />
         <ErrorBoundary>
@@ -64,6 +68,10 @@ export default function Home() {
         <SignalDivider />
         <ErrorBoundary>
           <Skills />
+        </ErrorBoundary>
+        <SignalDivider />
+        <ErrorBoundary>
+          <Methodology />
         </ErrorBoundary>
         <SignalDivider />
         <ErrorBoundary>

@@ -2,6 +2,7 @@
 
 import { useRef, useCallback, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import { User } from "lucide-react";
 import { staggerContainer, staggerItem, blurStagger, blurStaggerItem } from "@/lib/animations";
 import { aboutData } from "@/lib/data";
 import AnimatedText from "@/components/ui/AnimatedText";
@@ -47,7 +48,7 @@ export default function About() {
       {/* Interactive dot grid background */}
       <DotGrid className="absolute inset-0 h-full w-full opacity-60" />
       <div className="mx-auto max-w-6xl">
-        <SectionHeading number="01" title="About Me" />
+        <SectionHeading number="01" title="About Me" icon={User} />
 
         <div className="grid gap-12 md:grid-cols-2 md:gap-12 lg:gap-16">
           {/* Photo with 3D tilt */}
@@ -68,16 +69,28 @@ export default function About() {
                 transition={{ type: "spring", stiffness: 200, damping: 20 }}
                 style={{ transformStyle: "preserve-3d" }}
               >
-                <div className="flex h-full w-full flex-col items-center justify-center bg-gradient-to-br from-accent/20 via-bg-secondary to-accent-dark/20">
-                  <span className="select-none text-7xl font-bold text-accent/60">
-                    KP
-                  </span>
-                  <span className="mt-2 text-xs font-medium uppercase tracking-[0.25em] text-text-dim">
+                {/* Headshot fills the frame */}
+                <img
+                  src="/images/kushal.jpg"
+                  alt="Kushal Pitaliya — VLSI Design Verification Engineer"
+                  width={720}
+                  height={960}
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
+                  className="h-full w-full select-none object-cover"
+                  draggable={false}
+                />
+                {/* Subtle gradient ramp at the bottom for the nameplate to read on */}
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-bg/85 via-bg/40 to-transparent" />
+                {/* Accent glow tint across the whole frame */}
+                <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-t from-accent/10 to-transparent" />
+                {/* Nameplate */}
+                <div className="pointer-events-none absolute bottom-4 left-0 right-0 px-5 text-center">
+                  <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-accent/90 md:text-xs">
                     VLSI · DV Engineer
                   </span>
                 </div>
-                {/* Glow overlay */}
-                <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-t from-accent/10 to-transparent" />
                 {/* Rotating border glow */}
                 <div className="pointer-events-none absolute -inset-[1px] rounded-2xl opacity-40"
                   style={{
@@ -115,29 +128,7 @@ export default function About() {
           </motion.div>
         </div>
 
-        {/* Stats */}
-        <motion.div
-          className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 md:mt-20 md:grid-cols-3 md:gap-8"
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-        >
-          {aboutData.stats.map((stat) => (
-            <motion.div key={stat.label} variants={staggerItem}>
-              <GlassCard className="flex min-h-[160px] flex-col items-center justify-center text-center md:min-h-[180px]">
-                <Counter
-                  value={stat.value}
-                  suffix="+"
-                  className="text-4xl font-bold text-accent md:text-5xl"
-                />
-                <span className="mt-3 text-sm text-text-muted">
-                  {stat.label}
-                </span>
-              </GlassCard>
-            </motion.div>
-          ))}
-        </motion.div>
+        {/* Stats moved to CredibilityStrip above the About section — first proof point sits closer to the Hero. */}
       </div>
     </section>
   );

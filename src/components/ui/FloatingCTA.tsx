@@ -9,10 +9,14 @@ export default function FloatingCTA() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPercent = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
-      setVisible(scrollPercent > 0.25);
+      const scrollPercent =
+        window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+      // Narrow window — show only through Education/Certifications.
+      // Excludes Projects (was overlapping cards) and Contact (footer already has CTAs).
+      setVisible(scrollPercent > 0.55 && scrollPercent < 0.78);
     };
 
+    handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -22,7 +26,7 @@ export default function FloatingCTA() {
       {visible && (
         <motion.a
           href="#contact"
-          className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-accent text-bg shadow-[0_0_20px_rgba(0,191,255,0.2),0_4px_24px_rgba(0,0,0,0.3)] transition-all duration-300 hover:scale-110 hover:shadow-[0_0_30px_rgba(0,191,255,0.35),0_4px_24px_rgba(0,0,0,0.3)] md:h-14 md:w-auto md:rounded-full md:px-5"
+          className="fixed bottom-6 left-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-accent text-bg shadow-[0_0_20px_rgba(0,191,255,0.2),0_4px_24px_rgba(0,0,0,0.3)] transition-all duration-300 hover:scale-110 hover:shadow-[0_0_30px_rgba(0,191,255,0.35),0_4px_24px_rgba(0,0,0,0.3)]"
           initial={{ opacity: 0, y: 20, scale: 0.8 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 20, scale: 0.8 }}
@@ -30,8 +34,7 @@ export default function FloatingCTA() {
           aria-label="Get in touch"
           style={{ animation: "float-pulse 3s ease-in-out infinite" }}
         >
-          <MessageCircle className="h-5 w-5 md:mr-2" />
-          <span className="hidden text-sm font-semibold md:inline">Get in Touch</span>
+          <MessageCircle className="h-5 w-5" />
         </motion.a>
       )}
     </AnimatePresence>

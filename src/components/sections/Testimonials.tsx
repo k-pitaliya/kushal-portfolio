@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Quote } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { blurReveal } from "@/lib/animations";
 import { testimonials } from "@/lib/data";
@@ -61,7 +62,7 @@ export default function Testimonials() {
       className="relative bg-bg-secondary px-6 py-40 md:px-12 lg:px-24 xl:py-48"
     >
       <div className="mx-auto max-w-4xl">
-        <SectionHeading number="08" title="What People Say" />
+        <SectionHeading number="09" title="What People Say" icon={Quote} />
 
         <motion.div
           className="relative min-h-[320px] md:min-h-[360px]"
@@ -122,20 +123,24 @@ export default function Testimonials() {
                   key={i}
                   onClick={() => goTo(i)}
                   aria-label={`Go to testimonial ${i + 1}`}
-                  className={cn(
-                    "h-2.5 w-2.5 rounded-full transition-all duration-300",
-                    i === current
-                      ? "bg-accent shadow-[0_0_10px_rgba(0,191,255,0.5)]"
-                      : "bg-text-dim hover:bg-text-muted hover:shadow-[0_0_6px_rgba(0,191,255,0.15)]"
-                  )}
-                />
+                  className="group/dot relative flex h-11 w-11 items-center justify-center"
+                >
+                  <span
+                    className={cn(
+                      "block h-2.5 w-2.5 rounded-full transition-all duration-300",
+                      i === current
+                        ? "bg-accent shadow-[0_0_10px_rgba(0,191,255,0.5)]"
+                        : "bg-text-dim group-hover/dot:bg-text-muted group-hover/dot:shadow-[0_0_6px_rgba(0,191,255,0.15)]"
+                    )}
+                  />
+                </button>
               ))}
 
               {/* Pause/play button */}
               <button
                 onClick={() => setPaused((p) => !p)}
                 aria-label={paused ? "Resume auto-play" : "Pause auto-play"}
-                className="ml-2 rounded-full p-1 text-text-dim transition-colors hover:text-accent"
+                className="ml-2 flex h-11 w-11 items-center justify-center rounded-full text-text-dim transition-colors hover:text-accent"
               >
                 {paused ? (
                   <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor">

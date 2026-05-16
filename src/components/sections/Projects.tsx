@@ -2,12 +2,51 @@
 
 import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { Boxes } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { staggerContainer, staggerItem } from "@/lib/animations";
 import { projects } from "@/lib/data";
 import GlassCard from "@/components/ui/GlassCard";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
+import type { Project } from "@/types";
+
+/* Stopwords filtered out of initials computation */
+const INITIAL_STOPWORDS = new Set([
+  "with",
+  "and",
+  "for",
+  "the",
+  "on",
+  "of",
+  "in",
+  "a",
+  "an",
+  "to",
+  "from",
+]);
+
+/**
+ * Compute display initials for a project title.
+ * - Strips non-alphanumeric characters from each word
+ * - Filters stopwords ("with", "and", etc.)
+ * - Uppercases the first character of each remaining word
+ * - Caps result at 3 characters
+ * Examples:
+ *   "FSM Controller with Assertion-Based Verification" -> "FCV"
+ *   "Audio Spectrum Analyzer (STM32 Bare-Metal)"       -> "ASA"
+ *   "AXI4-Lite 4×4 Crossbar UVM Testbench"             -> "AXI"
+ *   "I2C Protocol Full UVM Verification"               -> "IPF"
+ */
+function projectInitials(title: string): string {
+  return title
+    .split(/\s+/)
+    .map((word) => word.replace(/[^A-Za-z0-9]/g, ""))
+    .filter((word) => word.length > 0 && !INITIAL_STOPWORDS.has(word.toLowerCase()))
+    .map((word) => word[0].toUpperCase())
+    .slice(0, 3)
+    .join("");
+}
 
 const filters = ["All", "VLSI", "Embedded"] as const;
 type Filter = (typeof filters)[number];
@@ -68,9 +107,9 @@ export default function Projects() {
   // MOBILE / TABLET: simple vertical layout
   if (useVerticalLayout) {
     return (
-      <section id="projects" className="relative px-6 py-40 xl:py-48">
+      <section id="projects" className="relative overflow-x-hidden px-6 py-40 xl:py-48">
         <div className="mx-auto max-w-6xl">
-          <SectionHeading number="03" title="Featured Projects" />
+          <SectionHeading number="04" title="Featured Projects" icon={Boxes} />
           <FilterBar active={active} setActive={setActive} />
           <AnimatePresence mode="wait">
             <motion.div
@@ -105,7 +144,7 @@ export default function Projects() {
         {/* Header + Filters */}
         <div className="px-6 pt-20 md:px-12 lg:px-24">
           <div className="mx-auto max-w-6xl">
-            <SectionHeading number="03" title="Featured Projects" />
+            <SectionHeading number="04" title="Featured Projects" icon={Boxes} />
             <FilterBar active={active} setActive={setActive} />
           </div>
         </div>
@@ -173,8 +212,83 @@ function FilterBar({ active, setActive }: { active: Filter; setActive: (f: Filte
   );
 }
 
+/* Category-themed minimal SVG glyph — replaces the gibberish initials placeholder.
+   VLSI: stylized DIP/IC chip with pins on all four sides.
+   Embedded: stylized MCU board with pin headers + trace lines. */
+function CategoryGlyph({ category }: { category: Project["category"] }) {
+  if (category === "vlsi") {
+    // IC chip motif: body, indent notch, pins on 4 sides
+    const pinPositions = [22, 38, 54, 70];
+    return (
+      <svg
+        viewBox="0 0 100 100"
+        aria-hidden="true"
+        className="h-32 w-32 text-white opacity-20 transition-all duration-700 group-hover:scale-110 group-hover:opacity-30 md:h-36 md:w-36"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+      >
+        {/* Chip body */}
+        <rect x="22" y="22" width="56" height="56" rx="3" strokeWidth="1.5" />
+        {/* Pin-1 indent notch */}
+        <circle cx="30" cy="30" r="1.6" fill="currentColor" />
+        {/* Left pins */}
+        {pinPositions.map((y) => (
+          <line key={`l${y}`} x1="22" y1={y + 4} x2="14" y2={y + 4} strokeWidth="1.5" />
+        ))}
+        {/* Right pins */}
+        {pinPositions.map((y) => (
+          <line key={`r${y}`} x1="78" y1={y + 4} x2="86" y2={y + 4} strokeWidth="1.5" />
+        ))}
+        {/* Top pins */}
+        {pinPositions.map((x) => (
+          <line key={`t${x}`} x1={x + 4} y1="22" x2={x + 4} y2="14" strokeWidth="1.5" />
+        ))}
+        {/* Bottom pins */}
+        {pinPositions.map((x) => (
+          <line key={`b${x}`} x1={x + 4} y1="78" x2={x + 4} y2="86" strokeWidth="1.5" />
+        ))}
+        {/* Inner core hint */}
+        <rect x="38" y="38" width="24" height="24" rx="1" strokeWidth="1" strokeDasharray="2 2" />
+      </svg>
+    );
+  }
+  // embedded / tools / other -> MCU dev-board motif
+  return (
+    <svg
+      viewBox="0 0 100 100"
+      aria-hidden="true"
+      className="h-32 w-32 text-white opacity-20 transition-all duration-700 group-hover:scale-110 group-hover:opacity-30 md:h-36 md:w-36"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+    >
+      {/* PCB outline */}
+      <rect x="14" y="22" width="72" height="56" rx="2" strokeWidth="1.5" />
+      {/* MCU square in centre */}
+      <rect x="40" y="42" width="20" height="20" rx="1" strokeWidth="1.5" />
+      <circle cx="44" cy="46" r="1" fill="currentColor" />
+      {/* Pin headers — top row */}
+      {[20, 28, 36, 44, 52, 60, 68, 76].map((x) => (
+        <rect key={`ht${x}`} x={x - 1.5} y="18" width="3" height="4" rx="0.5" strokeWidth="1" />
+      ))}
+      {/* Pin headers — bottom row */}
+      {[20, 28, 36, 44, 52, 60, 68, 76].map((x) => (
+        <rect key={`hb${x}`} x={x - 1.5} y="78" width="3" height="4" rx="0.5" strokeWidth="1" />
+      ))}
+      {/* Trace lines */}
+      <path d="M14 32 H32 V42" strokeWidth="1" />
+      <path d="M86 68 H68 V62" strokeWidth="1" />
+      <path d="M40 52 H28 V72" strokeWidth="1" />
+      {/* Decoupling cap / LED dots */}
+      <circle cx="22" cy="68" r="2" strokeWidth="1" />
+      <circle cx="78" cy="32" r="2" strokeWidth="1" />
+    </svg>
+  );
+}
+
 /* Extracted project card with 3D tilt on hover */
-function ProjectCard({ project, index }: { project: typeof projects[number]; index?: number }) {
+function ProjectCard({ project, index }: { project: Project; index?: number }) {
   const num = index !== undefined ? String(index + 1).padStart(2, "0") : "";
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -190,6 +304,11 @@ function ProjectCard({ project, index }: { project: typeof projects[number]; ind
   const handleMouseLeave = () => {
     const card = cardRef.current;
     if (card) card.style.transform = "perspective(800px) rotateY(0) rotateX(0) translateY(0) scale(1)";
+  };
+
+  const stopBubble = (e: React.MouseEvent | React.PointerEvent) => {
+    // Prevent parent card's tilt/hover handlers from firing while interacting with the link
+    e.stopPropagation();
   };
 
   return (
@@ -218,28 +337,54 @@ function ProjectCard({ project, index }: { project: typeof projects[number]; ind
           categoryGradients[project.category] ?? categoryGradients.other
         )}
       >
-        <span className="text-5xl font-bold text-white/15 transition-all duration-700 group-hover:scale-110 group-hover:text-white/25">
-          {project.title.split(" ").map((w) => w[0]).join("")}
+        {/* Category-themed minimal glyph (replaces gibberish initials placeholder) */}
+        <CategoryGlyph category={project.category} />
+
+        {/* Subtle title-initials watermark in corner — keeps a textual fingerprint without dominating */}
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute bottom-2 left-3 font-mono text-[10px] uppercase tracking-[0.3em] text-white/30"
+        >
+          {projectInitials(project.title)}
         </span>
-        {/* Hover overlay with links */}
-        <div className="absolute inset-0 flex items-center justify-center gap-4 bg-bg/60 opacity-0 backdrop-blur-sm transition-all duration-300 group-hover:opacity-100">
+
+        {/* Always-visible action icons (top-right) — discoverable without hover.
+            stopPropagation prevents the tilt handler from glitching when clicking. */}
+        <div className="absolute right-2 top-2 z-20 flex gap-1.5">
           {project.github && (
-            <a href={project.github} target="_blank" rel="noopener noreferrer"
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-glass border border-glass-border text-text transition-colors hover:border-accent hover:text-accent">
-              <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+            <a
+              href={project.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={stopBubble}
+              onMouseDown={stopBubble}
+              aria-label={`${project.title} — GitHub repository`}
+              title="View source on GitHub"
+              className="flex h-8 w-8 items-center justify-center rounded-md border border-glass-border bg-glass/80 text-text backdrop-blur-md transition-all duration-200 hover:border-accent hover:bg-glass hover:text-accent hover:shadow-[0_0_12px_rgba(0,191,255,0.35)]"
+            >
+              <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2Z" />
               </svg>
             </a>
           )}
           {project.live && (
-            <a href={project.live} target="_blank" rel="noopener noreferrer"
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-glass border border-glass-border text-text transition-colors hover:border-accent hover:text-accent">
-              <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+            <a
+              href={project.live}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={stopBubble}
+              onMouseDown={stopBubble}
+              aria-label={`${project.title} — live demo`}
+              title="Open live demo"
+              className="flex h-8 w-8 items-center justify-center rounded-md border border-glass-border bg-glass/80 text-text backdrop-blur-md transition-all duration-200 hover:border-accent hover:bg-glass hover:text-accent hover:shadow-[0_0_12px_rgba(0,191,255,0.35)]"
+            >
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
               </svg>
             </a>
           )}
         </div>
+
       </div>
 
       {/* Category label */}
@@ -251,14 +396,14 @@ function ProjectCard({ project, index }: { project: typeof projects[number]; ind
 
       {/* Verification metrics: prominent for DV recruiters */}
       {project.metrics && project.metrics.length > 0 && (
-        <div className="mb-3 grid grid-cols-3 gap-2">
+        <div className="mb-3 grid grid-cols-3 gap-1.5 sm:gap-2">
           {project.metrics.map((m) => (
             <div
               key={m.label}
-              className="rounded-md border border-glass-border bg-glass/40 px-2 py-1.5 text-center"
+              className="min-w-0 rounded-md border border-glass-border bg-glass/40 px-1.5 py-1.5 text-center sm:px-2"
             >
-              <div className="font-mono text-sm font-semibold text-accent">{m.value}</div>
-              <div className="font-mono text-[9px] uppercase tracking-wide text-text-dim leading-tight mt-0.5">
+              <div className="font-mono text-sm font-semibold text-accent break-words">{m.value}</div>
+              <div className="font-mono text-[9px] uppercase tracking-wide text-text-dim leading-tight mt-0.5 break-words">
                 {m.label}
               </div>
             </div>

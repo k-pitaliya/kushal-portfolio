@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
+import { Cpu } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { blurStagger, blurStaggerItem } from "@/lib/animations";
 import { skillCategories } from "@/lib/data";
@@ -49,7 +50,7 @@ export default function Skills() {
   return (
     <section id="skills" className="relative px-6 py-40 md:px-12 lg:px-24 xl:py-48">
       <div className="mx-auto max-w-6xl">
-        <SectionHeading number="02" title="Skills & Technologies" />
+        <SectionHeading number="02" title="Skills & Technologies" icon={Cpu} />
 
         {/* Category Tabs */}
         <LayoutGroup>

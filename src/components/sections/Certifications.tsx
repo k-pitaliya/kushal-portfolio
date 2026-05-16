@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { Award } from "lucide-react";
 import { blurReveal } from "@/lib/animations";
 import { certifications } from "@/lib/data";
 import GlassCard from "@/components/ui/GlassCard";
@@ -28,6 +29,42 @@ function CertBadge({
 }
 
 export default function Certifications() {
+  const SMALL_THRESHOLD = 4;
+  const isSmallSet = certifications.length <= SMALL_THRESHOLD;
+
+  // Static centered grid for small certification counts to avoid the
+  // marquee duplication looking like repeated entries.
+  if (isSmallSet) {
+    return (
+      <section
+        id="certifications"
+        className="relative px-6 py-40 md:px-12 lg:px-24 xl:py-48"
+      >
+        <div className="mx-auto max-w-6xl">
+          <SectionHeading number="07" title="Certifications" icon={Award} />
+        </div>
+
+        <motion.div
+          className="mx-auto mt-8 flex max-w-5xl flex-wrap items-stretch justify-center gap-6"
+          variants={blurReveal}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
+        >
+          {certifications.map((cert) => (
+            <CertBadge
+              key={cert.id}
+              name={cert.name}
+              issuer={cert.issuer}
+              date={cert.date}
+            />
+          ))}
+        </motion.div>
+      </section>
+    );
+  }
+
+  // Marquee layout for larger sets where the scrolling band reads naturally.
   const half = Math.ceil(certifications.length / 2);
   const row1 = certifications.slice(0, half);
   const row2 = certifications.slice(half);
@@ -38,7 +75,7 @@ export default function Certifications() {
       className="relative px-6 py-40 md:px-12 lg:px-24 xl:py-48"
     >
       <div className="mx-auto max-w-6xl">
-        <SectionHeading number="06" title="Certifications" />
+        <SectionHeading number="07" title="Certifications" icon={Award} />
       </div>
 
       <motion.div
@@ -57,30 +94,12 @@ export default function Certifications() {
               date={cert.date}
             />
           ))}
-          {/* Duplicate for visual density when few items */}
-          {row1.map((cert) => (
-            <CertBadge
-              key={`dup-${cert.id}`}
-              name={cert.name}
-              issuer={cert.issuer}
-              date={cert.date}
-            />
-          ))}
         </Marquee>
 
         <Marquee speed={40} direction="right" pauseOnHover>
           {row2.map((cert) => (
             <CertBadge
               key={cert.id}
-              name={cert.name}
-              issuer={cert.issuer}
-              date={cert.date}
-            />
-          ))}
-          {/* Duplicate for visual density when few items */}
-          {row2.map((cert) => (
-            <CertBadge
-              key={`dup-${cert.id}`}
               name={cert.name}
               issuer={cert.issuer}
               date={cert.date}

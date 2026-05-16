@@ -5,8 +5,8 @@
   --color-bg-secondary: #111111;
   --color-bg-tertiary: #1A1A1A;
   --color-text: #FAFAFA;
-  --color-text-muted: #888888;
-  --color-text-dim: #717171;
+  --color-text-muted: #A1A1A1;
+  --color-text-dim: #8A8A8A;
   --color-accent: #00BFFF;
   --color-accent-dark: #0099CC;
   --color-accent-glow: rgba(0, 191, 255, 0.2);
@@ -54,6 +54,23 @@ body {
   color: var(--color-text);
   font-family: var(--font-sans), system-ui, sans-serif;
   overflow-x: hidden;
+}
+
+/* Override Chrome/Webkit autofill — it paints inputs white-on-white on the dark theme.
+   The 1000px inset box-shadow trick is the standard workaround since you can't set
+   background-color on autofilled inputs directly. */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+textarea:-webkit-autofill:active {
+  -webkit-text-fill-color: var(--color-text);
+  -webkit-box-shadow: 0 0 0 1000px var(--color-bg-secondary) inset;
+  caret-color: var(--color-text);
+  transition: background-color 5000s ease-in-out 0s;
 }
 
 /* Only hide cursor when a fine pointer (mouse) is available */
