@@ -7,9 +7,7 @@ import { useForm } from "react-hook-form";
 import { cn } from "@/lib/utils";
 import { staggerContainer, staggerItem, blurReveal } from "@/lib/animations";
 import { socialLinks } from "@/lib/data";
-import MagneticButton from "@/components/ui/MagneticButton";
 import SectionHeading from "@/components/ui/SectionHeading";
-import DotGrid from "@/components/ui/DotGrid";
 
 interface FormData {
   name: string;
@@ -227,10 +225,9 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="relative px-6 py-40 md:px-12 lg:px-24 xl:py-48">
-      <DotGrid className="absolute inset-0 h-full w-full opacity-40" />
+    <section id="contact" className="relative section-y px-6 md:px-12 lg:px-24">
       <div className="relative z-10 mx-auto max-w-5xl">
-        <SectionHeading number="10" title="Get In Touch" icon={Mail} />
+        <SectionHeading number="07" title="Contact" subtitle="The form delivers messages to my inbox via Resend. Or email me directly." icon={Mail} />
 
         {/* Big statement */}
         <motion.p
@@ -274,19 +271,18 @@ export default function Contact() {
               </span>
             </a>
 
-            <div className="flex gap-4">
+            <div className="flex gap-3">
               {socialLinks.map((link) => (
-                <MagneticButton key={link.name} strength={0.4}>
-                  <a
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex h-11 w-11 items-center justify-center rounded-lg border border-glass-border bg-glass text-text-muted transition-all duration-300 hover:border-accent/40 hover:text-accent hover:scale-110 hover:-translate-y-1 hover:shadow-[0_0_16px_rgba(0,191,255,0.15)]"
-                    aria-label={link.name}
-                  >
-                    {socialIcons[link.icon] ?? link.name}
-                  </a>
-                </MagneticButton>
+                <a
+                  key={link.name}
+                  href={link.url}
+                  target={link.icon === "mail" ? undefined : "_blank"}
+                  rel={link.icon === "mail" ? undefined : "noopener noreferrer"}
+                  className="flex h-11 w-11 items-center justify-center rounded-lg border border-glass-border bg-glass text-text-muted transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/40 hover:text-accent"
+                  aria-label={link.name}
+                >
+                  {socialIcons[link.icon] ?? link.name}
+                </a>
               ))}
             </div>
           </motion.div>

@@ -21,12 +21,11 @@ export const siteConfig = {
 
 export const navItems: NavItem[] = [
   { label: "Home", href: "#home" },
+  { label: "Work", href: "#projects" },
+  { label: "Stack", href: "#stack" },
+  { label: "Background", href: "#background" },
+  { label: "Writeups", href: "#writeups" },
   { label: "About", href: "#about" },
-  { label: "Skills", href: "#skills" },
-  { label: "Projects", href: "#projects" },
-  { label: "Experience", href: "#experience" },
-  { label: "Education", href: "#education" },
-  { label: "Certifications", href: "#certifications" },
   { label: "Contact", href: "#contact" },
 ];
 
@@ -56,9 +55,26 @@ export const aboutData = {
     "Over the last six months I've shipped two full UVM verification environments — an AXI4-Lite 4×4 crossbar (25 bugs found and fixed, full rewrite May 2026) and an I2C protocol DUT (16 bugs found and fixed, 17 covergroups, ~89 coverage points, 95%+ predicted closure). Both projects have published EDA Playground flows so the work is reproducible, not a screenshot.",
   ],
   stats: [
-    { label: "Bugs found & fixed", value: 41 },
-    { label: "UVM components", value: 32 },
-    { label: "Coverage points", value: 89 },
+    {
+      label: "Bugs found & fixed",
+      value: 41,
+      desc: "across two UVM testbenches",
+    },
+    {
+      label: "Coverage points",
+      value: 89,
+      desc: "across 17 functional covergroups",
+    },
+    {
+      label: "UVM components",
+      value: 32,
+      desc: "drivers, monitors, scoreboards, sequences",
+    },
+    {
+      label: "Protocols verified",
+      value: 2,
+      desc: "I2C (UM10204) + AXI4-Lite",
+    },
   ],
 };
 

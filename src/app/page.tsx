@@ -4,27 +4,21 @@ import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { useSmoothScroll } from "@/hooks/useSmoothScroll";
 import Preloader from "@/components/layout/Preloader";
-import CustomCursor from "@/components/layout/CustomCursor";
-import Spotlight from "@/components/ui/Spotlight";
 import CommandPalette from "@/components/ui/CommandPalette";
-import KonamiEaster from "@/components/ui/KonamiEaster";
-import SoundToggle from "@/components/ui/SoundToggle";
 import Navbar from "@/components/layout/Navbar";
 import ScrollProgress from "@/components/ui/ScrollProgress";
-import SignalDivider from "@/components/ui/MarqueeDivider";
 import FloatingCTA from "@/components/ui/FloatingCTA";
 import ErrorBoundary from "@/components/ui/ErrorBoundary";
+import SignalPath from "@/components/ui/SignalPath";
+
 import Hero from "@/components/sections/Hero";
 import CredibilityStrip from "@/components/ui/CredibilityStrip";
-import About from "@/components/sections/About";
-import Skills from "@/components/sections/Skills";
-import Methodology from "@/components/sections/Methodology";
+import NowPanel from "@/components/sections/NowPanel";
 import Projects from "@/components/sections/Projects";
-import Experience from "@/components/sections/Experience";
-import Education from "@/components/sections/Education";
-import Certifications from "@/components/sections/Certifications";
-import Blog from "@/components/sections/Blog";
-import Testimonials from "@/components/sections/Testimonials";
+import StackAndApproach from "@/components/sections/StackAndApproach";
+import Background from "@/components/sections/Background";
+import Writeups from "@/components/sections/Writeups";
+import About from "@/components/sections/About";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/layout/Footer";
 
@@ -34,8 +28,7 @@ export default function Home() {
 
   return (
     <>
-      {/* Skip to content — accessibility */}
-      <a href="#about" className="skip-to-content">
+      <a href="#projects" className="skip-to-content">
         Skip to content
       </a>
 
@@ -45,60 +38,43 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      <CustomCursor />
-      <Spotlight />
       <CommandPalette />
-      <KonamiEaster />
-      <SoundToggle />
       <ScrollProgress />
       <FloatingCTA />
       <Navbar />
 
-      <main id="main-content" aria-label="Kushal Pitaliya — VLSI Design Verification Engineer Portfolio">
+      {/* Background signature: animated SVG signal path weaving through sections */}
+      <SignalPath />
+
+      <main
+        id="main-content"
+        className="relative"
+        aria-label="Kushal Pitaliya — VLSI Design Verification Engineer Portfolio"
+      >
         <ErrorBoundary>
           <Hero loaded={!isLoading} />
         </ErrorBoundary>
         <ErrorBoundary>
           <CredibilityStrip />
         </ErrorBoundary>
-        <SignalDivider />
         <ErrorBoundary>
-          <About />
+          <NowPanel />
         </ErrorBoundary>
-        <SignalDivider />
-        <ErrorBoundary>
-          <Skills />
-        </ErrorBoundary>
-        <SignalDivider />
-        <ErrorBoundary>
-          <Methodology />
-        </ErrorBoundary>
-        <SignalDivider />
         <ErrorBoundary>
           <Projects />
         </ErrorBoundary>
-
-        <SignalDivider />
         <ErrorBoundary>
-          <Experience />
+          <StackAndApproach />
         </ErrorBoundary>
-        <SignalDivider />
         <ErrorBoundary>
-          <Education />
+          <Background />
         </ErrorBoundary>
-        <SignalDivider />
         <ErrorBoundary>
-          <Certifications />
+          <Writeups />
         </ErrorBoundary>
-        <SignalDivider />
         <ErrorBoundary>
-          <Blog />
+          <About />
         </ErrorBoundary>
-        <SignalDivider />
-        <ErrorBoundary>
-          <Testimonials />
-        </ErrorBoundary>
-        <SignalDivider />
         <ErrorBoundary>
           <Contact />
         </ErrorBoundary>
