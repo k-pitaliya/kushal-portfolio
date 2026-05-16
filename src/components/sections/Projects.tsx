@@ -109,7 +109,7 @@ export default function Projects() {
     return (
       <section id="projects" className="relative overflow-x-hidden px-6 py-40 xl:py-48">
         <div className="mx-auto max-w-6xl">
-          <SectionHeading number="04" title="Featured Projects" icon={Boxes} />
+          <SectionHeading number="02" title="Selected Work" subtitle="Featured UVM verification environments and supporting projects." icon={Boxes} />
           <FilterBar active={active} setActive={setActive} />
           <AnimatePresence mode="wait">
             <motion.div
@@ -144,7 +144,7 @@ export default function Projects() {
         {/* Header + Filters */}
         <div className="px-6 pt-20 md:px-12 lg:px-24">
           <div className="mx-auto max-w-6xl">
-            <SectionHeading number="04" title="Featured Projects" icon={Boxes} />
+            <SectionHeading number="02" title="Selected Work" subtitle="Featured UVM verification environments and supporting projects." icon={Boxes} />
             <FilterBar active={active} setActive={setActive} />
           </div>
         </div>

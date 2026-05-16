@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, JetBrains_Mono } from "next/font/google";
+import { Geist, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
+const geist = Geist({
+  variable: "--font-geist",
   subsets: ["latin"],
   display: "swap",
+  weight: ["400", "500", "600", "700", "800", "900"],
 });
 
 const jetbrainsMono = JetBrains_Mono({
@@ -81,23 +82,15 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.variable} ${jetbrainsMono.variable}`}
+      className={`${geist.variable} ${jetbrainsMono.variable}`}
     >
       <head>
-        {/* Preload above-the-fold headshot so the About section's <img> is
-            warm by the time the user scrolls past the Hero. React 19 hoists
-            these <link>s into the document <head>. */}
         <link
           rel="preload"
           as="image"
           href="/images/kushal.jpg"
           fetchPriority="high"
         />
-        {/* next/font already self-hosts the woff2 files, but adding an explicit
-            dns-prefetch is cheap insurance for any third-party fonts.googleapis
-            references that may sneak in via dev tooling or future edits. */}
-        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body className="bg-bg text-text antialiased">
         <script
@@ -137,7 +130,6 @@ export default function RootLayout({
             }),
           }}
         />
-        <div className="noise-overlay" aria-hidden="true" />
         {children}
       </body>
     </html>
