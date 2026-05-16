@@ -48,7 +48,7 @@ export default function About() {
       {/* Interactive dot grid background */}
       <DotGrid className="absolute inset-0 h-full w-full opacity-60" />
       <div className="mx-auto max-w-6xl">
-        <SectionHeading number="01" title="About Me" icon={User} />
+        <SectionHeading number="06" title="About" subtitle="The story behind the verification work." icon={User} />
 
         <div className="grid gap-12 md:grid-cols-2 md:gap-12 lg:gap-16">
           {/* Photo with 3D tilt */}
