@@ -4,85 +4,134 @@ import { useEffect, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
 /**
- * SignalPath — animated SVG line weaving down the right gutter.
+ * SignalPath — vertical section navigator on the right edge.
  *
- * IMPORTANT: All hooks are called unconditionally at the top of the
- * component, BEFORE any early returns. Calling hooks conditionally (inside
- * a .map() that only renders after state update) caused React error #310
- * in production. Don't refactor the hooks back into a loop.
+ * Replaces the previous decorative S-curve (which read as "AI-generated
+ * line that does nothing"). Now functional:
+ *  - One dot per page section, anchored to its actual scroll position
+ *  - Active section dot lights up (intersection observer)
+ *  - Hover any dot → shows the section name as a label
+ *  - Click any dot → smooth-scroll to that section
+ *  - Thin progress line on the right edge fills proportional to scroll
+ *
+ * Same scroll-driven animation language; now serves navigation, not aesthetics.
+ * Visible on lg+ only — mobile has the navbar.
  */
 
-const NODE_POSITIONS = [0.05, 0.25, 0.45, 0.65, 0.85];
+type Section = { id: string; label: string };
+
+const SECTIONS: Section[] = [
+  { id: "home", label: "Home" },
+  { id: "now", label: "Now" },
+  { id: "projects", label: "Work" },
+  { id: "stack", label: "Stack" },
+  { id: "background", label: "Background" },
+  { id: "writeups", label: "Writeups" },
+  { id: "about", label: "About" },
+  { id: "contact", label: "Contact" },
+];
 
 export default function SignalPath() {
   const [mounted, setMounted] = useState(false);
-  const [vh, setVh] = useState(800);
+  const [active, setActive] = useState<string>("home");
   const { scrollYProgress } = useScroll();
 
-  // Five fixed useTransform calls — same number every render, no loop.
-  const node0 = useTransform(scrollYProgress, [0, 0.05, 0.1], [0.2, 1, 0.4]);
-  const node1 = useTransform(scrollYProgress, [0.2, 0.25, 0.3], [0.2, 1, 0.4]);
-  const node2 = useTransform(scrollYProgress, [0.4, 0.45, 0.5], [0.2, 1, 0.4]);
-  const node3 = useTransform(scrollYProgress, [0.6, 0.65, 0.7], [0.2, 1, 0.4]);
-  const node4 = useTransform(scrollYProgress, [0.8, 0.85, 0.9], [0.2, 1, 0.4]);
+  // Single hook for the progress line — same number every render
+  const lineHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
   useEffect(() => {
     setMounted(true);
-    const update = () => setVh(window.innerHeight);
-    update();
-    window.addEventListener("resize", update, { passive: true });
-    return () => window.removeEventListener("resize", update);
+
+    // Active-section detection via IntersectionObserver
+    const targets = SECTIONS.map((s) => document.getElementById(s.id)).filter(
+      (el): el is HTMLElement => el !== null
+    );
+
+    if (targets.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        // Pick the entry with the largest visible area near the top of the viewport
+        const intersecting = entries.filter((e) => e.isIntersecting);
+        if (intersecting.length === 0) return;
+        const top = intersecting.reduce((best, cur) =>
+          cur.intersectionRatio > best.intersectionRatio ? cur : best
+        );
+        setActive(top.target.id);
+      },
+      {
+        rootMargin: "-30% 0px -50% 0px",
+        threshold: [0, 0.25, 0.5, 0.75, 1],
+      }
+    );
+
+    targets.forEach((t) => observer.observe(t));
+    return () => observer.disconnect();
   }, []);
 
-  // Server + first client render both return null. After useEffect fires,
-  // mounted becomes true and the SVG renders. No hydration mismatch.
   if (!mounted) return null;
 
-  const nodes = [node0, node1, node2, node3, node4];
-  const pathD = `M24 0 Q 12 ${vh * 0.15}, 24 ${vh * 0.3} T 24 ${vh * 0.6} Q 36 ${vh * 0.75}, 24 ${vh * 0.9} L 24 ${vh}`;
+  const handleClick = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   return (
-    <div
-      aria-hidden="true"
-      className="pointer-events-none fixed inset-y-0 right-4 z-[2] hidden w-12 lg:block xl:right-8"
+    <nav
+      aria-label="Section navigator"
+      className="pointer-events-none fixed inset-y-0 right-6 z-[2] hidden items-center lg:flex xl:right-10"
     >
-      <svg
-        viewBox={`0 0 48 ${vh}`}
-        preserveAspectRatio="xMidYMid meet"
-        className="h-full w-full"
-        fill="none"
-      >
-        {/* Background trace — full path at low opacity */}
-        <path
-          d={pathD}
-          stroke="rgba(255,255,255,0.06)"
-          strokeWidth="1"
-          strokeLinecap="round"
-          strokeDasharray="3 5"
+      <div className="relative flex h-[min(70vh,560px)] flex-col items-center justify-between">
+        {/* Background track — full-height vertical line */}
+        <span
+          aria-hidden="true"
+          className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-glass-border"
         />
 
-        {/* Active trace — reveals as you scroll */}
-        <motion.path
-          d={pathD}
-          stroke="var(--color-accent)"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          style={{ pathLength: scrollYProgress }}
-          opacity={0.7}
+        {/* Scroll-progress line — fills from top */}
+        <motion.span
+          aria-hidden="true"
+          className="absolute left-1/2 top-0 w-px -translate-x-1/2 bg-accent shadow-[0_0_6px_rgba(0,191,255,0.5)]"
+          style={{ height: lineHeight }}
         />
 
-        {/* Node markers — five fixed positions, each with its own opacity hook */}
-        {NODE_POSITIONS.map((y, i) => (
-          <motion.circle
-            key={y}
-            cx={24}
-            cy={vh * y}
-            r={3}
-            fill="var(--color-accent)"
-            style={{ opacity: nodes[i] }}
-          />
-        ))}
-      </svg>
-    </div>
+        {/* Section dots */}
+        {SECTIONS.map((section) => {
+          const isActive = active === section.id;
+          return (
+            <button
+              key={section.id}
+              type="button"
+              onClick={() => handleClick(section.id)}
+              aria-label={`Jump to ${section.label} section`}
+              aria-current={isActive ? "true" : undefined}
+              className="group pointer-events-auto relative z-[3] flex h-6 w-6 items-center justify-center"
+            >
+              {/* The dot itself */}
+              <span
+                className={[
+                  "block rounded-full transition-all duration-300",
+                  isActive
+                    ? "h-2.5 w-2.5 bg-accent shadow-[0_0_8px_rgba(0,191,255,0.7)]"
+                    : "h-1.5 w-1.5 bg-text-dim/50 group-hover:h-2 group-hover:w-2 group-hover:bg-accent/70",
+                ].join(" ")}
+              />
+
+              {/* Label — appears on hover or when active */}
+              <span
+                className={[
+                  "pointer-events-none absolute right-full mr-3 whitespace-nowrap text-mono-xs transition-all duration-200",
+                  isActive
+                    ? "translate-x-0 text-accent opacity-100"
+                    : "translate-x-2 text-text-muted opacity-0 group-hover:translate-x-0 group-hover:opacity-100",
+                ].join(" ")}
+              >
+                {section.label}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    </nav>
   );
 }
