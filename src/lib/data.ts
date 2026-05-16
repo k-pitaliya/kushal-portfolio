@@ -165,7 +165,7 @@ export const projects: Project[] = [
     category: "vlsi",
     featured: true,
     image: "/images/projects/fsm.png",
-    github: "https://github.com/KushalPitaliya/FSM-Digital-Controller",
+    github: "https://github.com/k-pitaliya/FSM-Digital-Controller",
   },
   {
     id: "fifo-memory-buffer",
@@ -176,7 +176,7 @@ export const projects: Project[] = [
     category: "vlsi",
     featured: true,
     image: "/images/projects/fifo.png",
-    github: "https://github.com/KushalPitaliya/Spartan6-Synchronous-FIFO",
+    github: "https://github.com/k-pitaliya/Spartan6-Synchronous-FIFO",
   },
   {
     id: "audio-spectrum-analyzer",
@@ -187,7 +187,7 @@ export const projects: Project[] = [
     category: "embedded",
     featured: true,
     image: "/images/projects/audio-spectrum.png",
-    github: "https://github.com/KushalPitaliya/audio-spectrum-analyzer-stm32",
+    github: "https://github.com/k-pitaliya/audio-spectrum-analyzer-stm32",
   },
   {
     id: "ultrasonic-distance-system",
@@ -198,7 +198,7 @@ export const projects: Project[] = [
     category: "embedded",
     featured: false,
     image: "/images/projects/ultrasonic.png",
-    github: "https://github.com/KushalPitaliya/ATmega32-Ultrasonic-Distance-Meter",
+    github: "https://github.com/k-pitaliya/ATmega32-Ultrasonic-Distance-Meter",
   },
 ];
 

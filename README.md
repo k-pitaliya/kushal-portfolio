@@ -2,7 +2,7 @@
 
 > **Live site:** [kushalpitaliya.vercel.app](https://kushalpitaliya.vercel.app)  
 > **LinkedIn:** [linkedin.com/in/kushalpitaliya06](https://www.linkedin.com/in/kushalpitaliya06/)  
-> **GitHub:** [github.com/KushalPitaliya](https://github.com/KushalPitaliya)
+> **GitHub:** [github.com/k-pitaliya](https://github.com/k-pitaliya)
 
 Personal portfolio of **Kushal Pitaliya** — VLSI Design Verification Engineer & Cloud Architect.  
 ECE student at CHARUSAT building at the intersection of silicon and the cloud.
