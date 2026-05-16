@@ -34,12 +34,12 @@ const iconMap: Record<string, React.FC<{ className?: string }>> = {
 };
 
 // Build metadata — exposed in the footer.
-// Update these when you ship significant changes; otherwise auto-injectable
-// via Vercel env later (VERCEL_GIT_COMMIT_SHA).
+// Values are stable across server + client to avoid hydration mismatches.
 const buildMeta = {
   version: "v2.0",
   commit: process.env.NEXT_PUBLIC_COMMIT_SHA?.slice(0, 7) ?? "main",
-  built: new Date().toISOString().slice(0, 10),
+  // Build year is acceptable to differ slightly; we suppress hydration on it below
+  built: "2026-05",
 };
 
 export default function Footer() {
@@ -152,7 +152,7 @@ export default function Footer() {
           </ul>
 
           <div className="flex items-center gap-4">
-            <p className="text-mono-xs text-text-dim">
+            <p className="text-mono-xs text-text-dim" suppressHydrationWarning>
               © {new Date().getFullYear()} {siteConfig.name}
             </p>
             <button

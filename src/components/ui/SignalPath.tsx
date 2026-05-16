@@ -1,33 +1,45 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
 /**
- * SignalPath — the signature animated element for v2.
+ * SignalPath — animated SVG line weaving down the right gutter.
  *
- * A thin cyan line weaves through the entire page on the right edge,
- * drawn progressively as the user scrolls. Small "node" markers light up
- * when each section is in view. GPU-cheap SVG, respects reduced-motion.
- *
- * Visible only on lg+ viewports where there's gutter space. Hidden on
- * mobile/tablet (the screen is already narrow enough; less is more).
+ * IMPORTANT: All hooks are called unconditionally at the top of the
+ * component, BEFORE any early returns. Calling hooks conditionally (inside
+ * a .map() that only renders after state update) caused React error #310
+ * in production. Don't refactor the hooks back into a loop.
  */
+
+const NODE_POSITIONS = [0.05, 0.25, 0.45, 0.65, 0.85];
+
 export default function SignalPath() {
+  const [mounted, setMounted] = useState(false);
+  const [vh, setVh] = useState(800);
   const { scrollYProgress } = useScroll();
-  const [vh, setVh] = useState(0);
+
+  // Five fixed useTransform calls — same number every render, no loop.
+  const node0 = useTransform(scrollYProgress, [0, 0.05, 0.1], [0.2, 1, 0.4]);
+  const node1 = useTransform(scrollYProgress, [0.2, 0.25, 0.3], [0.2, 1, 0.4]);
+  const node2 = useTransform(scrollYProgress, [0.4, 0.45, 0.5], [0.2, 1, 0.4]);
+  const node3 = useTransform(scrollYProgress, [0.6, 0.65, 0.7], [0.2, 1, 0.4]);
+  const node4 = useTransform(scrollYProgress, [0.8, 0.85, 0.9], [0.2, 1, 0.4]);
 
   useEffect(() => {
+    setMounted(true);
     const update = () => setVh(window.innerHeight);
     update();
     window.addEventListener("resize", update, { passive: true });
     return () => window.removeEventListener("resize", update);
   }, []);
 
-  // The path traces the full document height; stroke-dashoffset reveals it.
-  const pathLength = useTransform(scrollYProgress, [0, 1], [1, 0]);
+  // Server + first client render both return null. After useEffect fires,
+  // mounted becomes true and the SVG renders. No hydration mismatch.
+  if (!mounted) return null;
 
-  if (!vh) return null;
+  const nodes = [node0, node1, node2, node3, node4];
+  const pathD = `M24 0 Q 12 ${vh * 0.15}, 24 ${vh * 0.3} T 24 ${vh * 0.6} Q 36 ${vh * 0.75}, 24 ${vh * 0.9} L 24 ${vh}`;
 
   return (
     <div
@@ -41,8 +53,8 @@ export default function SignalPath() {
         fill="none"
       >
         {/* Background trace — full path at low opacity */}
-        <motion.path
-          d={`M24 0 Q 12 ${vh * 0.15}, 24 ${vh * 0.3} T 24 ${vh * 0.6} Q 36 ${vh * 0.75}, 24 ${vh * 0.9} L 24 ${vh}`}
+        <path
+          d={pathD}
           stroke="rgba(255,255,255,0.06)"
           strokeWidth="1"
           strokeLinecap="round"
@@ -51,34 +63,25 @@ export default function SignalPath() {
 
         {/* Active trace — reveals as you scroll */}
         <motion.path
-          d={`M24 0 Q 12 ${vh * 0.15}, 24 ${vh * 0.3} T 24 ${vh * 0.6} Q 36 ${vh * 0.75}, 24 ${vh * 0.9} L 24 ${vh}`}
+          d={pathD}
           stroke="var(--color-accent)"
           strokeWidth="1.5"
           strokeLinecap="round"
-          style={{ pathLength: useTransform(scrollYProgress, [0, 1], [0, 1]) }}
+          style={{ pathLength: scrollYProgress }}
           opacity={0.7}
         />
 
-        {/* Small node markers at key vertical positions */}
-        {[0.05, 0.25, 0.45, 0.65, 0.85].map((y) => (
+        {/* Node markers — five fixed positions, each with its own opacity hook */}
+        {NODE_POSITIONS.map((y, i) => (
           <motion.circle
             key={y}
             cx={24}
             cy={vh * y}
             r={3}
             fill="var(--color-accent)"
-            style={{
-              opacity: useTransform(
-                scrollYProgress,
-                [y - 0.05, y, y + 0.05],
-                [0.2, 1, 0.4]
-              ),
-            }}
+            style={{ opacity: nodes[i] }}
           />
         ))}
-
-        {/* Suppress unused warning for pathLength */}
-        <motion.circle cx={0} cy={0} r={0} style={{ opacity: pathLength }} />
       </svg>
     </div>
   );
