@@ -92,6 +92,9 @@ export default function CommandPalette() {
       navigate(filtered[activeIndex].href);
     } else if (e.key === "Escape") {
       close();
+    } else if (e.key === "Tab") {
+      // Trap focus inside the palette — arrow keys drive the list.
+      e.preventDefault();
     }
   };
 

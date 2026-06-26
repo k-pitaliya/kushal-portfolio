@@ -63,14 +63,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://kushalpitaliya.vercel.app",
     siteName: "Kushal Pitaliya",
-    images: [
-      {
-        url: "https://kushalpitaliya.vercel.app/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Kushal Pitaliya — VLSI Design Verification Engineer",
-      },
-    ],
+    // og:image is provided by app/opengraph-image.tsx (generated, on-brand).
   },
   twitter: {
     card: "summary_large_image",
