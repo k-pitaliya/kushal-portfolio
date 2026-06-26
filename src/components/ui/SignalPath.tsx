@@ -1,20 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
 /**
- * SignalPath — vertical section navigator on the right edge.
+ * SignalPath — vertical section navigator on the right edge (Aurora × Silicon).
  *
- * Replaces the previous decorative S-curve (which read as "AI-generated
- * line that does nothing"). Now functional:
+ * Functional, not decorative:
  *  - One dot per page section, anchored to its actual scroll position
- *  - Active section dot lights up (intersection observer)
- *  - Hover any dot → shows the section name as a label
+ *  - Active section dot lights up (IntersectionObserver) with an aurora glow
+ *  - Hover any dot → shows the section name in a glass label
  *  - Click any dot → smooth-scroll to that section
- *  - Thin progress line on the right edge fills proportional to scroll
+ *  - Thin progress rail on the right edge fills proportional to scroll
  *
- * Same scroll-driven animation language; now serves navigation, not aesthetics.
  * Visible on lg+ only — mobile has the navbar.
  */
 
@@ -31,17 +29,32 @@ const SECTIONS: Section[] = [
   { id: "contact", label: "Contact" },
 ];
 
+/**
+ * Client-only mount flag without a setState-in-effect.
+ *
+ * `useSyncExternalStore` returns the server snapshot (`false`) during SSR /
+ * hydration and the client snapshot (`true`) afterwards — so the navigator only
+ * renders after mount, dodging the framer-motion `useTransform` hydration
+ * mismatch *without* the "setState synchronously within an effect" lint error
+ * that a `setMounted(true)` inside `useEffect` triggers on React 19 / Next 16.
+ */
+const subscribe = () => () => {};
+const getClientSnapshot = () => true;
+const getServerSnapshot = () => false;
+
 export default function SignalPath() {
-  const [mounted, setMounted] = useState(false);
+  const mounted = useSyncExternalStore(
+    subscribe,
+    getClientSnapshot,
+    getServerSnapshot
+  );
   const [active, setActive] = useState<string>("home");
   const { scrollYProgress } = useScroll();
 
-  // Single hook for the progress line — same number every render
+  // Single hook for the progress rail — same number of hooks every render
   const lineHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
   useEffect(() => {
-    setMounted(true);
-
     // Active-section detection via IntersectionObserver
     const targets = SECTIONS.map((s) => document.getElementById(s.id)).filter(
       (el): el is HTMLElement => el !== null
@@ -82,17 +95,21 @@ export default function SignalPath() {
       className="pointer-events-none fixed inset-y-0 right-6 z-[2] hidden items-center lg:flex xl:right-10"
     >
       <div className="relative flex h-[min(70vh,560px)] flex-col items-center justify-between">
-        {/* Background track — full-height vertical line */}
+        {/* Background rail — full-height vertical line */}
         <span
           aria-hidden="true"
           className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-glass-border"
         />
 
-        {/* Scroll-progress line — fills from top */}
+        {/* Scroll-progress rail — fills from top with an aurora gradient */}
         <motion.span
           aria-hidden="true"
-          className="absolute left-1/2 top-0 w-px -translate-x-1/2 bg-accent shadow-[0_0_6px_rgba(0,191,255,0.5)]"
-          style={{ height: lineHeight }}
+          className="absolute left-1/2 top-0 w-px -translate-x-1/2 rounded-full shadow-[0_0_8px_rgba(124,108,255,0.55)]"
+          style={{
+            height: lineHeight,
+            background:
+              "linear-gradient(180deg, var(--aurora-2), var(--aurora-1))",
+          }}
         />
 
         {/* Section dots */}
@@ -112,7 +129,7 @@ export default function SignalPath() {
                 className={[
                   "block rounded-full transition-all duration-300",
                   isActive
-                    ? "h-2.5 w-2.5 bg-accent shadow-[0_0_8px_rgba(0,191,255,0.7)]"
+                    ? "h-2.5 w-2.5 bg-accent shadow-[0_0_10px_rgba(124,108,255,0.8)] ring-2 ring-accent/25"
                     : "h-1.5 w-1.5 bg-text-dim/50 group-hover:h-2 group-hover:w-2 group-hover:bg-accent/70",
                 ].join(" ")}
               />
@@ -120,7 +137,7 @@ export default function SignalPath() {
               {/* Label — appears on hover or when active */}
               <span
                 className={[
-                  "pointer-events-none absolute right-full mr-3 whitespace-nowrap text-mono-xs transition-all duration-200",
+                  "glass glass-edge pointer-events-none absolute right-full mr-3 whitespace-nowrap rounded-full px-2.5 py-1 text-mono-xs transition-all duration-200",
                   isActive
                     ? "translate-x-0 text-accent opacity-100"
                     : "translate-x-2 text-text-muted opacity-0 group-hover:translate-x-0 group-hover:opacity-100",

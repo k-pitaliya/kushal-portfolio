@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Download, ExternalLink } from "lucide-react";
 
@@ -24,19 +24,19 @@ const RESUME_DISPLAY_NAME = "Kushal-Pitaliya-Resume.pdf";
  * unlocked page bleeds movement into the modal.
  */
 export default function ResumePreviewModal({ open, onClose }: ResumePreviewModalProps) {
-  // Track mobile viewport so we can swap the iframe for a fallback.
-  // useState + matchMedia (rather than a CSS-only solution) so the iframe
-  // never mounts on mobile — saves the PDF download on small/metered devices.
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const mq = window.matchMedia("(max-width: 767px)");
-    setIsMobile(mq.matches);
-    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
-  }, []);
+  // Track mobile viewport so we can swap the iframe for a fallback — the iframe
+  // never mounts on mobile, saving the PDF download on small/metered devices.
+  // useSyncExternalStore (rather than useState + a setState-in-effect) reads the
+  // matchMedia value cleanly: subscribe to changes, client snapshot, SSR = false.
+  const isMobile = useSyncExternalStore(
+    (cb) => {
+      const mq = window.matchMedia("(max-width: 767px)");
+      mq.addEventListener("change", cb);
+      return () => mq.removeEventListener("change", cb);
+    },
+    () => window.matchMedia("(max-width: 767px)").matches,
+    () => false
+  );
 
   // ESC to close + lock body scroll while open.
   useEffect(() => {
@@ -75,7 +75,7 @@ export default function ResumePreviewModal({ open, onClose }: ResumePreviewModal
             role="dialog"
             aria-modal="true"
             aria-labelledby="resume-modal-title"
-            className="relative flex h-[85vh] w-full max-w-5xl flex-col overflow-hidden rounded-2xl border border-glass-border bg-bg-secondary shadow-[0_20px_60px_rgba(0,0,0,0.5)]"
+            className="glass glass-edge relative flex h-[85vh] w-full max-w-5xl flex-col overflow-hidden rounded-2xl shadow-[0_30px_80px_rgba(3,2,10,0.6)]"
             initial={{ opacity: 0, scale: 0.94, y: 16 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.96, y: 8 }}
@@ -106,7 +106,7 @@ export default function ResumePreviewModal({ open, onClose }: ResumePreviewModal
               <a
                 href={RESUME_PATH}
                 download={RESUME_DISPLAY_NAME}
-                className="group inline-flex items-center gap-2 rounded-full bg-accent px-4 py-2 text-xs font-semibold text-bg transition-all duration-300 hover:-translate-y-0.5 hover:bg-accent-dark hover:shadow-[0_0_24px_rgba(0,191,255,0.3)] sm:text-sm"
+                className="group inline-flex items-center gap-2 rounded-full bg-accent px-4 py-2 text-xs font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-accent-dark hover:shadow-[0_0_24px_var(--color-accent-glow)] sm:text-sm"
               >
                 <Download className="h-3.5 w-3.5 transition-transform group-hover:translate-y-0.5" />
                 Download PDF
@@ -141,7 +141,7 @@ export default function ResumePreviewModal({ open, onClose }: ResumePreviewModal
                     <a
                       href={RESUME_PATH}
                       download={RESUME_DISPLAY_NAME}
-                      className="inline-flex items-center justify-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-bg transition-all hover:bg-accent-dark"
+                      className="inline-flex items-center justify-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-accent-dark"
                     >
                       <Download className="h-4 w-4" />
                       Download PDF

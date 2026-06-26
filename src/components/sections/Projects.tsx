@@ -1,7 +1,29 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Boxes, ArrowUpRight } from "lucide-react";
+import { useState, type CSSProperties } from "react";
+import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
+import { Boxes, ArrowUpRight, ArrowRight } from "lucide-react";
+import { projects } from "@/lib/data";
+import { cn } from "@/lib/utils";
+import SectionHeading from "@/components/ui/SectionHeading";
+import Tilt from "@/components/ui/Tilt";
+import Magnetic from "@/components/ui/Magnetic";
+import { ease } from "@/lib/animations";
+import {
+  AxiCrossbarDiagram,
+  I2cUvmDiagram,
+  FsmDiagram,
+} from "@/components/ui/ArchitectureDiagrams";
+import type { Project, ProjectAccent, ProjectStatus } from "@/types";
+
+/**
+ * Projects gallery (the /work page).
+ *
+ * DV case studies lead as full-width blocks with inline architecture; the rest
+ * sits in a client-filtered breadth grid. Every card routes to its own
+ * /work/[slug] case-study page — external repo/live links live there.
+ */
 
 function GithubIcon({ className }: { className?: string }) {
   return (
@@ -10,24 +32,6 @@ function GithubIcon({ className }: { className?: string }) {
     </svg>
   );
 }
-import { projects } from "@/lib/data";
-import SectionHeading from "@/components/ui/SectionHeading";
-import {
-  AxiCrossbarDiagram,
-  I2cUvmDiagram,
-  FsmDiagram,
-} from "@/components/ui/ArchitectureDiagrams";
-
-/**
- * Projects — v2 "Selected Work".
- *
- * Featured projects render as full-width case studies with inline SVG
- * architecture diagrams. Below, a compact "Also" grid for the remaining
- * supporting projects.
- *
- * Drops the horizontal-scroll pattern (impressive but disorienting on
- * laptops and broken on touch).
- */
 
 const diagramMap: Record<string, React.FC> = {
   "axi-xbar-uvm": AxiCrossbarDiagram,
@@ -35,72 +39,106 @@ const diagramMap: Record<string, React.FC> = {
   "fsm-controller": FsmDiagram,
 };
 
+const accentVar: Record<ProjectAccent, string> = {
+  indigo: "var(--aurora-1)",
+  cyan: "var(--aurora-2)",
+  teal: "var(--aurora-3)",
+  magenta: "var(--aurora-4)",
+  amber: "var(--aurora-5)",
+};
+
+const statusConfig: Record<ProjectStatus, { label: string; tone: string }> = {
+  verified: { label: "Verified", tone: "text-success" },
+  hardware: { label: "Hardware", tone: "text-success" },
+  shipped: { label: "Shipped", tone: "text-success" },
+  demo: { label: "Demo", tone: "text-accent" },
+  "in-progress": { label: "In Progress", tone: "text-warning" },
+};
+
+function StatusBadge({ status }: { status?: ProjectStatus }) {
+  if (!status) return null;
+  const cfg = statusConfig[status];
+  return (
+    <span className={cn("inline-flex items-center gap-1.5 text-mono-xs", cfg.tone)}>
+      <span className="h-1.5 w-1.5 rounded-full bg-current" aria-hidden="true" />
+      {cfg.label}
+    </span>
+  );
+}
+
+type FilterId = "all" | Project["category"];
+
+const filters: { id: FilterId; label: string }[] = [
+  { id: "all", label: "All" },
+  { id: "vlsi", label: "Silicon" },
+  { id: "cloud", label: "Cloud" },
+  { id: "embedded", label: "Embedded" },
+  { id: "web", label: "Web" },
+];
+
 export default function Projects() {
   const featured = projects.filter((p) => p.featured);
   const supporting = projects.filter((p) => !p.featured);
+  const [active, setActive] = useState<FilterId>("all");
+
+  const countFor = (id: FilterId) =>
+    id === "all" ? supporting.length : supporting.filter((p) => p.category === id).length;
+
+  const filtered =
+    active === "all" ? supporting : supporting.filter((p) => p.category === active);
 
   return (
-    <section
-      id="projects"
-      className="relative section-y px-6 md:px-12 lg:px-24"
-    >
+    <section id="projects" className="relative section-y px-6 md:px-12 lg:px-24">
       <div className="mx-auto max-w-6xl">
         <SectionHeading
-          number="02"
+          number="01"
           title="Selected Work"
-          subtitle="Featured UVM verification environments. Each case study links to source, EDA Playground flow, and the engineering writeup."
+          subtitle="Design-verification work leads; cloud, embedded and full-stack systems show the range. Every project opens a case study — or names why it's closed."
           icon={Boxes}
         />
 
-        {/* Featured case studies — full width, alternating layout */}
+        {/* ── Featured DV case studies ── */}
         <div className="space-y-24 md:space-y-32">
           {featured.map((project, i) => {
             const Diagram = diagramMap[project.id];
+            const accent = project.accent ?? "indigo";
             const reverse = i % 2 === 1;
+
             return (
               <motion.article
                 key={project.id}
                 initial={{ opacity: 0, y: 32 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-80px" }}
-                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.6, ease: ease.out }}
+                style={{ "--proj-accent": accentVar[accent] } as CSSProperties}
                 className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-12"
               >
-                {/* Content column */}
-                <div
-                  className={`lg:col-span-5 ${
-                    reverse ? "lg:col-start-8" : "lg:col-start-1"
-                  }`}
-                >
-                  {/* Date + repo */}
-                  <div className="mb-4 flex items-center gap-3">
+                <div className={cn("lg:col-span-5", reverse ? "lg:col-start-8" : "lg:col-start-1")}>
+                  <div className="mb-4 flex flex-wrap items-center gap-x-3 gap-y-2">
                     <span className="text-mono-xs text-text-dim">
-                      FEATURED · MAY 2026
+                      {project.domain}
+                      {project.year ? ` · ${project.year}` : ""}
                     </span>
+                    <StatusBadge status={project.status} />
                   </div>
 
-                  {/* Title */}
-                  <h3 className="text-display-md mb-4 text-text">
-                    {project.title}
-                  </h3>
-
-                  {/* Description */}
-                  <p className="mb-6 text-sm leading-relaxed text-text-muted md:text-base">
+                  <h3 className="text-display-md mb-4 text-text">{project.title}</h3>
+                  <p className="mb-6 text-pretty text-sm leading-relaxed text-text-muted md:text-base">
                     {project.description}
                   </p>
 
-                  {/* Metrics — if any */}
                   {project.metrics && project.metrics.length > 0 && (
                     <div className="mb-6 grid grid-cols-3 gap-3">
                       {project.metrics.map((m) => (
-                        <div
-                          key={m.label}
-                          className="rounded-lg border border-glass-border bg-bg-secondary/40 px-3 py-2.5 text-center"
-                        >
-                          <div className="font-mono text-base font-semibold text-accent md:text-lg">
+                        <div key={m.label} className="glass rounded-lg px-3 py-2.5 text-center">
+                          <div
+                            className="font-mono text-base font-semibold md:text-lg"
+                            style={{ color: "var(--proj-accent)" }}
+                          >
                             {m.value}
                           </div>
-                          <div className="mt-0.5 text-[10px] uppercase tracking-wide text-text-dim leading-tight">
+                          <div className="mt-0.5 text-[10px] uppercase leading-tight tracking-wide text-text-dim">
                             {m.label}
                           </div>
                         </div>
@@ -108,120 +146,193 @@ export default function Projects() {
                     </div>
                   )}
 
-                  {/* Stack */}
                   <div className="mb-6 flex flex-wrap gap-1.5">
                     {project.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="rounded-md bg-accent/8 px-2 py-0.5 text-xs font-medium text-accent/85"
+                        className="rounded-md border border-glass-border bg-glass px-2 py-0.5 text-xs font-medium text-text-muted"
                       >
                         {tag}
                       </span>
                     ))}
                   </div>
 
-                  {/* CTAs */}
-                  <div className="flex flex-wrap gap-3">
+                  <div className="flex flex-wrap items-center gap-3">
+                    <Magnetic strength={0.3}>
+                      <Link
+                        href={`/work/${project.id}`}
+                        className="group inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-mono-sm font-semibold text-white shadow-[0_0_30px_var(--color-accent-glow)] transition-colors hover:bg-accent-dark"
+                      >
+                        Read case study
+                        <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+                      </Link>
+                    </Magnetic>
                     {project.github && (
-                      <a
-                        href={project.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group inline-flex items-center gap-2 rounded-full border border-glass-border bg-glass px-4 py-2 text-mono-sm font-medium text-text transition-all hover:-translate-y-0.5 hover:border-accent/40 hover:text-accent"
-                      >
-                        <GithubIcon className="h-3.5 w-3.5" />
-                        View Repo
-                        <ArrowUpRight className="h-3 w-3 opacity-60 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-                      </a>
-                    )}
-                    {project.live && (
-                      <a
-                        href={project.live}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group inline-flex items-center gap-2 rounded-full border border-glass-border bg-glass px-4 py-2 text-mono-sm font-medium text-text transition-all hover:-translate-y-0.5 hover:border-accent/40 hover:text-accent"
-                      >
-                        EDA Playground
-                        <ArrowUpRight className="h-3 w-3 opacity-60 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-                      </a>
+                      <Magnetic strength={0.3}>
+                        <a
+                          href={project.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`View ${project.title} repository on GitHub`}
+                          className="group inline-flex items-center gap-2 rounded-full border border-glass-border bg-glass px-4 py-2.5 text-mono-sm font-medium text-text transition-all hover:-translate-y-0.5 hover:border-accent/40 hover:text-accent"
+                        >
+                          <GithubIcon className="h-3.5 w-3.5" />
+                          Repo
+                        </a>
+                      </Magnetic>
                     )}
                   </div>
                 </div>
 
-                {/* Diagram column */}
                 <div
-                  className={`lg:col-span-7 ${
+                  className={cn(
+                    "lg:col-span-7",
                     reverse ? "lg:col-start-1 lg:row-start-1" : "lg:col-start-6"
-                  }`}
+                  )}
                 >
-                  <div className="group relative aspect-[16/10] overflow-hidden rounded-2xl border border-glass-border bg-bg-secondary/30 transition-all duration-500 hover:border-accent/30">
-                    {/* Subtle grid background inside the card */}
-                    <div
-                      aria-hidden="true"
-                      className="absolute inset-0 grid-bg opacity-50"
-                    />
-                    {/* Architecture diagram */}
-                    <div className="relative h-full w-full p-6 md:p-8">
-                      {Diagram ? (
-                        <Diagram />
-                      ) : (
-                        <div className="flex h-full items-center justify-center text-text-dim">
-                          <span className="text-mono-xs">
-                            // diagram pending
-                          </span>
-                        </div>
-                      )}
+                  <Tilt className="rounded-2xl" max={4}>
+                    <div className="glass glass-edge group relative aspect-[16/10] overflow-hidden rounded-2xl">
+                      <div aria-hidden="true" className="absolute inset-0 grid-bg opacity-50" />
+                      <div
+                        aria-hidden="true"
+                        className="pointer-events-none absolute inset-0 opacity-[0.10] transition-opacity duration-500 group-hover:opacity-20"
+                        style={{
+                          background:
+                            "radial-gradient(60% 60% at 50% 40%, var(--proj-accent), transparent 70%)",
+                        }}
+                      />
+                      <div className="relative h-full w-full p-6 md:p-8">
+                        {Diagram ? (
+                          <Diagram />
+                        ) : (
+                          <div className="flex h-full items-center justify-center text-text-dim">
+                            <span className="text-mono-xs">{"// diagram pending"}</span>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                    {/* Hover gradient */}
-                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-accent/0 via-transparent to-accent/0 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                  </div>
+                  </Tilt>
                 </div>
               </motion.article>
             );
           })}
         </div>
 
-        {/* Supporting projects — compact grid */}
+        {/* ── Filterable breadth gallery ── */}
         {supporting.length > 0 && (
-          <div className="mt-32">
-            <h3 className="mb-2 text-mono-xs text-text-dim">
-              ALSO IN THE PORTFOLIO
-            </h3>
-            <p className="mb-8 text-sm text-text-muted md:text-base">
-              Supporting projects across embedded and digital design.
-            </p>
+          <div className="mt-28 md:mt-36">
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.5, ease: ease.out }}
+              className="mb-8"
+            >
+              <h3 className="mb-2 text-mono-xs text-text-dim">ALSO IN THE PORTFOLIO</h3>
+              <p className="mb-6 text-pretty text-sm text-text-muted md:text-base">
+                Silicon RTL, cloud infrastructure, embedded firmware and full-stack
+                systems — the breadth around the verification core.
+              </p>
 
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {supporting.map((project, i) => (
-                <motion.a
-                  key={project.id}
-                  href={project.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  initial={{ opacity: 0, y: 12 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-60px" }}
-                  transition={{
-                    duration: 0.4,
-                    delay: i * 0.06,
-                    ease: [0.22, 1, 0.36, 1],
-                  }}
-                  className="group block rounded-xl border border-glass-border bg-bg-secondary/30 p-5 transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:bg-bg-secondary/60"
-                >
-                  <div className="mb-2 flex items-center justify-between">
-                    <span className="text-mono-xs text-text-dim uppercase">
-                      {project.category}
-                    </span>
-                    <ArrowUpRight className="h-3.5 w-3.5 text-text-dim transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent" />
-                  </div>
-                  <h4 className="mb-2 text-base font-semibold text-text transition-colors group-hover:text-accent">
-                    {project.title}
-                  </h4>
-                  <p className="line-clamp-2 text-xs leading-relaxed text-text-muted md:text-sm">
-                    {project.description}
-                  </p>
-                </motion.a>
-              ))}
+              <div role="tablist" aria-label="Filter projects by domain" className="flex flex-wrap gap-2">
+                {filters.map((f) => {
+                  const isActive = active === f.id;
+                  return (
+                    <button
+                      key={f.id}
+                      type="button"
+                      role="tab"
+                      aria-selected={isActive}
+                      onClick={() => setActive(f.id)}
+                      className={cn(
+                        "inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-mono-xs transition-all",
+                        isActive
+                          ? "glass glass-edge text-accent"
+                          : "border border-glass-border text-text-dim hover:-translate-y-0.5 hover:text-text-muted"
+                      )}
+                    >
+                      {f.label}
+                      <span className={cn("tabular-nums", isActive ? "text-accent/70" : "text-text-dim/70")}>
+                        {countFor(f.id)}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </motion.div>
+
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              <AnimatePresence mode="popLayout">
+                {filtered.map((project, index) => {
+                  const accent = project.accent ?? "indigo";
+                  return (
+                    <motion.div
+                      key={project.id}
+                      layout
+                      initial={{ opacity: 0, y: 16 }}
+                      animate={{
+                        opacity: 1,
+                        y: 0,
+                        transition: { duration: 0.4, ease: ease.out, delay: Math.min(index * 0.05, 0.3) },
+                      }}
+                      exit={{ opacity: 0, y: -12 }}
+                      transition={{ duration: 0.4, ease: ease.out }}
+                      whileHover={{ y: -6 }}
+                      style={{ "--card-accent": accentVar[accent] } as CSSProperties}
+                      className="group glass glass-edge relative flex h-full flex-col overflow-hidden rounded-2xl p-5"
+                    >
+                      {/* Whole card routes to the case study */}
+                      <Link
+                        href={`/work/${project.id}`}
+                        aria-label={`View the ${project.title} case study`}
+                        className="absolute inset-0 z-10 rounded-2xl"
+                      />
+                      <span
+                        aria-hidden="true"
+                        className="pointer-events-none absolute inset-x-5 top-0 h-px opacity-40"
+                        style={{ background: "linear-gradient(90deg, transparent, var(--card-accent), transparent)" }}
+                      />
+                      <span
+                        aria-hidden="true"
+                        className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                        style={{ boxShadow: "0 0 38px -12px var(--card-accent)" }}
+                      />
+
+                      <div className="mb-3 flex items-center justify-between gap-2">
+                        <span className="text-mono-xs text-text-dim">{project.domain}</span>
+                        <StatusBadge status={project.status} />
+                      </div>
+
+                      <h4 className="mb-2 text-base font-semibold text-text transition-colors group-hover:text-accent">
+                        {project.title}
+                      </h4>
+
+                      <p className="mb-4 line-clamp-3 text-pretty text-xs leading-relaxed text-text-muted md:text-sm">
+                        {project.description}
+                      </p>
+
+                      <div className="mb-4 flex flex-wrap gap-1.5">
+                        {project.tags.slice(0, 4).map((tag) => (
+                          <span
+                            key={tag}
+                            className="rounded-md border border-glass-border bg-glass px-1.5 py-0.5 text-[10px] font-medium text-text-muted"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+
+                      <div className="mt-auto flex items-center justify-between pt-2">
+                        <span className="text-mono-xs text-text-dim">{project.year}</span>
+                        <span className="inline-flex items-center gap-1 text-mono-xs text-text-muted transition-colors group-hover:text-accent">
+                          View
+                          <ArrowUpRight className="h-3 w-3" />
+                        </span>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </AnimatePresence>
             </div>
           </div>
         )}

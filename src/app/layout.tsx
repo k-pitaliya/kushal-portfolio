@@ -1,12 +1,21 @@
 import type { Metadata } from "next";
-import { Geist, JetBrains_Mono } from "next/font/google";
+import { Fraunces, Geist, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import SiteShell from "@/components/layout/SiteShell";
+
+/* Display serif with optical sizing — characterful, premium, non-generic */
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
+  subsets: ["latin"],
+  display: "swap",
+  axes: ["opsz"],
+});
 
 const geist = Geist({
   variable: "--font-geist",
   subsets: ["latin"],
   display: "swap",
-  weight: ["400", "500", "600", "700", "800", "900"],
+  weight: ["400", "500", "600", "700"],
 });
 
 const jetbrainsMono = JetBrains_Mono({
@@ -19,7 +28,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://kushalpitaliya.vercel.app"),
   title: "Kushal Pitaliya — VLSI Design Verification Engineer",
   description:
-    "RTL · SystemVerilog · UVM 1.2 · SVA · Coverage-driven verification. ECE undergrad at CHARUSAT — 41 bugs found and fixed across full UVM testbenches for I2C and AXI4-Lite.",
+    "RTL · SystemVerilog · UVM 1.2 · SVA · coverage-driven verification. ECE undergrad at CHARUSAT — 41 bugs found and fixed across full UVM testbenches for I2C and AXI4-Lite, plus cloud and embedded systems work.",
   keywords: [
     "Kushal Pitaliya",
     "VLSI Design Verification",
@@ -35,15 +44,12 @@ export const metadata: Metadata = {
     "I2C Protocol Verification",
     "Embedded Systems",
     "STM32",
+    "AWS Serverless",
     "EDA Playground",
   ],
   authors: [{ name: "Kushal Pitaliya" }],
-  alternates: {
-    canonical: "https://kushalpitaliya.vercel.app",
-  },
-  verification: {
-    google: "IPrGre0AxtIPcQENkZXAdx4U5B-_AHp3n3IKRAmckPw",
-  },
+  alternates: { canonical: "https://kushalpitaliya.vercel.app" },
+  verification: { google: "IPrGre0AxtIPcQENkZXAdx4U5B-_AHp3n3IKRAmckPw" },
   robots: {
     index: true,
     follow: true,
@@ -82,7 +88,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geist.variable} ${jetbrainsMono.variable}`}
+      className={`${fraunces.variable} ${geist.variable} ${jetbrainsMono.variable}`}
     >
       <head>
         <link
@@ -117,6 +123,7 @@ export default function RootLayout({
                 "I2C Protocol",
                 "Embedded Systems",
                 "STM32",
+                "AWS Serverless",
                 "Python",
               ],
               alumniOf: {
@@ -130,7 +137,7 @@ export default function RootLayout({
             }),
           }}
         />
-        {children}
+        <SiteShell>{children}</SiteShell>
       </body>
     </html>
   );

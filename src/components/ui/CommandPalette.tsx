@@ -1,18 +1,16 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
-  { label: "Home", id: "home", shortcut: "H" },
-  { label: "About", id: "about", shortcut: "A" },
-  { label: "Skills", id: "skills", shortcut: "S" },
-  { label: "Projects", id: "projects", shortcut: "P" },
-  { label: "Experience", id: "experience", shortcut: "E" },
-  { label: "Education", id: "education", shortcut: "D" },
-  { label: "Blog", id: "blog", shortcut: "B" },
-  { label: "Contact", id: "contact", shortcut: "C" },
+  { label: "Home", href: "/", shortcut: "H" },
+  { label: "Work", href: "/work", shortcut: "W" },
+  { label: "About", href: "/about", shortcut: "A" },
+  { label: "Writeups", href: "/writeups", shortcut: "R" },
+  { label: "Contact", href: "/contact", shortcut: "C" },
 ];
 
 export default function CommandPalette() {
@@ -25,9 +23,11 @@ export default function CommandPalette() {
     item.label.toLowerCase().includes(query.toLowerCase())
   );
 
-  const prevQueryRef = useRef(query);
-  if (query !== prevQueryRef.current) {
-    prevQueryRef.current = query;
+  // Reset the highlight to the top result whenever the query changes, using the
+  // React-sanctioned "adjust state during render" pattern (no ref, no effect).
+  const [prevQuery, setPrevQuery] = useState(query);
+  if (query !== prevQuery) {
+    setPrevQuery(query);
     if (activeIndex !== 0) setActiveIndex(0);
   }
 
@@ -37,13 +37,14 @@ export default function CommandPalette() {
     setActiveIndex(0);
   }, []);
 
+  const router = useRouter();
+
   const navigate = useCallback(
-    (id: string) => {
-      const el = document.getElementById(id);
-      if (el) el.scrollIntoView({ behavior: "smooth" });
+    (href: string) => {
+      router.push(href);
       close();
     },
-    [close]
+    [close, router]
   );
 
   // Cmd+K / Ctrl+K toggles the palette
@@ -80,13 +81,15 @@ export default function CommandPalette() {
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "ArrowDown") {
       e.preventDefault();
+      if (filtered.length === 0) return;
       setActiveIndex((prev) => (prev + 1) % filtered.length);
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
+      if (filtered.length === 0) return;
       setActiveIndex((prev) => (prev - 1 + filtered.length) % filtered.length);
     } else if (e.key === "Enter" && filtered.length > 0) {
       e.preventDefault();
-      navigate(filtered[activeIndex].id);
+      navigate(filtered[activeIndex].href);
     } else if (e.key === "Escape") {
       close();
     }
@@ -105,7 +108,10 @@ export default function CommandPalette() {
           onClick={close}
         >
           <motion.div
-            className="w-full max-w-lg overflow-hidden rounded-2xl border border-glass-border bg-bg-secondary/90 shadow-2xl backdrop-blur-xl"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Command palette"
+            className="glass glass-edge w-full max-w-lg overflow-hidden rounded-2xl shadow-2xl"
             initial={{ opacity: 0, scale: 0.95, y: -10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: -10 }}
@@ -131,6 +137,7 @@ export default function CommandPalette() {
               <input
                 ref={inputRef}
                 type="text"
+                aria-label="Search sections"
                 placeholder="Navigate to…"
                 className="w-full bg-transparent text-sm text-text outline-none placeholder:text-text-dim"
                 value={query}
@@ -149,19 +156,26 @@ export default function CommandPalette() {
                 </li>
               )}
               {filtered.map((item, i) => (
-                <li key={item.id}>
+                <li key={item.href}>
                   <button
                     className={cn(
-                      "flex w-full items-center justify-between rounded-lg px-4 py-3 text-left text-sm transition-colors",
+                      "flex w-full items-center justify-between rounded-lg border px-4 py-3 text-left text-sm transition-colors",
                       i === activeIndex
-                        ? "bg-accent/10 text-accent"
-                        : "text-text-muted hover:bg-glass-hover hover:text-text"
+                        ? "border-accent/30 bg-accent-soft text-accent shadow-[inset_2px_0_0_var(--color-accent)]"
+                        : "border-transparent text-text-muted hover:bg-glass-hover hover:text-text"
                     )}
-                    onClick={() => navigate(item.id)}
+                    onClick={() => navigate(item.href)}
                     onMouseEnter={() => setActiveIndex(i)}
                   >
                     <span className="flex items-center gap-3">
-                      <span className="flex h-6 w-6 items-center justify-center rounded-md border border-glass-border bg-glass text-[10px] font-semibold uppercase">
+                      <span
+                        className={cn(
+                          "flex h-6 w-6 items-center justify-center rounded-md border text-[10px] font-semibold uppercase transition-colors",
+                          i === activeIndex
+                            ? "border-accent/40 bg-accent/15 text-accent"
+                            : "border-glass-border bg-glass text-text-dim"
+                        )}
+                      >
                         {item.shortcut}
                       </span>
                       {item.label}

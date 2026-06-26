@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { fadeUp } from "@/lib/animations";
+import TextReveal from "@/components/ui/TextReveal";
 
 interface SectionHeadingProps {
   number: string;
@@ -44,7 +45,14 @@ export default function SectionHeading({
           align === "center" && "justify-center"
         )}
       >
-        <span className="h-px w-6 bg-accent/60" aria-hidden="true" />
+        <span
+          className="h-px w-8 rounded-full"
+          style={{
+            background:
+              "linear-gradient(90deg, var(--aurora-1), var(--aurora-2))",
+          }}
+          aria-hidden="true"
+        />
         <span className="text-mono-xs text-accent">
           {number} / {title.split(" ")[0]}
         </span>
@@ -60,7 +68,7 @@ export default function SectionHeading({
         {Icon && (
           <motion.div
             className="shrink-0 text-accent"
-            style={{ filter: "drop-shadow(0 0 6px rgba(0,191,255,0.35))" }}
+            style={{ filter: "drop-shadow(0 0 8px var(--color-accent-glow))" }}
             initial={{ opacity: 0, scale: 0.6 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
@@ -73,15 +81,9 @@ export default function SectionHeading({
             />
           </motion.div>
         )}
-        <motion.h2
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="text-display-lg text-text"
-        >
-          {title}
-        </motion.h2>
+        <h2 className="text-display-lg text-text">
+          <TextReveal text={title} by="word" />
+        </h2>
       </div>
 
       {subtitle && (

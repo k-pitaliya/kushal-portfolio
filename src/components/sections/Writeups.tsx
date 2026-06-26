@@ -4,81 +4,88 @@ import { motion } from "framer-motion";
 import { ArrowUpRight, FileText } from "lucide-react";
 import { blogPosts } from "@/lib/data";
 import SectionHeading from "@/components/ui/SectionHeading";
+import { ease } from "@/lib/animations";
 
 /**
- * Writeups — slim list view replacing the old Blog card grid.
+ * Writeups — Aurora × Silicon.
  *
- * Date + title + tags + arrow. Click goes to the GitHub markdown doc.
- * Clean list rhythm reads as "engineering writing" rather than "blog cards."
+ * A slim stack of `glass glass-edge` rows that lift on hover: mono date, title
+ * that warms to accent, tag chips, and an ArrowUpRight that drifts toward the
+ * link. Each row opens its GitHub markdown doc in a new tab. Reads as
+ * "engineering writing," not "blog cards."
  */
 export default function Writeups() {
   return (
-    <section
-      id="writeups"
-      className="relative section-y px-6 md:px-12 lg:px-24"
-    >
+    <section id="writeups" className="relative section-y px-6 md:px-12 lg:px-24">
       <div className="mx-auto max-w-4xl">
         <SectionHeading
-          number="05"
+          number="01"
           title="Writeups"
-          subtitle="Engineering writeups, debug walkthroughs, and coverage closure notes. Hosted on GitHub for free, public access."
+          subtitle="Debug walkthroughs, coverage-closure notes, and RTL bug post-mortems — public on GitHub."
           icon={FileText}
         />
 
-        <ul className="space-y-2">
+        <ul className="space-y-3 md:space-y-4">
           {blogPosts.map((post, i) => (
             <motion.li
               key={post.id}
-              initial={{ opacity: 0, y: 8 }}
+              initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{
-                duration: 0.4,
+                duration: 0.6,
                 delay: i * 0.06,
-                ease: [0.22, 1, 0.36, 1],
+                ease: ease.out,
               }}
             >
-              <a
+              <motion.a
                 href={post.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`Read writeup: ${post.title}`}
-                className="group flex flex-col gap-2 rounded-xl border border-transparent px-4 py-5 transition-all duration-200 hover:border-glass-border hover:bg-bg-secondary/40 md:flex-row md:items-start md:gap-6 md:px-6 md:py-6"
+                whileHover={{
+                  y: -4,
+                  boxShadow:
+                    "0 0 0 1px var(--color-accent-glow), 0 16px 44px rgba(3,2,10,0.55), 0 0 38px var(--color-accent-glow), inset 0 1px 0 rgba(255,255,255,0.1)",
+                }}
+                transition={{ type: "spring", stiffness: 260, damping: 22 }}
+                className="glass glass-edge group block rounded-2xl p-5 md:p-6"
               >
-                <div className="text-mono-xs text-text-dim md:w-32 md:pt-1">
-                  {new Date(post.date)
-                    .toLocaleDateString("en-US", {
+                <div className="flex flex-col gap-3 md:flex-row md:items-start md:gap-6">
+                  <div className="text-mono-xs text-text-dim md:w-28 md:shrink-0 md:pt-1">
+                    {new Date(post.date).toLocaleDateString("en-US", {
                       year: "numeric",
                       month: "short",
                       day: "numeric",
-                    })
-                    .toUpperCase()}
-                </div>
-
-                <div className="flex-1">
-                  <h3 className="mb-1.5 text-base font-semibold text-text transition-colors group-hover:text-accent md:text-lg">
-                    {post.title}
-                  </h3>
-                  <p className="mb-2 text-sm leading-relaxed text-text-muted">
-                    {post.excerpt}
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {post.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="rounded-full bg-accent/8 px-2.5 py-0.5 text-[10px] font-medium text-accent/80"
-                      >
-                        {tag}
-                      </span>
-                    ))}
+                      timeZone: "UTC",
+                    })}
                   </div>
-                </div>
 
-                <ArrowUpRight
-                  className="h-4 w-4 shrink-0 self-start text-text-dim transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent md:mt-1"
-                  aria-hidden="true"
-                />
-              </a>
+                  <div className="min-w-0 flex-1">
+                    <h3 className="text-base font-semibold text-text transition-colors duration-200 group-hover:text-accent md:text-lg">
+                      {post.title}
+                    </h3>
+                    <p className="mt-2 text-sm leading-relaxed text-text-muted">
+                      {post.excerpt}
+                    </p>
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {post.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="rounded-full border border-glass-border bg-accent-soft px-2.5 py-0.5 text-[11px] font-medium text-accent/85"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <ArrowUpRight
+                    className="h-4 w-4 shrink-0 self-start text-text-dim transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent md:mt-1"
+                    aria-hidden="true"
+                  />
+                </div>
+              </motion.a>
             </motion.li>
           ))}
         </ul>

@@ -1,134 +1,121 @@
 "use client";
 
-import { useRef, useCallback, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import Image from "next/image";
+import { motion } from "framer-motion";
 import { User } from "lucide-react";
-import { staggerContainer, staggerItem, blurStagger, blurStaggerItem } from "@/lib/animations";
+import { blurStagger, blurStaggerItem } from "@/lib/animations";
 import { aboutData } from "@/lib/data";
-import AnimatedText from "@/components/ui/AnimatedText";
-import GlassCard from "@/components/ui/GlassCard";
-import Counter from "@/components/ui/Counter";
 import SectionHeading from "@/components/ui/SectionHeading";
-import DotGrid from "@/components/ui/DotGrid";
+import Tilt from "@/components/ui/Tilt";
 
+/**
+ * About — Aurora × Silicon.
+ *
+ * A `glass glass-edge` photo frame over a soft aurora glow, paired with the
+ * headline + three paragraphs revealed on a blur-stagger. The old scroll
+ * parallax (useScroll/useTransform) is gone — it hydrates inconsistently on
+ * React 19 + Next 16 + framer-motion 12. The photo's pointer tilt is handled
+ * by the shared <Tilt> primitive (the site-wide 3D system), which renders the
+ * neutral 0/0 state on the server and disables itself under reduced motion —
+ * so there is no hydration mismatch.
+ */
 export default function About() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const photoRef = useRef<HTMLDivElement>(null);
-  const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0 });
-
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
-
-  const photoY = useTransform(scrollYProgress, [0, 1], [60, -60]);
-
-  const handleMouseMove = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      const el = photoRef.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width - 0.5;
-      const y = (e.clientY - rect.top) / rect.height - 0.5;
-      setTilt({ rotateX: -y * 15, rotateY: x * 15 });
-    },
-    []
-  );
-
-  const handleMouseLeave = useCallback(() => {
-    setTilt({ rotateX: 0, rotateY: 0 });
-  }, []);
-
   return (
-    <section
-      id="about"
-      ref={sectionRef}
-      className="relative px-6 py-40 md:px-12 lg:px-24 xl:py-48"
-    >
-      {/* Interactive dot grid background */}
-      <DotGrid className="absolute inset-0 h-full w-full opacity-60" />
-      <div className="mx-auto max-w-6xl">
-        <SectionHeading number="06" title="About" subtitle="The story behind the verification work." icon={User} />
+    <section id="about" className="relative section-y px-6 md:px-12 lg:px-24">
+      {/* Faint wafer grid — echoes the Hero, sits under the global aurora */}
+      <div aria-hidden="true" className="absolute inset-0 grid-bg opacity-40" />
 
-        <div className="grid gap-12 md:grid-cols-2 md:gap-12 lg:gap-16">
-          {/* Photo with 3D tilt */}
-          <motion.div style={{ y: photoY }} className="flex justify-center">
-            <div
-              ref={photoRef}
-              onMouseMove={handleMouseMove}
-              onMouseLeave={handleMouseLeave}
-              className="relative"
-              style={{ perspective: 800 }}
-            >
-              <motion.div
-                className="relative h-80 w-72 overflow-hidden rounded-2xl border border-accent/30 shadow-[0_0_40px_rgba(0,191,255,0.15)] md:h-96 md:w-80 lg:h-[28rem] lg:w-96"
-                animate={{
-                  rotateX: tilt.rotateX,
-                  rotateY: tilt.rotateY,
+      <div className="relative mx-auto max-w-6xl">
+        <SectionHeading
+          number="01"
+          title="About"
+          subtitle="The story behind the verification work."
+          icon={User}
+        />
+
+        <div className="grid items-center gap-12 md:grid-cols-2 md:gap-14 lg:gap-20">
+          {/* Photo — glass frame over a soft aurora glow, shared <Tilt> 3D */}
+          <motion.div
+            initial={{ opacity: 0, y: 24, filter: "blur(10px)" }}
+            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="flex justify-center md:justify-start"
+          >
+            <div className="relative w-full max-w-[20rem] rounded-2xl">
+              {/* Aurora glow pooled behind the frame — stays put while it tilts */}
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute -inset-8 -z-10 rounded-[2.5rem] opacity-55 blur-3xl"
+                style={{
+                  background:
+                    "radial-gradient(58% 58% at 28% 18%, var(--aurora-1), transparent 70%), radial-gradient(58% 58% at 82% 88%, var(--aurora-4), transparent 70%)",
                 }}
-                transition={{ type: "spring", stiffness: 200, damping: 20 }}
-                style={{ transformStyle: "preserve-3d" }}
-              >
-                {/* Headshot fills the frame */}
-                <img
-                  src="/images/kushal.jpg"
-                  alt="Kushal Pitaliya — VLSI Design Verification Engineer"
-                  width={720}
-                  height={960}
-                  loading="eager"
-                  fetchPriority="high"
-                  decoding="async"
-                  className="h-full w-full select-none object-cover"
-                  draggable={false}
-                />
-                {/* Subtle gradient ramp at the bottom for the nameplate to read on */}
-                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-bg/85 via-bg/40 to-transparent" />
-                {/* Accent glow tint across the whole frame */}
-                <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-t from-accent/10 to-transparent" />
-                {/* Nameplate */}
-                <div className="pointer-events-none absolute bottom-4 left-0 right-0 px-5 text-center">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-accent/90 md:text-xs">
-                    VLSI · DV Engineer
-                  </span>
+              />
+
+              <Tilt className="rounded-[inherit]" max={9}>
+                <div className="glass glass-edge card-shine relative h-80 w-full overflow-hidden rounded-2xl md:h-96 lg:h-[26rem]">
+                  {/* Headshot fills the frame. next/image with both dims pinned
+                      to 100% via h-full/w-full + object-cover — no aspect-ratio
+                      warning, and it lazy-loads since About sits mid-page. */}
+                  <Image
+                    src="/images/kushal.jpg"
+                    alt="Kushal Pitaliya — VLSI Design Verification Engineer"
+                    width={720}
+                    height={960}
+                    draggable={false}
+                    className="h-full w-full select-none object-cover"
+                  />
+                  {/* Gradient ramp so the nameplate reads */}
+                  <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-bg/85 via-bg/40 to-transparent" />
+                  {/* Aurora tint across the glass */}
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-accent/12 to-transparent" />
+                  {/* Nameplate */}
+                  <div className="pointer-events-none absolute inset-x-0 bottom-4 px-5 text-center">
+                    <span className="text-mono-xs text-accent/90">
+                      VLSI · DV Engineer
+                    </span>
+                  </div>
                 </div>
-                {/* Rotating border glow */}
-                <div className="pointer-events-none absolute -inset-[1px] rounded-2xl opacity-40"
-                  style={{
-                    background: "conic-gradient(from 0deg, transparent, rgba(0,191,255,0.4), transparent, rgba(123,104,238,0.3), transparent)",
-                    mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                    maskComposite: "exclude",
-                    WebkitMaskComposite: "xor",
-                    padding: "1.5px",
-                    animation: "spin 6s linear infinite",
-                  }}
-                />
-              </motion.div>
+              </Tilt>
             </div>
           </motion.div>
 
-          {/* Description — blur-reveal on scroll */}
+          {/* Headline + description — blur-stagger reveal */}
           <motion.div
-            className="flex flex-col justify-center space-y-6"
             variants={blurStagger}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-80px" }}
+            className="flex flex-col justify-center"
           >
-            {aboutData.description.map((paragraph, i) => (
-              <motion.div key={i} variants={blurStaggerItem}>
-                <AnimatedText
-                  text={paragraph}
-                  as="p"
-                  mode="words"
-                  delay={0}
+            <motion.span
+              variants={blurStaggerItem}
+              className="text-mono-xs text-accent"
+            >
+              {"// who"}
+            </motion.span>
+
+            <motion.h3
+              variants={blurStaggerItem}
+              className="mt-4 text-display-md text-text"
+            >
+              {aboutData.headline}
+            </motion.h3>
+
+            <div className="mt-6 space-y-5">
+              {aboutData.description.map((paragraph, i) => (
+                <motion.p
+                  key={i}
+                  variants={blurStaggerItem}
                   className="text-base leading-relaxed text-text-muted md:text-lg"
-                />
-              </motion.div>
-            ))}
+                >
+                  {paragraph}
+                </motion.p>
+              ))}
+            </div>
           </motion.div>
         </div>
-
-        {/* Stats moved to CredibilityStrip above the About section — first proof point sits closer to the Hero. */}
       </div>
     </section>
   );

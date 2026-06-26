@@ -4,11 +4,12 @@ import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 
 /**
- * NowPanel — current focus block.
+ * NowPanel — current focus block (Aurora × Silicon).
  *
- * The live-feeling status update. Tells visitors the portfolio is alive,
+ * The live-feeling status update: a single frosted glass strip with a pulsing
+ * live-dot and a mono "NOW —" label. Tells visitors the portfolio is alive,
  * not frozen. Update the `nowState` string manually whenever you ship
- * something meaningful.
+ * something meaningful — the `weekOf` date is intentionally hardcoded.
  *
  * Inspired by Derek Sivers' "/now" pages but as a hero-flow section.
  */
@@ -34,25 +35,33 @@ export default function NowPanel() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="relative overflow-hidden rounded-2xl border border-glass-border bg-bg-secondary/40 p-6 md:p-8"
+          className="glass glass-edge relative overflow-hidden rounded-2xl p-6 md:p-8"
         >
-          {/* Subtle gradient accent strip on the left */}
-          <span className="absolute inset-y-6 left-0 w-[2px] bg-gradient-to-b from-transparent via-accent to-transparent md:inset-y-8" />
+          {/* Aurora accent strip on the left edge */}
+          <span
+            aria-hidden="true"
+            className="absolute inset-y-6 left-0 w-[2px] md:inset-y-8"
+            style={{
+              background:
+                "linear-gradient(180deg, transparent, var(--aurora-2) 30%, var(--aurora-1) 70%, transparent)",
+            }}
+          />
 
-          {/* Header */}
+          {/* Header — live dot + mono NOW label */}
           <div className="mb-4 flex items-center gap-3">
             <span className="live-dot shrink-0" aria-hidden="true" />
             <span className="text-mono-xs text-accent">
-              Current focus · week of {nowState.weekOf}
+              NOW{" "}
+              <span className="text-text-dim">— week of {nowState.weekOf}</span>
             </span>
           </div>
 
-          {/* Body */}
+          {/* Body — the honest, current focus sentence */}
           <p className="mb-5 text-body-lg leading-relaxed text-text">
             {nowState.focus}
           </p>
 
-          {/* Footer */}
+          {/* Footer — optional next-commit link */}
           <a
             href={nowState.nextCommitUrl}
             target="_blank"

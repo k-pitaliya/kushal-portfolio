@@ -2,12 +2,13 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Mail } from "lucide-react";
+import { Mail, MapPin } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { cn } from "@/lib/utils";
 import { staggerContainer, staggerItem, blurReveal } from "@/lib/animations";
 import { socialLinks } from "@/lib/data";
 import SectionHeading from "@/components/ui/SectionHeading";
+import Magnetic from "@/components/ui/Magnetic";
 
 interface FormData {
   name: string;
@@ -69,18 +70,20 @@ function FloatingField({
   const [hasValue, setHasValue] = useState(false);
   const isActive = focused || hasValue;
 
+  // Aurora focus ring: accent border + a soft periwinkle glow that picks up the
+  // background aurora without shouting. Errors switch to the error token.
   const inputClasses = cn(
-    "peer w-full rounded-lg border bg-transparent px-4 pt-6 pb-2 text-sm text-text outline-none transition-colors duration-300",
+    "peer w-full rounded-xl border bg-bg-secondary/40 px-4 pt-6 pb-2 text-sm text-text outline-none transition-all duration-300 placeholder:text-text-dim",
     focused
-      ? "border-accent shadow-[0_0_0_1px_rgba(0,191,255,0.3)]"
-      : "border-glass-border",
-    error && "border-red-500"
+      ? "border-accent shadow-[0_0_0_3px_var(--color-accent-soft),0_0_24px_-6px_var(--color-accent-glow)]"
+      : "border-glass-border hover:border-accent/30",
+    error && "border-error"
   );
 
   const labelClasses = cn(
     "pointer-events-none absolute left-4 transition-all duration-200",
     isActive
-      ? "top-2 text-xs text-accent"
+      ? "top-2 text-mono-xs text-accent"
       : "top-1/2 -translate-y-1/2 text-sm text-text-muted",
     textarea && !isActive && "top-4 translate-y-0"
   );
@@ -117,7 +120,7 @@ function FloatingField({
         <input type={type} className={inputClasses} {...fieldProps} />
       )}
       <label className={labelClasses}>{label}</label>
-      {error && <p id={`${id}-error`} className="mt-1 text-xs text-red-400" role="alert">{error}</p>}
+      {error && <p id={`${id}-error`} className="mt-1.5 text-xs text-error" role="alert">{error}</p>}
     </div>
   );
 }
@@ -128,7 +131,7 @@ function SuccessDots() {
       {Array.from({ length: 8 }).map((_, i) => (
         <motion.div
           key={i}
-          className="h-2 w-2 rounded-full bg-accent"
+          className="h-2 w-2 rounded-full bg-accent shadow-[0_0_10px_var(--color-accent-glow)]"
           initial={{ opacity: 0, y: 20, scale: 0 }}
           animate={{ opacity: [0, 1, 0], y: [20, -20, -40], scale: [0, 1, 0] }}
           transition={{
@@ -199,20 +202,24 @@ export default function Contact() {
         return;
       }
 
-      // Any other status — surface the real error so it can be diagnosed.
+      // Any other status (4xx/5xx) — the server actually responded with an
+      // error, so surface it honestly. No mailto, no fake success: render the
+      // serverError UI and let the user retry or use the direct email link.
       const payload = await res.json().catch(() => null);
       const fieldErrors = payload?.errors as Record<string, string[]> | undefined;
       const firstFieldError = fieldErrors
         ? Object.values(fieldErrors).flat()[0]
         : null;
-      throw new Error(
+      setServerError(
         firstFieldError ||
           payload?.error ||
-          `Couldn't send (status ${res.status}). Opening your email client instead.`
+          `Couldn't send your message (status ${res.status}). Please try again.`
       );
+      return;
     } catch (err) {
-      // Network failure or unexpected response — also fall back to mailto so
-      // the user is never blocked.
+      // Genuine network failure — the server never responded (fetch threw), so
+      // fall back to mailto so the user is never blocked. Server-side error
+      // responses are handled above and never reach here.
       window.location.href = buildMailto(data);
       setSubmitted(true);
       reset();
@@ -231,15 +238,14 @@ export default function Contact() {
 
         {/* Big statement */}
         <motion.p
-          className="mb-16 text-center text-3xl font-bold leading-tight text-text sm:text-4xl md:text-5xl"
+          className="mb-16 text-display-md text-text"
           variants={blurReveal}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-80px" }}
         >
-          Have an idea? Let&apos;s turn it
-          <br />
-          into <span className="text-accent">reality.</span>
+          Have an idea? Let&apos;s turn it into{" "}
+          <span className="aurora-text">reality.</span>
         </motion.p>
 
         <motion.div
@@ -252,24 +258,37 @@ export default function Contact() {
           {/* Left — Info */}
           <motion.div variants={staggerItem} className="space-y-8">
             <div>
-              <h3 className="mb-4 text-2xl font-bold text-text md:text-3xl">
+              <h3 className="mb-4 text-display-md text-text">
                 Let&apos;s build something together
               </h3>
-              <p className="text-text-muted">
+              <p className="text-body-lg text-text-muted">
                 I&apos;m always open to new opportunities and interesting
                 projects. Feel free to reach out!
               </p>
             </div>
 
-            <a
-              href="mailto:pitaliyakushal@gmail.com"
-              className="group/email inline-flex items-center gap-2 text-lg font-medium text-accent transition-colors hover:text-accent-dark"
-            >
-              <span className="relative">
-                pitaliyakushal@gmail.com
-                <span className="absolute -bottom-0.5 left-0 h-[1px] w-0 bg-accent transition-all duration-300 group-hover/email:w-full" />
-              </span>
-            </a>
+            {/* Contact coordinates — mono-labelled, code-block flavour */}
+            <div className="space-y-4">
+              <a
+                href="mailto:pitaliyakushal@gmail.com"
+                className="group/email flex items-center gap-3 text-text transition-colors hover:text-accent"
+              >
+                <span className="glass glass-edge flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-accent">
+                  <Mail className="h-4 w-4" aria-hidden="true" />
+                </span>
+                <span className="relative text-base font-medium">
+                  pitaliyakushal@gmail.com
+                  <span className="absolute -bottom-0.5 left-0 h-px w-0 bg-accent transition-all duration-300 group-hover/email:w-full" />
+                </span>
+              </a>
+
+              <div className="flex items-center gap-3 text-text-muted">
+                <span className="glass glass-edge flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-accent">
+                  <MapPin className="h-4 w-4" aria-hidden="true" />
+                </span>
+                <span className="text-base">Rajkot, Gujarat</span>
+              </div>
+            </div>
 
             <div className="flex gap-3">
               {socialLinks.map((link) => (
@@ -278,7 +297,7 @@ export default function Contact() {
                   href={link.url}
                   target={link.icon === "mail" ? undefined : "_blank"}
                   rel={link.icon === "mail" ? undefined : "noopener noreferrer"}
-                  className="flex h-11 w-11 items-center justify-center rounded-lg border border-glass-border bg-glass text-text-muted transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/40 hover:text-accent"
+                  className="glass glass-edge flex h-11 w-11 items-center justify-center rounded-xl text-text-muted transition-all duration-300 hover:-translate-y-0.5 hover:text-accent"
                   aria-label={link.name}
                 >
                   {socialIcons[link.icon] ?? link.name}
@@ -288,7 +307,7 @@ export default function Contact() {
           </motion.div>
 
           {/* Right — Form */}
-          <motion.div variants={staggerItem}>
+          <motion.div variants={staggerItem} className="glass glass-edge rounded-2xl p-6 md:p-8">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
               <FloatingField
                 label="Name"
@@ -312,31 +331,33 @@ export default function Contact() {
                 minLength={10}
               />
 
-              <button
-                type="submit"
-                disabled={submitting}
-                className={cn(
-                  "relative w-full rounded-lg bg-accent px-6 py-3 font-medium text-bg transition-all duration-300",
-                  "hover:shadow-[0_0_30px_rgba(0,191,255,0.3)]",
-                  "disabled:cursor-not-allowed disabled:opacity-60"
-                )}
-              >
-                {submitting ? (
-                  <span className="inline-flex items-center gap-1.5">
-                    Sending
-                    {[0, 1, 2].map((i) => (
-                      <motion.span
-                        key={i}
-                        className="inline-block h-1 w-1 rounded-full bg-bg"
-                        animate={{ opacity: [0, 1, 0] }}
-                        transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }}
-                      />
-                    ))}
-                  </span>
-                ) : (
-                  "Send Message"
-                )}
-              </button>
+              <Magnetic strength={0.3} className="w-full">
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className={cn(
+                    "relative w-full rounded-xl bg-accent px-6 py-3 font-semibold text-white transition-all duration-300",
+                    "shadow-[0_0_30px_var(--color-accent-glow)] hover:-translate-y-0.5 hover:bg-accent-dark hover:shadow-[0_0_50px_var(--color-accent-glow)]",
+                    "disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:shadow-[0_0_30px_var(--color-accent-glow)]"
+                  )}
+                >
+                  {submitting ? (
+                    <span className="inline-flex items-center gap-1.5">
+                      Sending
+                      {[0, 1, 2].map((i) => (
+                        <motion.span
+                          key={i}
+                          className="inline-block h-1 w-1 rounded-full bg-white"
+                          animate={{ opacity: [0, 1, 0] }}
+                          transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }}
+                        />
+                      ))}
+                    </span>
+                  ) : (
+                    "Send Message"
+                  )}
+                </button>
+              </Magnetic>
             </form>
 
             {/* Success animation */}
@@ -361,12 +382,12 @@ export default function Contact() {
               {serverError && (
                 <motion.div
                   role="alert"
-                  className="mt-6 rounded-lg border border-red-500/30 bg-red-500/5 px-4 py-3 text-center"
+                  className="mt-6 rounded-xl border border-error/30 bg-error/5 px-4 py-3 text-center"
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0 }}
                 >
-                  <p className="text-sm text-red-400">{serverError}</p>
+                  <p className="text-sm text-error">{serverError}</p>
                   <p className="mt-2 text-xs text-text-dim">
                     Or email me directly:{" "}
                     <a

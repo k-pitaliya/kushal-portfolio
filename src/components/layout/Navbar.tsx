@@ -1,16 +1,23 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { navItems } from "@/lib/data";
 import { staggerContainer, staggerItem } from "@/lib/animations";
 
+/** Active when the path matches exactly ("/") or is nested under the route. */
+function isActive(href: string, pathname: string) {
+  return href === "/" ? pathname === "/" : pathname.startsWith(href);
+}
+
 export default function Navbar() {
+  const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState("home");
   const lastScrollY = useRef(0);
 
   const handleScroll = useCallback(() => {
@@ -26,37 +33,19 @@ export default function Navbar() {
   }, [handleScroll]);
 
   useEffect(() => {
-    const sections = navItems
-      .map((item) => document.querySelector(item.href))
-      .filter(Boolean) as Element[];
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
-        });
-      },
-      { rootMargin: "-40% 0px -55% 0px", threshold: 0 }
-    );
-
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
     document.body.style.overflow = isMobileOpen ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
   }, [isMobileOpen]);
 
-  const handleNavClick = (href: string) => {
-    setIsMobileOpen(false);
-    const el = document.querySelector(href);
-    el?.scrollIntoView({ behavior: "smooth" });
-  };
+  // Close the mobile menu whenever the route changes — adjust-state-during-render
+  // (not an effect), which avoids the React-19 set-state-in-effect warning.
+  const [prevPath, setPrevPath] = useState(pathname);
+  if (pathname !== prevPath) {
+    setPrevPath(pathname);
+    if (isMobileOpen) setIsMobileOpen(false);
+  }
 
   return (
     <>
@@ -66,62 +55,61 @@ export default function Navbar() {
           isScrolled ? "top-2" : "top-4"
         )}
         initial={{ y: -100, opacity: 0 }}
-        animate={{
-          y: isVisible ? 0 : -120,
-          opacity: isVisible ? 1 : 0,
-        }}
+        animate={{ y: isVisible ? 0 : -120, opacity: isVisible ? 1 : 0 }}
         transition={{ duration: 0.4, ease: [0.43, 0.13, 0.23, 0.96] }}
       >
         <nav
+          aria-label="Primary"
           className={cn(
-            "glass flex items-center gap-1 rounded-full transition-all duration-500",
+            "glass glass-edge flex items-center gap-1 rounded-full transition-all duration-500",
             isScrolled ? "py-2 px-4 shadow-lg shadow-black/20" : "py-3 px-6"
           )}
         >
-          {/* Logo */}
-          <button
-            onClick={() => handleNavClick("#home")}
-            aria-label="Kushal Pitaliya — back to top"
-            className="mr-4 flex h-9 w-9 items-center justify-center rounded-full bg-accent font-bold text-bg text-sm transition-all hover:scale-105 hover:shadow-[0_0_16px_rgba(0,191,255,0.4)]"
+          {/* Logo → home */}
+          <Link
+            href="/"
+            aria-label="Kushal Pitaliya — home"
+            className="mr-4 flex h-9 w-9 items-center justify-center rounded-full bg-accent text-sm font-bold text-white transition-all duration-300 hover:scale-105 hover:bg-accent-dark hover:shadow-[0_0_24px_var(--color-accent-glow)]"
           >
             KP
-          </button>
+          </Link>
 
           {/* Desktop nav links */}
           <LayoutGroup>
-            <ul className="hidden items-center gap-0.5 md:flex" role="navigation">
-              {navItems.map((item) => (
-                <li key={item.href}>
-                  <button
-                    onClick={() => handleNavClick(item.href)}
-                    className="group relative px-3 py-2 text-mono-sm font-medium transition-colors"
-                  >
-                    <span
-                      className={cn(
-                        "relative z-10 transition-colors duration-300",
-                        activeSection === item.href.slice(1)
-                          ? "text-accent"
-                          : "text-text-muted hover:text-text"
-                      )}
+            <ul className="hidden items-center gap-0.5 md:flex">
+              {navItems.map((item) => {
+                const active = isActive(item.href, pathname);
+                return (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      className="group relative px-3 py-2 text-mono-sm font-medium"
                     >
-                      {item.label}
-                    </span>
-                    {activeSection === item.href.slice(1) && (
-                      <motion.span
-                        className="absolute bottom-1 left-3 right-3 h-[2px] rounded-full bg-accent shadow-[0_0_8px_rgba(0,191,255,0.4)]"
-                        layoutId="navbar-active-underline"
-                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                      />
-                    )}
-                  </button>
-                </li>
-              ))}
+                      <span
+                        className={cn(
+                          "relative z-10 transition-colors duration-300",
+                          active ? "text-accent" : "text-text-muted hover:text-text"
+                        )}
+                      >
+                        {item.label}
+                      </span>
+                      {active && (
+                        <motion.span
+                          className="absolute bottom-1 left-3 right-3 h-[2px] rounded-full bg-accent shadow-[0_0_10px_var(--color-accent-glow)]"
+                          layoutId="navbar-active-underline"
+                          transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                        />
+                      )}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </LayoutGroup>
 
           {/* Mobile hamburger */}
           <button
-            onClick={() => setIsMobileOpen(!isMobileOpen)}
+            onClick={() => setIsMobileOpen((v) => !v)}
             className="relative z-[110] ml-2 flex h-11 w-11 flex-col items-center justify-center gap-[5px] md:hidden"
             aria-label="Toggle menu"
             aria-expanded={isMobileOpen}
@@ -149,33 +137,37 @@ export default function Navbar() {
       <AnimatePresence>
         {isMobileOpen && (
           <motion.div
-            className="fixed inset-0 z-[105] flex items-center justify-center bg-bg/95 backdrop-blur-xl md:hidden"
+            onClick={() => setIsMobileOpen(false)}
+            className="fixed inset-0 z-[90] flex items-center justify-center bg-bg/95 backdrop-blur-xl md:hidden"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
           >
             <motion.nav
+              onClick={(e) => e.stopPropagation()}
               variants={staggerContainer}
               initial="hidden"
               animate="visible"
               exit="hidden"
               className="flex flex-col items-center gap-6"
+              aria-label="Mobile"
             >
               {navItems.map((item) => (
-                <motion.button
-                  key={item.href}
-                  variants={staggerItem}
-                  onClick={() => handleNavClick(item.href)}
-                  className={cn(
-                    "text-3xl font-bold tracking-tight transition-colors",
-                    activeSection === item.href.slice(1)
-                      ? "text-accent"
-                      : "text-text-muted hover:text-text"
-                  )}
-                >
-                  {item.label}
-                </motion.button>
+                <motion.div key={item.href} variants={staggerItem}>
+                  <Link
+                    href={item.href}
+                    onClick={() => setIsMobileOpen(false)}
+                    className={cn(
+                      "text-3xl font-bold tracking-tight transition-colors",
+                      isActive(item.href, pathname)
+                        ? "text-accent"
+                        : "text-text-muted hover:text-text"
+                    )}
+                  >
+                    {item.label}
+                  </Link>
+                </motion.div>
               ))}
             </motion.nav>
           </motion.div>

@@ -6,8 +6,11 @@
  * Hand-tuned per-project visuals that show the verification architecture
  * at a glance. Far higher signal than the generic chip glyph placeholder.
  *
- * Style: monochrome lines + cyan accents, mono labels, sparse, technical.
- * Animations: paths draw on mount, subtle pulse on connection nodes.
+ * Style: monochrome lines + aurora accents, mono labels, sparse, technical.
+ * Hues pull from the design-system palette via CSS vars — var(--aurora-2)
+ * (cyan), var(--aurora-1) (indigo), var(--aurora-3) (teal) — with subtle
+ * fill/stroke opacity for depth. Text inherits via currentColor.
+ * Animations: paths draw on mount, blocks fade in staggered.
  */
 
 import { motion } from "framer-motion";
@@ -27,7 +30,7 @@ export function AxiCrossbarDiagram() {
   return (
     <svg
       viewBox="0 0 480 300"
-      className="h-full w-full"
+      className="h-full w-full text-text"
       fill="none"
       stroke="currentColor"
       strokeWidth="1.2"
@@ -42,7 +45,8 @@ export function AxiCrossbarDiagram() {
           y1={50 + i * 60}
           x2="180"
           y2={50 + i * 60}
-          stroke="rgba(0,191,255,0.4)"
+          stroke="var(--aurora-2)"
+          strokeOpacity={0.4}
           strokeDasharray="3 3"
           initial={{ pathLength: 0 }}
           whileInView={{ pathLength: 1 }}
@@ -58,7 +62,8 @@ export function AxiCrossbarDiagram() {
           y1={50 + i * 60}
           x2="388"
           y2={50 + i * 60}
-          stroke="rgba(0,191,255,0.4)"
+          stroke="var(--aurora-2)"
+          strokeOpacity={0.4}
           strokeDasharray="3 3"
           initial={{ pathLength: 0 }}
           whileInView={{ pathLength: 1 }}
@@ -83,7 +88,8 @@ export function AxiCrossbarDiagram() {
             height="30"
             rx="4"
             stroke="rgba(255,255,255,0.4)"
-            fill="rgba(0,191,255,0.04)"
+            fill="var(--aurora-2)"
+            fillOpacity={0.04}
           />
           <text
             x="62"
@@ -116,7 +122,8 @@ export function AxiCrossbarDiagram() {
             height="30"
             rx="4"
             stroke="rgba(255,255,255,0.4)"
-            fill="rgba(0,191,255,0.04)"
+            fill="var(--aurora-2)"
+            fillOpacity={0.04}
           />
           <text
             x="418"
@@ -147,7 +154,8 @@ export function AxiCrossbarDiagram() {
           height="200"
           rx="6"
           stroke="var(--color-accent)"
-          fill="rgba(0,191,255,0.05)"
+          fill="var(--aurora-1)"
+          fillOpacity={0.06}
         />
         <text
           x="240"
@@ -235,7 +243,7 @@ export function I2cUvmDiagram() {
   return (
     <svg
       viewBox="0 0 480 300"
-      className="h-full w-full"
+      className="h-full w-full text-text"
       fill="none"
       stroke="currentColor"
       strokeWidth="1.2"
@@ -249,9 +257,11 @@ export function I2cUvmDiagram() {
         width="300"
         height="260"
         rx="6"
-        stroke="rgba(0,191,255,0.5)"
+        stroke="var(--aurora-3)"
+        strokeOpacity={0.5}
         strokeDasharray="4 3"
-        fill="rgba(0,191,255,0.03)"
+        fill="var(--aurora-3)"
+        fillOpacity={0.03}
         initial={{ pathLength: 0 }}
         whileInView={{ pathLength: 1 }}
         viewport={{ once: true }}
@@ -283,7 +293,8 @@ export function I2cUvmDiagram() {
           height="60"
           rx="4"
           stroke="rgba(255,255,255,0.4)"
-          fill="rgba(0,191,255,0.04)"
+          fill="var(--aurora-2)"
+          fillOpacity={0.04}
         />
         <text
           x="96"
@@ -337,7 +348,8 @@ export function I2cUvmDiagram() {
           height="60"
           rx="4"
           stroke="rgba(255,255,255,0.4)"
-          fill="rgba(0,191,255,0.04)"
+          fill="var(--aurora-2)"
+          fillOpacity={0.04}
         />
         <text
           x="240"
@@ -390,8 +402,10 @@ export function I2cUvmDiagram() {
           width="264"
           height="55"
           rx="4"
-          stroke="rgba(0,191,255,0.5)"
-          fill="rgba(0,191,255,0.06)"
+          stroke="var(--aurora-3)"
+          strokeOpacity={0.5}
+          fill="var(--aurora-3)"
+          fillOpacity={0.06}
         />
         <text
           x="168"
@@ -433,7 +447,8 @@ export function I2cUvmDiagram() {
           height="50"
           rx="4"
           stroke="rgba(255,255,255,0.4)"
-          fill="rgba(0,191,255,0.04)"
+          fill="var(--aurora-2)"
+          fillOpacity={0.04}
         />
         <text
           x="168"
@@ -475,7 +490,8 @@ export function I2cUvmDiagram() {
           height="100"
           rx="4"
           stroke="var(--color-accent)"
-          fill="rgba(0,191,255,0.06)"
+          fill="var(--aurora-2)"
+          fillOpacity={0.06}
         />
         <text
           x="405"
@@ -533,7 +549,8 @@ export function I2cUvmDiagram() {
         y1="150"
         x2="350"
         y2="150"
-        stroke="rgba(0,191,255,0.5)"
+        stroke="var(--aurora-2)"
+        strokeOpacity={0.5}
         strokeDasharray="3 3"
         initial={{ pathLength: 0 }}
         whileInView={{ pathLength: 1 }}
@@ -558,7 +575,7 @@ export function FsmDiagram() {
   return (
     <svg
       viewBox="0 0 480 300"
-      className="h-full w-full"
+      className="h-full w-full text-text"
       fill="none"
       stroke="currentColor"
       strokeWidth="1.2"
@@ -573,24 +590,50 @@ export function FsmDiagram() {
         transition={{ duration: 0.8 }}
       >
         {/* IDLE -> LOAD */}
-        <line x1="116" y1="80" x2="204" y2="80" stroke="rgba(0,191,255,0.5)" />
-        <polygon points="200,77 208,80 200,83" fill="rgba(0,191,255,0.5)" stroke="none" />
+        <line
+          x1="116"
+          y1="80"
+          x2="204"
+          y2="80"
+          stroke="var(--aurora-2)"
+          strokeOpacity={0.5}
+        />
+        <polygon
+          points="200,77 208,80 200,83"
+          fill="var(--aurora-2)"
+          fillOpacity={0.5}
+          stroke="none"
+        />
 
         {/* LOAD -> EXEC */}
-        <line x1="276" y1="80" x2="364" y2="80" stroke="rgba(0,191,255,0.5)" />
-        <polygon points="360,77 368,80 360,83" fill="rgba(0,191,255,0.5)" stroke="none" />
+        <line
+          x1="276"
+          y1="80"
+          x2="364"
+          y2="80"
+          stroke="var(--aurora-2)"
+          strokeOpacity={0.5}
+        />
+        <polygon
+          points="360,77 368,80 360,83"
+          fill="var(--aurora-2)"
+          fillOpacity={0.5}
+          stroke="none"
+        />
 
         {/* EXEC -> DONE */}
         <path
           d="M 400 116 Q 400 180 280 220"
-          stroke="rgba(0,191,255,0.5)"
+          stroke="var(--aurora-2)"
+          strokeOpacity={0.5}
           fill="none"
         />
 
         {/* DONE -> IDLE */}
         <path
           d="M 200 220 Q 80 180 80 116"
-          stroke="rgba(0,191,255,0.5)"
+          stroke="var(--aurora-2)"
+          strokeOpacity={0.5}
           fill="none"
         />
 
@@ -616,9 +659,12 @@ export function FsmDiagram() {
             cx={s.x}
             cy={s.y}
             r="36"
-            stroke={s.name === "IDLE" ? "var(--color-accent)" : "rgba(255,255,255,0.5)"}
+            stroke={
+              s.name === "IDLE" ? "var(--color-accent)" : "rgba(255,255,255,0.5)"
+            }
             strokeWidth="1.5"
-            fill="rgba(0,191,255,0.05)"
+            fill="var(--aurora-2)"
+            fillOpacity={0.05}
           />
           <text
             x={s.x}
@@ -648,9 +694,11 @@ export function FsmDiagram() {
           width="120"
           height="22"
           rx="4"
-          stroke="rgba(0,191,255,0.4)"
+          stroke="var(--aurora-3)"
+          strokeOpacity={0.4}
           strokeDasharray="3 3"
-          fill="rgba(0,191,255,0.05)"
+          fill="var(--aurora-3)"
+          fillOpacity={0.05}
         />
         <text
           x="240"

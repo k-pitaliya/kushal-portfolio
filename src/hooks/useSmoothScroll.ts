@@ -25,6 +25,9 @@ export function useSmoothScroll() {
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       gestureOrientation: "vertical",
       smoothWheel: true,
+      // Intercept in-page hash links (Hero CTA, FloatingCTA, Footer, skip-link)
+      // so they glide like the nav buttons instead of teleporting.
+      anchors: true,
     });
 
     function raf(time: number) {

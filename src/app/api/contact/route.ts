@@ -75,7 +75,7 @@ export async function POST(request: Request) {
       subject: subject || `Portfolio: Message from ${name}`,
       text: `From: ${name} (${email})\n\n${message}`,
       html: `<div style="font-family:sans-serif;max-width:600px;margin:0 auto">
-        <h2 style="color:#00BFFF">New Portfolio Message</h2>
+        <h2 style="color:#7c6cff">New Portfolio Message</h2>
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
         <hr style="border-color:#eee" />

@@ -1,8 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowUp, ArrowUpRight, Mail } from "lucide-react";
 import { navItems, socialLinks, siteConfig } from "@/lib/data";
+import Magnetic from "@/components/ui/Magnetic";
 
 function Github({ className }: { className?: string }) {
   return (
@@ -50,26 +52,44 @@ export default function Footer() {
   return (
     <footer className="relative border-t border-divider bg-bg">
       <div className="mx-auto max-w-6xl px-6 py-16 md:px-12 lg:px-24">
-        {/* Top: big CTA */}
+        {/* Top: big CTA — glass panel with a soft aurora wash */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.5 }}
-          className="mb-16 flex flex-col items-start gap-6 md:flex-row md:items-end md:justify-between"
+          className="glass glass-edge relative mb-16 overflow-hidden rounded-3xl px-8 py-12 md:px-12 md:py-14"
         >
-          <div>
-            <p className="mb-3 text-mono-xs text-text-dim">Have a project?</p>
-            <h2 className="text-display-lg text-text">Let&apos;s build.</h2>
-          </div>
+          {/* Decorative aurora glows — purely atmospheric, behind content */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -right-24 -top-28 h-72 w-72 rounded-full opacity-20 blur-3xl"
+            style={{ background: "radial-gradient(circle, var(--aurora-1), transparent 70%)" }}
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -bottom-28 -left-16 h-64 w-64 rounded-full opacity-15 blur-3xl"
+            style={{ background: "radial-gradient(circle, var(--aurora-3), transparent 70%)" }}
+          />
 
-          <a
-            href="#contact"
-            className="group inline-flex items-center gap-2 rounded-full border border-glass-border bg-glass px-6 py-3 text-sm font-semibold text-text transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/40 hover:text-accent"
-          >
-            Start a conversation
-            <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-          </a>
+          <div className="relative z-10 flex flex-col items-start gap-6 md:flex-row md:items-end md:justify-between">
+            <div>
+              <p className="mb-3 text-mono-xs text-text-dim">Have a project?</p>
+              <h2 className="text-display-lg text-text">
+                Let&apos;s <span className="aurora-text">build.</span>
+              </h2>
+            </div>
+
+            <Magnetic strength={0.35}>
+              <Link
+                href="/contact"
+                className="group inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-white shadow-[0_0_30px_var(--color-accent-glow)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-accent-dark hover:shadow-[0_0_50px_var(--color-accent-glow)]"
+              >
+                Start a conversation
+                <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              </Link>
+            </Magnetic>
+          </div>
         </motion.div>
 
         {/* Divider line */}
@@ -91,12 +111,12 @@ export default function Footer() {
             <ul className="grid grid-cols-2 gap-x-4 gap-y-1.5 text-sm">
               {navItems.map((item) => (
                 <li key={item.href}>
-                  <a
+                  <Link
                     href={item.href}
                     className="text-text-muted transition-colors hover:text-accent"
                   >
                     {item.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -116,7 +136,7 @@ export default function Footer() {
                     target={link.icon === "mail" ? undefined : "_blank"}
                     rel={link.icon === "mail" ? undefined : "noopener noreferrer"}
                     aria-label={link.name}
-                    className="flex h-10 w-10 items-center justify-center rounded-lg border border-glass-border bg-glass text-text-muted transition-all duration-200 hover:-translate-y-0.5 hover:border-accent/40 hover:text-accent"
+                    className="glass glass-edge flex h-10 w-10 items-center justify-center rounded-xl text-text-muted transition-all duration-200 hover:-translate-y-0.5 hover:text-accent"
                   >
                     <Icon className="h-4 w-4" />
                   </a>
@@ -132,13 +152,13 @@ export default function Footer() {
             <li>
               <span className="text-text-muted">signal-path </span>
               <span className="text-accent">{buildMeta.version}</span>
-              <span className="text-text-dim/60"> · last build {buildMeta.built}</span>
-              <span className="text-text-dim/60"> · commit {buildMeta.commit}</span>
+              <span className="text-text-dim"> · last build {buildMeta.built}</span>
+              <span className="text-text-dim"> · commit {buildMeta.commit}</span>
             </li>
-            <li className="text-text-dim/70">
-              built with Next.js 16 · Tailwind 4 · Framer Motion
+            <li className="text-text-dim">
+              built with Next.js 16 · React 19 · Tailwind 4 · Framer Motion
             </li>
-            <li className="text-text-dim/70">
+            <li className="text-text-dim">
               source ·{" "}
               <a
                 href="https://github.com/k-pitaliya/kushal-portfolio"

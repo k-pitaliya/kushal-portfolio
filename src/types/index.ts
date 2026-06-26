@@ -3,16 +3,36 @@ export interface ProjectMetric {
   value: string;
 }
 
+export type ProjectCategory = "vlsi" | "embedded" | "cloud" | "web";
+
+/** Honest completion state — surfaced on every card so nothing is oversold. */
+export type ProjectStatus =
+  | "verified" // simulated/tested and passing
+  | "hardware" // proven on real silicon/board
+  | "shipped" // deployed / production-built
+  | "demo" // working demo / proof-of-concept
+  | "in-progress"; // architecture done, build ongoing
+
+/** Which aurora hue themes the card. */
+export type ProjectAccent = "indigo" | "cyan" | "teal" | "magenta" | "amber";
+
 export interface Project {
   id: string;
   title: string;
   description: string;
   longDescription?: string;
-  image: string;
+  image?: string;
   tags: string[];
-  category: "vlsi" | "embedded" | "tools" | "other";
+  category: ProjectCategory;
+  /** Human-readable domain label, e.g. "Silicon", "Cloud". */
+  domain: string;
+  status?: ProjectStatus;
+  accent?: ProjectAccent;
+  year?: string;
   github?: string;
   live?: string;
+  /** Reason a repo link is absent — e.g. "Private", "Commercial". */
+  closedReason?: string;
   featured: boolean;
   metrics?: ProjectMetric[];
 }

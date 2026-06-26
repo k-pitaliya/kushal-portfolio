@@ -1,61 +1,83 @@
 @import "tailwindcss";
 
+/* ============================================================================
+   AURORA × SILICON — design system
+   A deep-midnight base with a drifting multi-hue aurora (teal-green breaks the
+   blue/violet cliché), frosted glass with light-refraction edges, fine grain,
+   and a signal-trace motif that ties the look to design verification.
+   Type: Fraunces (display serif) · Geist (body) · JetBrains Mono (technical).
+   NOTE: legacy token *names* are preserved so every section adopts the new
+   palette instantly; values are all-new.
+   ========================================================================== */
+
 @theme inline {
-  /* === Color — restrained, single accent === */
-  --color-bg: #0A0A0B;
-  --color-bg-elevated: #111114;
-  --color-bg-secondary: #0F0F12;
-  --color-bg-tertiary: #16161B;
-  --color-text: #FAFAFA;
-  --color-text-muted: #A1A1A1;
-  --color-text-dim: #8A8A8A;
-  --color-accent: #00BFFF;
-  --color-accent-dark: #0099CC;
-  --color-accent-soft: rgba(0, 191, 255, 0.12);
-  --color-accent-glow: rgba(0, 191, 255, 0.2);
-  --color-divider: #20202A;
-  --color-glass: rgba(255, 255, 255, 0.04);
-  --color-glass-border: rgba(255, 255, 255, 0.08);
+  /* === Surfaces — deep midnight indigo, never pure black === */
+  --color-bg: #07060e;
+  --color-bg-elevated: #0e0c1a;
+  --color-bg-secondary: #0b0a16;
+  --color-bg-tertiary: #131022;
+
+  /* === Ink — cool near-white === */
+  --color-text: #f2f0fa;
+  --color-text-muted: #ada8c7;
+  --color-text-dim: #9591b3;
+
+  /* === Accent — electric periwinkle (primary interactive) === */
+  --color-accent: #7c6cff;
+  --color-accent-dark: #5b49e8;
+  --color-accent-soft: rgba(124, 108, 255, 0.12);
+  --color-accent-glow: rgba(124, 108, 255, 0.28);
+
+  /* === Aurora palette — used for atmosphere, glows, gradient text === */
+  --aurora-1: #6e5bff; /* indigo  */
+  --aurora-2: #2bd9ff; /* cyan    */
+  --aurora-3: #2fe6b8; /* teal-green — the cliché-breaker */
+  --aurora-4: #ff5fc8; /* magenta */
+  --aurora-5: #ffc25e; /* amber — rare warm pop */
+
+  --color-divider: #211c38;
+  --color-glass: rgba(255, 255, 255, 0.035);
+  --color-glass-border: rgba(255, 255, 255, 0.09);
   --color-glass-hover: rgba(255, 255, 255, 0.06);
-  --color-success: #4ADE80;
-  --color-warning: #FBBF24;
-  --color-error: #F87171;
+
+  --color-success: #36e0b0;
+  --color-warning: #ffc25e;
+  --color-error: #ff6b8a;
 
   /* === Typography === */
+  --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
   --font-sans: var(--font-geist), system-ui, -apple-system, sans-serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, "Courier New", monospace;
 }
 
-/* Selection */
-::selection {
-  background: var(--color-accent);
-  color: var(--color-bg);
-}
-
-/* Scrollbar — narrow, restrained */
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: var(--color-bg); }
-::-webkit-scrollbar-thumb {
-  background: var(--color-divider);
-  border-radius: 3px;
-  transition: background 200ms;
-}
-::-webkit-scrollbar-thumb:hover { background: var(--color-accent); }
-
-/* Base */
+/* ---------------------------------------------------------------- base ---- */
 html {
-  scroll-behavior: auto; /* Lenis handles smooth scrolling */
+  scroll-behavior: auto; /* Lenis owns smooth scroll */
 }
 
 body {
   background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-sans);
-  font-feature-settings: "ss01", "ss02", "cv11";
+  font-feature-settings: "ss01", "cv11";
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Keyboard focus ring — only for keyboard nav */
+::selection {
+  background: var(--aurora-1);
+  color: #fff;
+}
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--color-bg); }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--aurora-1), var(--aurora-2));
+  border-radius: 4px;
+  border: 2px solid var(--color-bg);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--aurora-1); }
+
 *:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 3px;
@@ -63,7 +85,6 @@ body {
 }
 *:focus:not(:focus-visible) { outline: none; }
 
-/* Skip to content */
 .skip-to-content {
   position: fixed;
   top: -100%;
@@ -72,48 +93,174 @@ body {
   z-index: 100000;
   padding: 0.75rem 1.5rem;
   background: var(--color-accent);
-  color: var(--color-bg);
+  color: #fff;
   font-weight: 600;
   font-size: 0.875rem;
-  border-radius: 0 0 8px 8px;
+  border-radius: 0 0 10px 10px;
   transition: top 0.2s ease;
 }
 .skip-to-content:focus { top: 0; }
 
-/* Form input autofill — override Chrome's white background */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
-input:-webkit-autofill:active,
 textarea:-webkit-autofill,
 textarea:-webkit-autofill:hover,
-textarea:-webkit-autofill:focus,
-textarea:-webkit-autofill:active {
+textarea:-webkit-autofill:focus {
   -webkit-text-fill-color: var(--color-text);
   -webkit-box-shadow: 0 0 0 1000px var(--color-bg-secondary) inset;
   caret-color: var(--color-text);
   transition: background-color 5000s ease-in-out 0s;
 }
 
-/* Subtle animated dot grid background */
-.grid-bg {
-  background-image:
-    radial-gradient(circle, rgba(255,255,255,0.025) 1px, transparent 1px);
-  background-size: 32px 32px;
-  background-position: 0 0;
+/* ----------------------------------------------------- atmosphere ---- */
+
+/* Fine film grain — sits above the aurora, below content */
+.grain-layer {
+  position: fixed;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain-jitter 7s steps(6) infinite;
 }
 
+/* Subtle dot grid — wafer-lithography feel */
+.grid-bg {
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 30px 30px;
+}
 .grid-bg-fade {
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(ellipse 80% 60% at 50% 30%, transparent 0%, var(--color-bg) 90%);
+  background: radial-gradient(ellipse 80% 60% at 50% 30%, transparent 0%, var(--color-bg) 92%);
   pointer-events: none;
 }
 
-/* Subtle text shimmer for emphasis */
+/* ---------------------------------------------------------- glass ---- */
+
+/* Frosted glass with a top light-line and depth shadow */
+.glass {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.018));
+  border: 1px solid var(--color-glass-border);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.22),
+    0 10px 40px rgba(3, 2, 10, 0.45);
+}
+
+/* A refraction edge that picks up the aurora — apply to .relative wrappers */
+.glass-edge {
+  position: relative;
+}
+.glass-edge::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    var(--aurora-2) 0%,
+    transparent 35%,
+    transparent 65%,
+    var(--aurora-4) 100%
+  );
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  opacity: 0.5;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+.glass-edge:hover::before { opacity: 0.9; }
+
+/* legacy alias retained (older components referenced these) */
+.gradient-border { position: relative; border-radius: 14px; }
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, var(--aurora-2) 0%, transparent 50%, var(--aurora-1) 100%);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  opacity: 0.4;
+}
+.card-shine { position: relative; overflow: hidden; }
+.card-shine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.06) 50%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+.card-shine:hover::after { opacity: 1; }
+
+/* ----------------------------------------------------- typography ---- */
+.text-display-xl {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-size: clamp(3.25rem, 8.5vw, 6.75rem);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+}
+.text-display-lg {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-size: clamp(2.25rem, 5vw, 3.85rem);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+}
+.text-display-md {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-size: clamp(1.5rem, 2.8vw, 2.25rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+.text-body-lg {
+  font-size: clamp(1.0625rem, 1.3vw, 1.25rem);
+  line-height: 1.65;
+}
+.text-mono-xs {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.text-mono-sm {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+}
+
+/* Aurora gradient text — for selective emphasis */
+.aurora-text {
+  background: linear-gradient(100deg, var(--aurora-2), var(--aurora-3) 35%, var(--aurora-1) 70%, var(--aurora-4));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: aurora-hue 9s ease-in-out infinite;
+}
+
+/* Old shimmer kept for compatibility, retuned to aurora */
 .text-shimmer {
-  background: linear-gradient(110deg, var(--color-text) 35%, var(--color-accent) 50%, var(--color-text) 65%);
+  background: linear-gradient(110deg, var(--color-text) 35%, var(--aurora-2) 50%, var(--color-text) 65%);
   background-size: 250% 100%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -121,59 +268,80 @@ textarea:-webkit-autofill:active {
   animation: shimmer 3.5s ease-in-out infinite;
 }
 
-@keyframes shimmer {
-  0%, 100% { background-position: 250% center; }
-  50% { background-position: 0% center; }
-}
+/* Mask used by AnimatedText word reveals */
+.clip-text { overflow: hidden; display: inline-block; vertical-align: top; }
 
-/* Glass — use sparingly */
-.glass {
-  background: var(--color-glass);
-  border: 1px solid var(--color-glass-border);
-  backdrop-filter: blur(12px) saturate(1.2);
-  -webkit-backdrop-filter: blur(12px) saturate(1.2);
-}
-
-/* Subtle gradient border for emphasis */
-.gradient-border {
-  position: relative;
-  border-radius: 12px;
-}
-.gradient-border::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(135deg, var(--color-accent) 0%, transparent 50%, var(--color-accent) 100%);
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask-composite: exclude;
-  -webkit-mask-composite: xor;
-  opacity: 0.4;
-}
-
-/* Section spacing utility */
+/* ------------------------------------------------------- utilities ---- */
 .section-y {
-  padding-top: clamp(4rem, 10vw, 8rem);
-  padding-bottom: clamp(4rem, 10vw, 8rem);
+  padding-top: clamp(4.5rem, 10vw, 8.5rem);
+  padding-bottom: clamp(4.5rem, 10vw, 8.5rem);
 }
 
-/* Signal path animation */
-@keyframes signalDraw {
-  from { stroke-dashoffset: 1000; }
-  to { stroke-dashoffset: 0; }
+.live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-success);
+  box-shadow: 0 0 0 0 var(--color-success);
+  animation: live-pulse 2s ease-in-out infinite;
+}
+
+.cmd-backdrop {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .signal-line {
   fill: none;
-  stroke: var(--color-accent);
+  stroke: var(--aurora-2);
   stroke-width: 1.5;
   stroke-linecap: round;
   stroke-dasharray: 4 4;
   opacity: 0.5;
 }
 
-/* Reduced motion */
+/* --------------------------------------------------------- keyframes ---- */
+@keyframes aurora-drift-a {
+  0%, 100% { transform: translate3d(-8%, -6%, 0) scale(1.1); }
+  50%      { transform: translate3d(10%, 8%, 0) scale(1.35); }
+}
+@keyframes aurora-drift-b {
+  0%, 100% { transform: translate3d(8%, 4%, 0) scale(1.25); }
+  50%      { transform: translate3d(-12%, -10%, 0) scale(1); }
+}
+@keyframes aurora-drift-c {
+  0%, 100% { transform: translate3d(0, 10%, 0) scale(1.05); }
+  50%      { transform: translate3d(6%, -8%, 0) scale(1.3); }
+}
+@keyframes aurora-hue {
+  0%, 100% { background-position: 0% center; }
+  50%      { background-position: 100% center; }
+}
+@keyframes grain-jitter {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-3%, 2%); }
+  40% { transform: translate(2%, -3%); }
+  60% { transform: translate(-2%, -2%); }
+  80% { transform: translate(3%, 1%); }
+  100% { transform: translate(0, 0); }
+}
+@keyframes shimmer {
+  0%, 100% { background-position: 250% center; }
+  50% { background-position: 0% center; }
+}
+@keyframes live-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 var(--color-success); opacity: 1; }
+  50% { box-shadow: 0 0 0 6px transparent; opacity: 0.65; }
+}
+@keyframes float-pulse {
+  0%, 100% { box-shadow: 0 0 22px var(--color-accent-glow), 0 4px 24px rgba(0,0,0,0.35); }
+  50% { box-shadow: 0 0 34px var(--color-accent-glow), 0 4px 24px rgba(0,0,0,0.35); }
+}
+@keyframes trace-flow {
+  to { stroke-dashoffset: -1000; }
+}
+
+/* ---------------------------------------------------- accessibility ---- */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -181,9 +349,9 @@ textarea:-webkit-autofill:active {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+  .grain-layer, .aurora-text { animation: none !important; }
 }
 
-/* Minimum touch target on mobile */
 @media (pointer: coarse) {
   button, a, [role="tab"], [role="button"] {
     min-height: 44px;
@@ -191,78 +359,11 @@ textarea:-webkit-autofill:active {
   }
 }
 
-/* Fluid typography */
-.text-display-xl {
-  font-size: clamp(3.5rem, 9vw, 7rem);
-  line-height: 0.95;
-  letter-spacing: -0.04em;
-  font-weight: 800;
-}
+/* ── Craft layer — typographic finish ───────────────────────────────── */
+.text-balance { text-wrap: balance; }
+.text-pretty { text-wrap: pretty; }
+.tnum { font-variant-numeric: tabular-nums; }
 
-.text-display-lg {
-  font-size: clamp(2.25rem, 5vw, 4rem);
-  line-height: 1.05;
-  letter-spacing: -0.02em;
-  font-weight: 700;
-}
-
-.text-display-md {
-  font-size: clamp(1.5rem, 2.8vw, 2.25rem);
-  line-height: 1.15;
-  letter-spacing: -0.01em;
-  font-weight: 600;
-}
-
-.text-body-lg {
-  font-size: clamp(1.0625rem, 1.3vw, 1.25rem);
-  line-height: 1.6;
-}
-
-.text-mono-xs {
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-}
-
-.text-mono-sm {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.05em;
-}
-
-/* FloatingCTA animation */
-@keyframes float-pulse {
-  0%, 100% { box-shadow: 0 0 20px rgba(0,191,255,0.2), 0 4px 24px rgba(0,0,0,0.3); }
-  50% { box-shadow: 0 0 30px rgba(0,191,255,0.35), 0 4px 24px rgba(0,0,0,0.3); }
-}
-
-/* Preloader fade-out */
-.preloader {
-  position: fixed;
-  inset: 0;
-  z-index: 99999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--color-bg);
-}
-
-/* Command palette backdrop */
-.cmd-backdrop {
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-}
-
-/* Live dot indicator */
-@keyframes live-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 var(--color-success); opacity: 1; }
-  50% { box-shadow: 0 0 0 6px transparent; opacity: 0.7; }
-}
-.live-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--color-success);
-  animation: live-pulse 2s ease-in-out infinite;
-}
+/* Display headings never leave orphan words; body copy wraps prettily. */
+.text-display-xl, .text-display-lg, .text-display-md { text-wrap: balance; }
+.text-body-lg, p { text-wrap: pretty; }

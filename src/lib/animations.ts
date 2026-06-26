@@ -206,3 +206,33 @@ export const letter: Variants = {
     },
   },
 };
+
+// ── Unified motion language (v3 — premium) ──────────────────────────────
+/** Signature easing curves. Use `ease.out` for reveals everywhere. */
+export const ease: Record<"out" | "inOut" | "soft", [number, number, number, number]> = {
+  out: [0.16, 1, 0.3, 1], // expo-out — primary reveal
+  inOut: [0.65, 0, 0.35, 1],
+  soft: [0.22, 1, 0.36, 1],
+};
+
+export const springSoft: Transition = { type: "spring", stiffness: 120, damping: 18, mass: 0.6 };
+export const springSnappy: Transition = { type: "spring", stiffness: 300, damping: 26 };
+export const springMagnetic: Transition = { type: "spring", stiffness: 150, damping: 15, mass: 0.5 };
+
+/** Mask-reveal item — pair with an overflow-hidden parent for line/char reveals. */
+export const maskItem: Variants = {
+  hidden: { y: "115%" },
+  visible: { y: "0%", transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } },
+};
+
+/** Refined fade-up — the new default scroll entrance. */
+export const rise: Variants = {
+  hidden: { opacity: 0, y: 28 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } },
+};
+
+/** Stagger container factory. */
+export const stagger = (staggerChildren = 0.08, delayChildren = 0): Variants => ({
+  hidden: {},
+  visible: { transition: { staggerChildren, delayChildren } },
+});

@@ -5,6 +5,7 @@ import {
   useInView,
   useMotionValue,
   useTransform,
+  useReducedMotion,
   animate,
   motion,
 } from "framer-motion";
@@ -25,11 +26,16 @@ export default function Counter({
 }: CounterProps) {
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const prefersReducedMotion = useReducedMotion();
   const motionValue = useMotionValue(0);
   const rounded = useTransform(motionValue, (latest) => Math.round(latest));
 
   useEffect(() => {
     if (!isInView) return;
+
+    // Respect reduced-motion: skip the decorative count-up. The final value is
+    // already rendered as the initial text, so there's nothing to do here.
+    if (prefersReducedMotion) return;
 
     const controls = animate(motionValue, value, {
       duration,
@@ -37,7 +43,7 @@ export default function Counter({
     });
 
     return controls.stop;
-  }, [isInView, motionValue, value, duration]);
+  }, [isInView, prefersReducedMotion, motionValue, value, duration]);
 
   useEffect(() => {
     const unsubscribe = rounded.on("change", (latest) => {
@@ -51,7 +57,8 @@ export default function Counter({
 
   return (
     <motion.span ref={ref} className={cn("tabular-nums", className)}>
-      0{suffix}
+      {value}
+      {suffix}
     </motion.span>
   );
 }

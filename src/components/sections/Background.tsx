@@ -3,12 +3,15 @@
 import { motion } from "framer-motion";
 import { Briefcase } from "lucide-react";
 import SectionHeading from "@/components/ui/SectionHeading";
+import { ease } from "@/lib/animations";
 
 /**
- * Background — vertical timeline that merges Experience + Education + Certifications.
+ * Background — Aurora × Silicon.
  *
- * One scrollable chronological list rather than three separate sections.
- * Visually simpler, denser, easier to scan.
+ * One vertical timeline that merges Experience + Education + Certifications
+ * into a single reverse-chronological rail rather than three separate sections.
+ * An aurora gradient line runs the spine; each entry is a frosted glass card
+ * pinned to a glowing node dot tinted by kind. Visually denser, easy to scan.
  */
 
 type TimelineEntry = {
@@ -82,84 +85,130 @@ const entries: TimelineEntry[] = [
   },
 ];
 
-const kindBadge: Record<TimelineEntry["kind"], { label: string; color: string }> = {
-  work: { label: "Work", color: "text-accent border-accent/30 bg-accent/5" },
-  education: { label: "Education", color: "text-text-muted border-glass-border bg-glass" },
-  cert: { label: "Cert", color: "text-success border-success/30 bg-success/5" },
+/**
+ * Per-kind styling — the badge label/class, plus a node tint (aurora hue) and a
+ * matching rgba glow so dots and hover shadows stay cohesive with the palette.
+ */
+const kindMeta: Record<
+  TimelineEntry["kind"],
+  { label: string; badge: string; tint: string; glow: string }
+> = {
+  work: {
+    label: "Work",
+    badge: "text-accent border-accent/30 bg-accent/5",
+    tint: "var(--aurora-1)",
+    glow: "rgba(110,91,255,0.28)",
+  },
+  education: {
+    label: "Education",
+    badge: "text-text-muted border-glass-border bg-glass",
+    tint: "var(--aurora-2)",
+    glow: "rgba(43,217,255,0.26)",
+  },
+  cert: {
+    label: "Cert",
+    badge: "text-success border-success/30 bg-success/5",
+    tint: "var(--aurora-3)",
+    glow: "rgba(47,230,184,0.26)",
+  },
 };
 
 export default function Background() {
   return (
-    <section
-      id="background"
-      className="relative section-y px-6 md:px-12 lg:px-24"
-    >
+    <section id="background" className="relative section-y px-6 md:px-12 lg:px-24">
       <div className="mx-auto max-w-4xl">
         <SectionHeading
-          number="04"
+          number="03"
           title="Background"
-          subtitle="Experience, education, and credentials — reverse-chronological."
+          subtitle="Experience, education, and credentials — one reverse-chronological rail."
           icon={Briefcase}
         />
 
-        <ol className="relative space-y-12 border-l border-divider pl-6 md:pl-10">
+        <ol className="relative">
+          {/* Aurora gradient timeline rail */}
+          <span
+            aria-hidden="true"
+            className="absolute left-[6px] top-3 bottom-3 w-[2px] rounded-full"
+            style={{
+              background:
+                "linear-gradient(180deg, var(--aurora-2) 0%, var(--aurora-1) 48%, var(--aurora-4) 100%)",
+              opacity: 0.55,
+            }}
+          />
+
           {entries.map((entry, i) => {
-            const badge = kindBadge[entry.kind];
+            const meta = kindMeta[entry.kind];
             return (
               <motion.li
                 key={`${entry.org}-${entry.date}`}
-                initial={{ opacity: 0, x: -12 }}
+                initial={{ opacity: 0, x: -14 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{
-                  duration: 0.5,
-                  delay: i * 0.05,
-                  ease: [0.22, 1, 0.36, 1],
+                  duration: 0.6,
+                  delay: i * 0.06,
+                  ease: ease.out,
                 }}
-                className="relative"
+                className="relative pb-6 pl-9 last:pb-0 md:pl-12"
               >
-                {/* Dot on the timeline */}
+                {/* Glowing node dot on the rail */}
                 <span
                   aria-hidden="true"
-                  className="absolute -left-[33px] top-1.5 h-2.5 w-2.5 rounded-full border-2 border-bg bg-accent md:-left-[43px]"
+                  className="absolute left-0 top-[26px] h-3.5 w-3.5 rounded-full border-2 border-bg"
+                  style={{
+                    background: meta.tint,
+                    boxShadow: `0 0 12px ${meta.glow}`,
+                  }}
                 />
 
-                {/* Date + badge */}
-                <div className="mb-2 flex flex-wrap items-center gap-3">
-                  <span className="text-mono-xs text-text-muted">
-                    {entry.date}
-                    {entry.rangeEnd && (
-                      <span className="text-text-dim"> · {entry.rangeEnd}</span>
-                    )}
-                  </span>
-                  <span
-                    className={`rounded-full border px-2 py-0.5 text-[10px] uppercase tracking-widest ${badge.color}`}
-                  >
-                    {badge.label}
-                  </span>
-                </div>
+                {/* Glass entry card */}
+                <motion.div
+                  whileHover={{
+                    y: -4,
+                    boxShadow: `0 0 0 1px ${meta.glow}, 0 16px 44px rgba(3,2,10,0.55), 0 0 38px ${meta.glow}, inset 0 1px 0 rgba(255,255,255,0.1)`,
+                  }}
+                  transition={{ type: "spring", stiffness: 260, damping: 22 }}
+                  className="glass glass-edge rounded-2xl p-5 md:p-6"
+                >
+                  {/* Date + kind badge */}
+                  <div className="mb-2.5 flex flex-wrap items-center gap-3">
+                    <span className="text-mono-xs text-text-muted">
+                      {entry.date}
+                      {entry.rangeEnd && (
+                        <span className="text-text-dim"> · {entry.rangeEnd}</span>
+                      )}
+                    </span>
+                    <span
+                      className={`rounded-full border px-2 py-0.5 text-mono-xs ${meta.badge}`}
+                    >
+                      {meta.label}
+                    </span>
+                  </div>
 
-                {/* Org */}
-                <h3 className="mb-1 text-lg font-semibold text-text md:text-xl">
-                  {entry.org}
-                </h3>
+                  {/* Org */}
+                  <h3 className="mb-1 text-lg font-semibold text-text md:text-xl">
+                    {entry.org}
+                  </h3>
 
-                {/* Role */}
-                <p className="mb-3 text-sm text-text-muted md:text-base">
-                  {entry.role}
-                </p>
+                  {/* Role */}
+                  <p className="text-mono-sm text-accent">{entry.role}</p>
 
-                {/* Bullets */}
-                {entry.bullets && (
-                  <ul className="space-y-2 text-sm text-text-muted md:text-base">
-                    {entry.bullets.map((b, idx) => (
-                      <li key={idx} className="flex items-baseline gap-2">
-                        <span className="mt-1.5 inline-block h-1 w-1 shrink-0 rounded-full bg-accent/40" />
-                        <span>{b}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
+                  {/* Bullets */}
+                  {entry.bullets && (
+                    <ul className="mt-3.5 space-y-2 text-sm text-text-muted md:text-base">
+                      {entry.bullets.map((b, idx) => (
+                        <li key={idx} className="flex items-baseline gap-2.5">
+                          <span
+                            aria-hidden="true"
+                            className="mt-1.5 inline-block h-1 w-1 shrink-0 rounded-full"
+                            style={{ background: meta.tint }}
+                          />
+                          <span>{b}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </motion.div>
               </motion.li>
             );
           })}
